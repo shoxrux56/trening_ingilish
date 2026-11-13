@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="uz" translate="no"><head><meta charset="utf-8"><meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RuMio English · Kunlik dars</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;--bg:#fff;--tx:#3c3c3c;--mut:#777;--bd:#e5e5e5;--g:#58cc02;--gd:#46a302;--b:#1cb0f6;--bd2:#1899d6;--r:#ff4b4b;--rl:#ffdfe0;--gl:#d7ffb8;--sel:#ddf4ff;color-scheme:light}
+html{height:100%}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#131f24;--tx:#f1f7fb;--mut:#9fb0ba;--bd:#37464f;--rl:#4a2326;--gl:#25410f;--sel:#1b3a4b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#131f24;--tx:#f1f7fb;--mut:#9fb0ba;--bd:#37464f;--rl:#4a2326;--gl:#25410f;--sel:#1b3a4b;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:700}
+#app{max-width:560px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column}
+.hd{position:sticky;top:0;background:var(--bg);display:flex;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;border-bottom:2px solid var(--bd);font-size:18px;font-weight:900;z-index:5}
+.hd .y{color:#ff9600}.hd .p{color:#ce82ff}.hd .h{color:var(--r)}
+.unit{margin:16px;padding:16px;border-radius:16px;background:var(--g);color:#fff}.unit small{opacity:.92;font-weight:800;letter-spacing:.04em}.unit h2{margin:2px 0 0;font-size:21px;font-weight:900;line-height:1.25}
+.path{display:flex;flex-direction:column;align-items:center;gap:22px;padding:30px 0 60px}
+.nd{width:84px;height:76px;border-radius:50%;border:0;border-bottom:8px solid var(--gd);background:var(--g);font-size:36px;cursor:pointer;position:relative;font-family:inherit}
+.nd:active{transform:translateY(4px);border-bottom-width:4px}
+.nd.lock{background:var(--bd);border-bottom-color:#c4c4c4;filter:grayscale(1);cursor:not-allowed}
+.nd.cur{animation:bob 1.2s infinite}.nd.done{background:#ffc800;border-bottom-color:#d8a700}
+.nd .s{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:var(--bg);border:2px solid var(--bd);border-radius:12px;padding:3px 10px;font-size:14px;font-weight:900;color:var(--g);white-space:nowrap}
+.lb{font-size:13px;color:var(--mut);text-align:center;margin-top:4px;max-width:140px}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.top{display:flex;align-items:center;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 16px 14px}
+.x{background:none;border:0;font-size:26px;color:var(--mut);cursor:pointer;font-family:inherit}
+.pg{flex:1;height:16px;background:var(--bd);border-radius:9px;overflow:hidden}.pg i{display:block;height:100%;background:var(--g);border-radius:9px;transition:width .35s}
+.bd{flex:1;padding:8px 20px 20px;overflow:auto}
+.q{font-size:24px;font-weight:900;margin:8px 0 16px}
+.owl{display:flex;gap:12px;align-items:flex-end;margin-bottom:14px}.owl .o{font-size:64px;line-height:1}
+.bub{border:2px solid var(--bd);border-radius:16px;padding:12px 14px;font-size:17px;position:relative}
+.ru{font-size:30px;font-weight:900;display:flex;gap:10px;align-items:center;flex-wrap:wrap;line-height:1.25}
+.spk{width:48px;height:48px;border-radius:14px;border:0;border-bottom:4px solid var(--bd2);background:var(--b);color:#fff;font-size:22px;cursor:pointer;flex:none}
+.wl{display:flex;flex-wrap:wrap;gap:8px 10px;margin:10px 0 12px}.wl .w{text-align:center;border:2px solid var(--bd);border-radius:10px;padding:5px 9px;line-height:1.2}.wl .w b{display:block;font-size:17px}.wl .w span{display:block;font-size:13px;color:var(--b);font-weight:700}.tr{color:var(--mut);margin:8px 0}.uz{color:var(--b);font-size:22px;font-weight:900}
+.when{background:#fff4cc;color:#5b4500;border-radius:14px;padding:12px;margin-top:14px;font-size:15px}
+.op{display:block;width:100%;text-align:left;padding:14px 16px;margin-bottom:10px;border:2px solid var(--bd);border-bottom-width:5px;border-radius:16px;background:var(--bg);color:var(--tx);font:inherit;font-size:18px;cursor:pointer}
+.op.sel{border-color:var(--b);background:var(--sel);color:var(--b)}
+.op.ok{border-color:var(--g);background:var(--gl);color:var(--gd)}.op.no{border-color:var(--r);background:var(--rl);color:var(--r)}
+.ans,.bank{display:flex;flex-wrap:wrap;gap:8px;min-height:62px;padding:8px 0}
+.ans{border-top:2px solid var(--bd);border-bottom:2px solid var(--bd);margin:12px 0;padding:12px 0}
+.tl{padding:10px 14px;border:2px solid var(--bd);border-bottom-width:5px;border-radius:14px;background:var(--bg);color:var(--tx);font:inherit;font-size:19px;cursor:pointer}
+.ft{padding:16px 20px calc(16px + env(safe-area-inset-bottom));border-top:2px solid var(--bd)}
+.ft.ok{background:var(--gl);border-color:transparent}.ft.no{background:var(--rl);border-color:transparent}
+.fm{font-size:20px;font-weight:900;margin-bottom:10px}.ft.ok .fm{color:var(--gd)}.ft.no .fm{color:var(--r)}
+.btn{width:100%;padding:15px;border:0;border-bottom:5px solid var(--gd);border-radius:16px;background:var(--g);color:#fff;font:inherit;font-size:17px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;cursor:pointer}
+.btn:active{transform:translateY(3px);border-bottom-width:2px}
+.btn:disabled{background:var(--bd);border-bottom-color:#c4c4c4;color:var(--mut);cursor:default}
+.ft.no .btn{background:var(--r);border-bottom-color:#d33}
+.end{text-align:center;padding-top:40px}.end .e{font-size:90px}.end h1{font-size:30px;margin:10px 0;color:#ffc800}
+.stat{display:flex;gap:12px;justify-content:center;margin:20px 0;flex-wrap:wrap}.stat div{border:2px solid var(--bd);border-radius:16px;padding:10px 18px;font-size:20px;font-weight:900}
+.cf{position:fixed;top:-40px;font-size:28px;animation:fall 2.4s linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+.mic{width:84px;height:84px;border-radius:50%;border:0;border-bottom:6px solid var(--bd2);background:var(--b);color:#fff;font-size:38px;cursor:pointer}
+.mg{margin-top:12px;color:var(--mut);min-height:44px}.btn.sk{background:var(--bd);border-bottom-color:#c4c4c4;color:var(--mut)}
+.rv{display:block;width:calc(100% - 32px);margin:12px 16px 0;padding:14px 16px;border:2px solid #ce82ff;border-bottom-width:5px;border-radius:16px;background:var(--bg);color:var(--tx);font:inherit;font-size:18px;text-align:left;cursor:pointer}.rv small{color:var(--mut);font-weight:700;font-size:14px}
+.rv.hot{background:#f4e9ff;color:#3d2466}.rv.hot small{color:#6b4a99}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.gr{padding:12px 4px;border:2px solid;border-bottom-width:5px;border-radius:14px;background:var(--bg);font:inherit;font-weight:900;font-size:15px;cursor:pointer}.gr.r{border-color:var(--r);color:var(--r)}.gr.y{border-color:#ff9600;color:#ff9600}.gr.g{border-color:var(--g);color:var(--gd)}
+.mr{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:2px solid var(--bd);font-size:15px}.mr span:last-child{color:var(--mut);white-space:nowrap}
+.ring{width:150px;height:150px;margin:6px auto 0;position:relative}.ring svg{transform:rotate(-90deg)}.ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900}
+.stars{font-size:38px;letter-spacing:6px;margin:6px 0;color:#ffc800}
+.miss{text-align:left;border:2px solid var(--bd);border-radius:14px;padding:4px 14px;margin:8px 0}.miss>div{padding:10px 0;border-bottom:1px solid var(--bd)}.miss>div:last-child{border:0}
+.scene{font-size:64px;text-align:center;background:var(--sel);border-radius:24px;padding:18px 10px;margin:4px 0 16px;line-height:1.2;letter-spacing:6px}
+.tfbox{background:var(--sel);color:var(--bd2);border-radius:14px;padding:12px 16px;font-size:20px;font-weight:800;margin-bottom:16px}.tfbox small{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.8;margin-bottom:4px}
+.scene.has{padding:0;background:none;letter-spacing:0;line-height:0}.scene.has .em{display:none}.scene img,.scene svg{display:block;width:100%;height:auto;border-radius:24px}
+.mini{font-size:34px;margin-bottom:6px;line-height:1.1}
+.unit .sit{margin-top:8px;font-size:15px;font-weight:700;opacity:.95}
+.mt{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mtc{margin:0!important;text-align:center!important;font-size:16px!important;min-height:64px;display:flex;align-items:center;justify-content:center}.op.gone{visibility:hidden}
+.note{color:var(--mut);font-size:15px;margin:10px 0}
+.bar{height:10px;border-radius:6px;background:var(--bd);overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;border-radius:6px}
+.sec{font-size:18px;font-weight:900;margin:22px 0 6px}.sub{color:var(--mut);font-size:14px;margin:0 0 8px}
+.chip{display:inline-block;font-size:12px;font-weight:800;border-radius:8px;padding:2px 8px;margin-right:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body><div id="app"></div>
+<script src="data.js"></script>
+<script>
+"use strict";
+/* ============ sozlamalar ============ */
+var IV=[0,1,3,7,16,35,70,140];          // takrorlash oraliqlari (kun)
+var COURSE=15;                          // kurs tuzilmasi versiyasi (kunlar qayta bo'lingan)
+var MAXREV=12,MAXIV=180,REVN=12;        // bir martada nechta takrorlash; eng uzun oraliq (kun)
+var REVMODE=new URLSearchParams(location.search).get("m")==="review";
+var Q=new URLSearchParams(location.search);
+var DAY=parseInt(Q.get("d"),10),GDAY=Q.get("g")=="1";
+var TESTMODE=Q.get("m")==="test",OLD=[],OLDPER=2;
+var LID=Q.get("l")===null||Q.get("l")===""?NaN:Number(Q.get("l")),PASS=0.7;
+var tg=window.Telegram&&Telegram.WebApp,inTG=!!(tg&&tg.platform&&tg.platform!=="unknown");
+try{if(tg){tg.ready();tg.expand();if(tg.colorScheme)document.documentElement.setAttribute("data-theme",tg.colorScheme)}}catch(e){}
+var DAYS=window.DAYS||[];
+var $=function(s){return document.querySelector(s)};
+function sh(a){return a.slice().sort(function(){return Math.random()-.5})}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function today(){var d=new Date();return Math.floor((Date.now()-d.getTimezoneOffset()*6e4)/864e5)}
+function norm(s){return s.toLowerCase().replace(/[’‘`]/g,"'").replace(/[.,!?;:"«»()—–\-…]/g," ").replace(/\s+/g," ").trim()}
+function words(s){return s.split(/\s+/).filter(Boolean)}
+
+/* ingliz tilida lotincha o'qilish ko'rsatilmaydi */
+function trl(){return ""}
+
+/* ============ tovush ============ */
+function snd(f,d){d=d||.15;try{var c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.frequency.value=f;o.type="triangle";g.gain.value=.15;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+d)}catch(e){}}
+var VOICE=null;
+function pickVoice(){try{VOICE=speechSynthesis.getVoices().filter(function(x){return /^en/i.test(x.lang)})[0]||null}catch(e){}}
+if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function sayT(t){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";if(VOICE)u.voice=VOICE;u.rate=.85;speechSynthesis.speak(u)}catch(e){}}
+function hap(ok){try{tg&&tg.HapticFeedback&&tg.HapticFeedback.notificationOccurred(ok?"success":"error")}catch(e){}}
+
+/* ============ saqlash: Telegram CloudStorage + localStorage ============ */
+var Store={
+  cloud:function(){try{return inTG&&tg.CloudStorage&&tg.isVersionAtLeast&&tg.isVersionAtLeast("6.9")?tg.CloudStorage:null}catch(e){return null}},
+  loadLocal:function(){try{return JSON.parse(localStorage.getItem("rm_en_srs2")||"{}")}catch(e){return {}}},
+  saveLocal:function(m){try{localStorage.setItem("rm_en_srs2",JSON.stringify(m))}catch(e){}},
+  all:function(){var self=this;return new Promise(function(res){
+    var loc=self.loadLocal(),c=self.cloud();if(!c)return res(loc);
+    var done=false,t=setTimeout(function(){if(!done){done=true;res(loc)}},3500);
+    function fin(v){if(!done){done=true;clearTimeout(t);res(v)}}
+    try{c.getKeys(function(e,keys){if(e||!keys||!keys.length)return fin(loc);
+      keys=keys.filter(function(k){return /^en_(s\d+|g)$/.test(k)});
+      c.getItems(keys,function(e2,o){var m=Object.assign({},loc);
+        if(!e2&&o)for(var k0 in o){var k=k0.slice(3);try{var r=JSON.parse(o[k0]);if(!m[k]||(r.t||0)>(m[k].t||0))m[k]=r}catch(x){}}
+        self.saveLocal(m);fin(m)})})}catch(x){fin(loc)}})},
+  put:function(key,rec){rec.t=Date.now();var m=this.loadLocal();m[key]=rec;this.saveLocal(m);
+    var c=this.cloud();if(c){try{c.setItem("en_"+key,JSON.stringify(rec),function(){})}catch(e){}}return m}
+};
+
+/* ============ holat ============ */
+var S={},G={gr:{},gt:{},xp:0,sk:0,last:0,ty:{},lg:[0,0,0,0,0],wk:{}};
+var its=[],UN=[],dayRec={v:[],p:0};
+var L=null,R=null,POOL=[];
+DAYS.forEach(function(d){d.i.forEach(function(x){POOL.push(x)})});
+function saveDay(){Store.put("s"+DAY,{v:dayRec.v,p:dayRec.p,ver:COURSE});S["s"+DAY]={v:dayRec.v,p:dayRec.p,ver:COURSE}}
+function saveG(){Store.put("g",{gr:G.gr,gt:G.gt,xp:G.xp,sk:G.sk,last:G.last,ty:G.ty,lg:G.lg,wk:G.wk})}
+function loadG(m){if(m&&m.g){G.gr=m.g.gr||{};G.gt=m.g.gt||{};G.xp=m.g.xp||0;G.sk=m.g.sk||0;G.last=m.g.last||0;G.ty=m.g.ty||{};G.lg=m.g.lg||[0,0,0,0,0];G.wk=m.g.wk||{}}}
+function bumpStreak(){var t=today();if(G.last===t)return;G.sk=(G.last===t-1)?G.sk+1:1;G.last=t}
+/* ============ xotira (SRS) ============
+   yozuv: [bosqich, muddat(kun), unutishlar, qulaylik, takror, oxirgi ko'rish, oxirgi xato, oraliq, unutish oralig'i]
+   eski [bosqich, muddat] yozuvlar ham ishlaydi. Xato = bosqich 1ga tushadi, qulaylik pasayadi; qiyin gaplar tez-tez qaytadi.
+   Hech qachon "tugatilmaydi": eng uzun oraliq MAXIV kun, keyin yana qaytadi. */
+function nr(r){var t=today();r=r||[];var st=r[0]||1;return {st:st,due:r[1]==null?t+1:r[1],lap:r[2]||0,ez:r[3]||2.5,rep:r[4]||0,seen:r[5]||0,wr:r[6]||0,iv:r[7]||IV[Math.min(7,st)]||1,gap:r[8]||0}}
+function pk(o){return [o.st,o.due,o.lap,Math.round(o.ez*100)/100,o.rep,o.seen,o.wr,o.iv,o.gap]}
+function newRec(hard){var t=today();return pk({st:1,due:t+1,lap:0,ez:hard?2.1:2.5,rep:0,seen:t,wr:hard?t:0,iv:1,gap:0})}
+function grade(o,ok,t){var n=Object.assign({},o);n.seen=t;
+  if(ok){if(o.seen===t&&o.rep>0)return n;
+    n.rep=o.rep+1;n.st=Math.min(7,o.st+1);n.ez=Math.min(2.8,o.ez+.08);
+    var iv=Math.max(IV[n.st],Math.round(o.iv*o.ez)),cap=o.lap>=4?7:o.lap>=2?14:MAXIV;
+    n.iv=Math.max(1,Math.min(iv,cap,MAXIV));n.due=t+n.iv}
+  else{n.lap=o.lap+1;n.wr=t;n.gap=o.seen?Math.max(0,t-o.seen):Math.max(0,t-(o.due-o.iv));n.st=1;n.iv=1;n.ez=Math.max(1.3,o.ez-.2);n.due=t+1}
+  return n}
+function ret(o,t){var e=Math.max(0,t-(o.due-o.iv));return Math.pow(.9,e/Math.max(1,o.iv))}
+function isWeak(o){return o.lap>=2||o.ez<1.7}
+function allRecs(){var out=[];Object.keys(S).forEach(function(k){if(!/^s\d+$/.test(k)||S[k].ver!==COURSE)return;var d=+k.slice(1),day=DAYS[d-1];if(!day)return;var v=S[k].v||[];
+  for(var i=0;i<day.i.length;i++)if(v[i])out.push({day:d,idx:i,it:day.i[i],r:nr(v[i])})});return out}
+function prio(w){return (today()-w.r.due)+w.r.lap*2+(w.r.ez<1.8?2:0)}
+function dueAll(){var t=today();return allRecs().filter(function(w){return w.r.due<=t}).map(function(w){w.over=t-w.r.due;return w}).sort(function(a,b){return prio(b)-prio(a)})}
+function learnedAll(){return allRecs()}
+function weakAll(){return allRecs().filter(function(w){return isWeak(w.r)}).sort(function(a,b){return b.r.lap-a.r.lap||a.r.ez-b.r.ez})}
+function tyStat(ty,ok){var a=G.ty[ty]||(G.ty[ty]=[0,0]);a[ok?0:1]++;var k=String(today()),w=G.wk[k]||(G.wk[k]=[0,0]);w[ok?0:1]++;
+  var ks=Object.keys(G.wk);if(ks.length>21)ks.sort(function(x,y){return x-y}).slice(0,ks.length-21).forEach(function(x){delete G.wk[x]})}
+function lagStat(g){G.lg[g<=1?0:g<=3?1:g<=7?2:g<=30?3:4]++}
+function pickType(o){var a=(o.lap>=2||o.st<=2)?["mc","listen","uzru","tf"]:o.st<=4?["fill","uzru","listen","dict"]:["dict","build","speak","fill","listen"];return a[Math.floor(Math.random()*a.length)]}
+
+/* ============ bosh sahifa (yo'l xaritasi) ============ */
+function home(){if(!DAYS[DAY-1])return memo();if(L&&L.dirty)saveG();L=null;
+  var day=DAYS[DAY-1];its=day.i;
+  var nodes=UN.map(function(u,i){var st=i<dayRec.p?"done":i===dayRec.p?"cur":"lock";return node(i,st,u.e,u.n)});
+  var gf=gramFor(DAY);if(gf&&GDAY)nodes=[gNode(0,gf),gTest(1,gf)];else {
+  var mst=dayRec.p>UN.length?"done":dayRec.p===UN.length?"cur":"lock";nodes.push(node(UN.length,mst,"🏆","Yakuniy test"));
+    if(gf&&dayRec.p>UN.length)nodes.push('<div class="note" style="text-align:center;margin:18px 0 0">😌 Dam olish: grammatika (gap yodlash yo\'q)</div>',gNode(UN.length+1,gf),gTest(UN.length+2,gf))}
+  $("#app").innerHTML='<div class="hd"><span class="y">🔥 '+G.sk+'</span><span class="p">⭐ '+G.xp+' XP</span><span class="h">❤️ 5</span></div>'+
+    '<div class="unit"><small>'+day.lv+' · KUN '+DAY+'</small><h2>'+day.e+' '+esc(day.t)+(day.k>1?' ('+day.p+'/'+day.k+')':'')+'</h2><div class="sit">📍 '+esc(day.s)+'</div></div>'+
+    '<div class="path" style="padding-bottom:10px">'+nodes.join("")+'</div>'+(gf&&GDAY?'<div class="bd"><div class="note" style="text-align:center">😌 Bu grammatika kuni: gap yodlash yo\'q, miya dam oladi. Avval grammatika, so\'ng test.</div></div>':'')+
+    (dayRec.p>UN.length?'<div class="bd"><div class="note" style="text-align:center">🎉 Bugungi dars tayyor! Botga qaytib, shu kunning testini bosing.</div></div>':'')}
+function gTest(i,t){var off=[0,50,-45,40,0,-30][i%6],ok=G.gt[gramIdx(DAY)],open=!!G.gr[gramIdx(DAY)];
+  return '<div style="transform:translateX('+off+'px);text-align:center"><button class="nd '+(ok?"done":open?"cur":"lock")+'" '+(open?'onclick="gStart(1)"':"")+'>'+(ok?"⭐":(open?'<span class="s">BOSHLASH</span>':"")+"🏆")+'</button><div class="lb">Grammatika testi</div></div>'}
+function gNode(i,t){var off=[0,50,-45,40,0,-30][i%6],dn=G.gr[gramIdx(DAY)];
+  return '<div style="transform:translateX('+off+'px);text-align:center"><button class="nd cur" style="background:#1cb0f6;border-bottom-color:#1899d6" onclick="gStart()">'+(dn?"✅":"📘")+'</button><div class="lb">Grammatika</div></div>'}
+function node(i,st,e,name){var off=[0,50,-45,40,0,-30][i%6];
+  return '<div style="transform:translateX('+off+'px);text-align:center"><button class="nd '+st+'" '+(st==="lock"?"":'onclick="start('+i+')"')+'>'+(st==="cur"?'<span class="s">BOSHLASH</span>':'')+(st==="done"?"⭐":e)+'</button><div class="lb">'+esc(name)+'</div></div>'}
+
+
+/* ============ grammatika (har 5-kunda, 1 mavzu) ============ */
+function gramIdx(d){return d%5===0?d/5-1:-1}
+function gramFor(d){var i=gramIdx(d);return window.GRAM&&i>=0?GRAM[i]||null:null}
+var GR=null;
+function gStart(test){var i=gramIdx(DAY),t=GRAM[i];if(!t)return;
+  GR={i:i,t:t,q:(test?sh(t.q):t.q).map(function(q){return q.slice()}),n:0,err:0,sel:null,ans:[],st:test?"q":"rule",si:0,test:!!test};gDraw()}
+function gHead(){return '<div class="top"><button class="x" onclick="home()" aria-label="Yopish">✕</button><div class="pg"><i style="width:'+Math.round(GR.n/GR.q.length*100)+'%"></i></div></div>'}
+function gf(x){return esc(x).replace(/\*\*(.+?)\*\*/g,'<b style="color:#1899d6">$1</b>')}
+function gDraw(){var t=GR.t;
+  if(GR.st==="rule"){var sd=t.s[GR.si||0],last=(GR.si||0)>=t.s.length-1;
+    $("#app").innerHTML='<div class="top"><button class="x" onclick="home()" aria-label="Yopish">✕</button><div class="pg"><i style="width:'+Math.round(((GR.si||0)+1)/(t.s.length+1)*100)+'%"></i></div></div><div class="bd"><small style="color:#1cb0f6;font-weight:900">'+t.lv+' · '+esc(t.t)+'</small><h2 style="margin:8px 0 14px">'+gf(sd.h)+'</h2>'+
+     '<div class="note" style="text-align:left;line-height:1.8;font-size:18px">'+sd.p.map(gf).join("<br>")+'</div>'+
+     (sd.e.length?'<div style="margin-top:14px">'+sd.e.map(function(e){return '<div class="op" style="cursor:default"><b>'+esc(e[0])+'</b> <button class="spk" onclick="sayT(this.dataset.t)" data-t="'+esc(e[0].replace(/[🔵🔴🟡]/g,"").trim())+'" aria-label="Eshitish" style="margin-left:6px">🔊</button><br><small style="color:var(--mut)">'+esc(e[1])+'</small></div>'}).join("")+'</div>':"")+'</div>'+
+     '<div class="ft"><button class="btn" onclick="'+(last?"GR.st=\'q\';":"GR.si=(GR.si||0)+1;")+'gDraw()">'+(last?"🎮 O'ynaymiz!":"Tushunarli ➜")+'</button></div>';return}
+  if(GR.n>=GR.q.length)return gFin();
+  var q=GR.q[GR.n];GR.sel=null;GR.ans=[];GR.done=false;
+  if(q[0]==="mc"){var ops=sh(q.slice(2).concat([q[2]]).filter(function(v,k,a){return a.indexOf(v)===k}));GR.ops=ops;
+    $("#app").innerHTML=gHead()+'<div class="bd"><h3 style="margin:0 0 18px">🎮 To\'g\'ri so\'zni toping</h3><div class="q" style="font-size:22px;margin-bottom:18px">'+esc(q[1])+'</div>'+
+      ops.map(function(o,k){return '<button class="op" id="o'+k+'" onclick="gPick('+k+')">'+esc(o)+'</button>'}).join("")+'</div><div class="ft" id="ft"><button class="btn" id="gb" disabled onclick="gChk()">Tekshirish</button></div>'}
+  else{var w=sh(q[2].split(" ").concat(q[3].split(" ")));GR.bank=w;
+    $("#app").innerHTML=gHead()+'<div class="bd"><h3 style="margin:0 0 18px">Ingliz tiliga tarjima qiling</h3><div class="q" style="font-size:22px">'+esc(q[1])+'</div><div class="ans" id="ga"></div><div class="bank" id="gk"></div></div><div class="ft" id="ft"><button class="btn" id="gb" disabled onclick="gChk()">Tekshirish</button></div>';gTiles()}}
+function gTiles(){var a=$("#ga"),k=$("#gk");if(!a)return;
+  a.innerHTML=GR.ans.map(function(i){return '<button class="tl" onclick="gTap('+i+')">'+esc(GR.bank[i])+'</button>'}).join("");
+  k.innerHTML=GR.bank.map(function(w,i){return GR.ans.indexOf(i)<0?'<button class="tl" onclick="gTap('+i+')">'+esc(w)+'</button>':'<button class="tl" disabled style="opacity:.25">'+esc(w)+'</button>'}).join("");
+  $("#gb").disabled=!GR.ans.length}
+function gTap(i){if(GR.done)return;var k=GR.ans.indexOf(i);if(k<0)GR.ans.push(i);else GR.ans.splice(k,1);gTiles()}
+function gPick(k){if(GR.done)return;GR.sel=k;GR.ops.forEach(function(_,j){var b=$("#o"+j);b.style.borderColor=j===k?"#1cb0f6":"";b.style.background=j===k?"#ddf4ff":""});$("#gb").disabled=false}
+function gChk(){if(GR.done){GR.n++;return gDraw()}
+  var q=GR.q[GR.n],ok,right;
+  if(q[0]==="mc"){right=q[2];ok=GR.ops[GR.sel]===right;GR.ops.forEach(function(o,j){var b=$("#o"+j);if(o===right){b.style.borderColor="#58cc02";b.style.background="#d7ffb8"}else if(j===GR.sel){b.style.borderColor="#ff4b4b";b.style.background="#ffdfe0"}})}
+  else{right=q[2];ok=GR.ans.map(function(i){return GR.bank[i]}).join(" ")===right}
+  GR.done=true;hap(ok);snd(ok?660:200,.2);if(!ok){GR.err++;if(!GR.test)GR.q.push(q)}
+  var f=$("#ft");f.className="ft"+(ok?"":" no");
+  f.innerHTML='<div style="font-weight:900;margin-bottom:10px;color:'+(ok?"var(--g)":"var(--r)")+'">'+(ok?["✅ To'g'ri!","🎉 Barakalla!","👏 Zo'r!","🔥 Ajoyib!"][GR.n%4]:"❌ To'g'ri javob: "+esc(right)+(GR.t.tip?'<div style="font-weight:700;color:var(--mut);margin-top:6px">💡 '+esc(GR.t.tip)+'</div>':""))+'</div><button class="btn" id="gb" onclick="gChk()">Davom</button>'}
+function gFinTest(){var N=GR.q.length,sc=(N-GR.err)/N,pass=sc>=.8,xp=0;
+  if(pass&&!G.gt[GR.i]){G.gt[GR.i]=1;xp=25;G.xp+=xp}
+  if(pass)bumpStreak();saveG();snd(pass?523:200);
+  $("#app").innerHTML=(pass?confetti():"")+'<div class="end"><div class="e">'+(pass?"🏆":"💪")+'</div><h1>'+(pass?"Test topshirildi!":"Yana urinib ko'ring")+'</h1><div class="stat"><div style="color:#ce82ff">⭐ +'+xp+' XP</div><div style="color:var(--g)">🎯 '+Math.round(sc*100)+'%</div></div><div class="note">'+(pass?"Grammatika yodlandi. Ertaga yangi kun!":"80% kerak. Qoidani qayta o'qib, testni yana bajaring.")+'</div><div class="bd"><button class="btn" onclick="'+(pass?"home()":"gStart()")+'">'+(pass?"Davom etish":"Qoidani qayta ko'rish")+'</button></div></div>'}
+function gFin(){if(GR.test)return gFinTest();var xp=15;if(!G.gr[GR.i]){G.gr[GR.i]=1;G.xp+=xp}else xp=0;bumpStreak();saveG();snd(523);setTimeout(function(){snd(784,.3)},150);
+  $("#app").innerHTML=confetti()+'<div class="end"><div class="e">📘</div><h1>Grammatika tayyor!</h1><div class="stat"><div style="color:#ce82ff">⭐ +'+xp+' XP</div><div style="color:var(--g)">🎯 '+Math.max(0,100-GR.err*12)+'%</div></div><div class="note">Mavzu: '+esc(GR.t.t)+'. Keyingi grammatika 5 kundan keyin.</div><div class="bd"><button class="btn" onclick="home()">Davom etish</button></div></div>'}
+
+/* ============ mashq turlari (har xil shablonlar) ============ */
+function spk(){try{var q=L&&L.q[L.i];if(q&&q.item)getPk(Math.floor((q.item[0]-13)/100)).catch(function(){})}catch(e){}return '<button class="spk" onclick="sayCur()" aria-label="Eshitish">🔊</button>'}
+var AU=null,PK={};
+function getPk(b){if(!PK[b])PK[b]=fetch("p"+b+".bin").then(function(r){if(!r.ok)return fetch("ovoz/p"+b+".bin").then(function(r2){if(!r2.ok)throw 0;return r2.arrayBuffer()});return r.arrayBuffer()}).then(function(buf){var dv=new DataView(buf),c=dv.getUint32(0,true),m={},base=4+c*12;for(var i=0;i<c;i++){var o=4+i*12;m[dv.getUint32(o,true)]=[base+dv.getUint32(o+4,true),dv.getUint32(o+8,true)]}return{buf:buf,m:m,u:{}}}).catch(function(e){delete PK[b];throw e});return PK[b]}
+function sayCur(){var it=L&&L.q[L.i];if(!it||!it.item)return;try{speechSynthesis.cancel()}catch(e){}
+try{if(AU)AU.pause()}catch(e){}
+var n=it.item[0],blk=Math.floor((n-13)/100),urls=["audio/"+blk+"/"+n+".mp3","audio/"+n+".mp3"],k=0,done=false;
+var fb=function(){if(done)return;if(k<urls.length)return go();done=true;sayT(it.item[1])};
+var go=function(){var a=new Audio(urls[k++]);AU=a;a.onerror=function(){if(AU===a)fb()};try{var p=a.play();if(p&&p.catch)p.catch(function(){if(AU===a)fb()})}catch(e){fb()}};
+getPk(blk).then(function(p){var e=p.m[n];if(!e)throw 0;if(!p.u[n])p.u[n]=URL.createObjectURL(new Blob([p.buf.slice(e[0],e[0]+e[1])],{type:"audio/mpeg"}));var a=new Audio(p.u[n]);AU=a;a.onerror=function(){if(AU===a)fb()};var pr=a.play();if(pr&&pr.catch)pr.catch(function(){if(AU===a)fb()})}).catch(function(){fb()})}
+function distract(item,field,n){var Ln=item[field].length;
+  var c=POOL.filter(function(x){return x[0]!==item[0]&&x[field]!==item[field]&&Math.abs(x[field].length-Ln)<=Math.max(8,Ln*.5)});
+  if(c.length<n)c=POOL.filter(function(x){return x[0]!==item[0]});return sh(c).slice(0,n).map(function(x){return x[field]})}
+function core(w){var m=w.match(/^([«"(]*)(.+?)([.,!?;:»")…]*)$/);return m?[m[1],m[2],m[3]]:["",w,""]}
+function mkEx(t,it,k){var e={t:t,item:it,k:k};
+  if(t==="fill"){var w=words(it[1]);if(w.length<3)t=e.t="mc";
+    else{var bi=0,bl=0;w.forEach(function(x,i){var c=core(x)[1];if(c.length>bl){bl=c.length;bi=i}});var p=core(w[bi]),ans=p[1];
+      var dis=[];sh(POOL).some(function(x){words(x[1]).forEach(function(z){var c=core(z)[1];if(dis.length<2&&c.length>=3&&Math.abs(c.length-ans.length)<=3&&c.toLowerCase()!==ans.toLowerCase()&&dis.indexOf(c)<0&&w.map(function(q){return core(q)[1].toLowerCase()}).indexOf(c.toLowerCase())<0)dis.push(c)});return dis.length>=2});
+      var shown=w.map(function(x,i){return i===bi?p[0]+"＿＿＿＿"+p[2]:x}).join(" ");
+      e.title="Bo‘sh joyni to‘ldiring";e.head='<div class="bub" style="margin-bottom:10px">'+esc(it[2])+'</div><div class="ru" style="font-size:25px;margin-bottom:16px">'+esc(shown)+'</div>';e.o=sh([ans].concat(dis));e.a=ans;return e}}
+  if(t==="mc"){e.title="Bu o‘zbekchada nima?";e.head='<div class="mini">'+esc(it[3])+'</div><div class="ru" style="margin-bottom:16px">'+esc(it[1])+spk()+'</div>';e.o=sh([it[2]].concat(distract(it,2,3)));e.a=it[2]}
+  else if(t==="uzru"){e.title="Inglizcha qanday aytiladi?";e.head='<div class="bub" style="margin-bottom:16px;font-size:20px"><span class="mini" style="display:inline;margin-right:6px">'+esc(it[3])+'</span>'+esc(it[2])+'</div>';e.o=sh([it[1]].concat(distract(it,1,3)));e.a=it[1]}
+  else if(t==="tf"){var good=Math.random()<.5,shown2=good?it[2]:distract(it,2,1)[0];
+    e.title="Bu tarjima to‘g‘rimi?";e.head='<div class="ru" style="margin-bottom:14px">'+esc(it[1])+spk()+'</div><div class="tfbox"><small>Berilgan tarjima</small>“'+esc(shown2)+'”</div><div class="note" style="margin:0 0 12px">Quyidagidan birini tanlang:</div>';
+    e.o=["Ha, to‘g‘ri ✅","Yo‘q, noto‘g‘ri ❌"];e.a=good?e.o[0]:e.o[1]}
+  else if(t==="listen"){var ru=Math.random()<.5,f=ru?1:2;
+    e.title="Eshiting va to‘g‘ri javobni tanlang";
+    e.head='<div style="text-align:center;margin:6px 0 16px"><button class="spk" style="width:96px;height:96px;font-size:44px;border-radius:28px" onclick="sayCur()" aria-label="Eshitish">🔊</button><div class="note">'+(ru?"Qaysi gapni eshitdingiz?":"Bu o‘zbekchada nima?")+' (🔊 ni bosib qayta eshiting)</div></div>';
+    e.o=sh([it[f]].concat(distract(it,f,3)));e.a=it[f];e.auto=1}
+  else if(t==="speak"){e.title="Ovoz chiqarib ayting";e.head="";e.o=["✅ Aniq ayta oldim","😕 Qiynaldim"];e.a=e.o[0];e.self=1;e.auto=1}
+  else if(t==="build"||t==="dict"){var w2=words(it[1]);if(w2.length<3)return mkEx(t==="dict"?"listen":"uzru",it,k);
+    var ex=[];sh(POOL).some(function(x){words(x[1]).forEach(function(z){if(ex.length<2&&w2.indexOf(z)<0&&ex.indexOf(z)<0&&z.length>1)ex.push(z)});return ex.length>=2});
+    e.pool=sh(w2.concat(ex).map(function(x,i){return {w:x,i:i}}));if(t==="dict")e.auto=1}
+  return e}
+function mkMatch(ks){var cells=[];ks.forEach(function(k){cells.push({id:its[k][0],side:0,t:its[k][1]},{id:its[k][0],side:1,t:its[k][2]})});
+  return {t:"match",item:null,k:-1,cells:sh(cells),gone:{},sel:null,left:ks.length,err:0}}
+function fixAdj(a){for(var i=1;i<a.length;i++){if(a[i].t===a[i-1].t){for(var j=i+1;j<a.length;j++){if(a[j].t!==a[i-1].t&&(!a[i+1]||a[j].t!==a[i+1].t||j===i+1)){var x=a[i];a[i]=a[j];a[j]=x;break}}}}return a}
+function exOld(w){var e=mkEx(pickType(w.r),w.it,-1);e.old=w;return e}
+function mk(u){var q=[];
+  if(u<UN.length){var ks=UN[u].k,quick=["mc","tf"],second=["fill","build","uzru","listen","dict","speak"];
+    ks.forEach(function(k,j){q.push({t:"teach",k:k,item:its[k]});q.push(mkEx(quick[(j+u)%2],its[k],k))});
+    var arr=ks.map(function(k,j){return mkEx(second[(j+u)%6],its[k],k)});arr=fixAdj(sh(arr));
+    OLD.slice(u*OLDPER,u*OLDPER+OLDPER).forEach(function(w){arr.splice(Math.floor(Math.random()*(arr.length+1)),0,exOld(w))});
+    q=q.concat(fixAdj(arr));if(ks.length>=3)q.push(mkMatch(ks))}
+  else{var T5=["mc","tf","fill","build","uzru","dict"],off=Math.floor(Math.random()*6);
+    var arr2=fixAdj(sh(its.map(function(_,k){return mkEx(T5[(k+off)%6],its[k],k)})));
+    var idx=its.map(function(_,i){return i}),h=Math.ceil(idx.length/2);
+    q=arr2;if(idx.length>=4){q.splice(Math.ceil(q.length/2),0,mkMatch(sh(idx).slice(0,Math.min(5,h))));q.push(mkMatch(sh(idx).slice(0,Math.min(5,h))))}}
+  return q}
+function start(u){var q=mk(u);L={u:u,q:q,i:0,d:0,tot:q.length,hp:5,st:"ask",sel:null,pick:[],xp:0,err:0,wrongK:{},res:[]};draw()}
+
+function draw(){var it=L.q[L.i];if(!it)return L.test?finTest():L.rev?finRev():fin();var s=it.item,b="",ft="";
+  if(it.t==="teach"){var nT=L.q.filter(function(x){return x.t==="teach"&&!x.re}).length,nth=L.q.slice(0,L.i+1).filter(function(x){return x.t==="teach"&&!x.re}).length;
+    b='<div class="owl"><div class="o">🦊</div><div class="bub">'+(it.re?'Yana bir bor ko‘ring va eslab qoling 👀':'Yangi gap '+nth+'/'+nT)+'</div></div>'+
+      '<div class="scene" data-n="'+s[0]+'"><span class="em">'+esc(s[3])+'</span></div>'+
+      '<div class="ru">'+esc(s[1])+spk()+'</div><div class="wl" data-n="'+s[0]+'"></div><div class="uz">'+esc(s[2])+'</div>'+
+      '<div class="when">📍 <b>Qayerda va qachon aytiladi:</b><br>'+esc(s[4]||DAYS[DAY-1].s)+'</div>';
+    ft='<div class="ft"><button class="btn" onclick="nxt('+(it.re?0:1)+')">'+(it.re?'Esladim, davom etish':'Tushunarli')+'</button></div>'}
+  else if(it.t==="match"){
+    b='<div class="q">Juftliklarni toping</div><div class="mt">'+it.cells.map(function(c,j){var cls=it.gone[j]?"gone":it.bad&&it.bad.indexOf(j)>=0?"no":it.sel===j?"sel":"";
+      return '<button class="op mtc '+cls+'" '+(it.gone[j]||L.st!=="ask"?"disabled":'onclick="mt('+j+')"')+'>'+esc(c.t)+'</button>'}).join("")+'</div>';
+    ft=L.st==="ask"?'<div class="ft"><button class="btn" disabled>Juftliklarni tanlang</button></div>':'<div class="ft ok"><div class="fm">'+(it.err?"Juftliklar topildi (xatolar bilan)":"✅ Hammasi to‘g‘ri!")+'</div><button class="btn" onclick="nxt(1)">Davom etish</button></div>'}
+  else{
+    if(it.t==="build"||it.t==="dict"){
+      b=(it.t==="dict"?'<div class="q">Eshiting va yozing</div><div style="text-align:center;margin:6px 0 10px"><button class="spk" style="width:84px;height:84px;font-size:40px;border-radius:24px" onclick="sayCur()" aria-label="Eshitish">🔊</button><div class="note">Eshitganingizni so‘zlardan tuzing (🔊 ni qayta bosish mumkin)</div></div>':'<div class="q">Inglizcha tuzing</div><div class="bub" style="margin-bottom:6px;font-size:20px"><span class="mini" style="display:inline;margin-right:6px">'+esc(s[3])+'</span>'+esc(s[2])+'</div>')+'<div class="ans">'+L.pick.map(function(p,j){return '<button class="tl" onclick="ub('+j+')">'+esc(p.w)+'</button>'}).join("")+'</div><div class="bank">'+it.pool.map(function(p,j){return '<button class="tl" onclick="ab('+j+')">'+esc(p.w)+'</button>'}).join("")+'</div>'}
+    else{
+      b='<div class="q">'+it.title+'</div>'+(it.t==="speak"?speakHead(it,s):it.head)+it.o.map(function(o,j){var cls=L.st==="ask"?(L.sel===j?"sel":""):(o===it.a?"ok":(L.sel===j?"no":""));
+        return '<button class="op '+cls+'" '+(L.st==="ask"?'onclick="L.sel='+j+';draw()"':'')+'>'+esc(o)+'</button>'}).join("")}
+    var ready=(it.t==="build"||it.t==="dict")?L.pick.length>0:L.sel!=null;
+    if(L.st==="ask")ft='<div class="ft"><button class="btn" '+(ready?"":"disabled")+' onclick="chk()">Tekshirish</button></div>';
+    else ft='<div class="ft '+L.st+'"><div class="fm">'+(L.st==="ok"?"✅ Ofarin!":(it.self?"😕 Yana eshiting va ayting:":"❌ To‘g‘ri javob:"))+'</div><div style="margin-bottom:12px;font-weight:800;display:flex;gap:10px;align-items:center;justify-content:space-between"><span>'+esc(s[1])+'<br><span style="font-weight:700;opacity:.85">'+esc(s[2])+'</span></span>'+spk()+'</div><button class="btn" onclick="nxt('+(L.st==="ok"?1:0)+')">Davom etish</button>'+(L.st==="no"&&!L.rev&&!L.test?'<button class="op" style="text-align:center;margin:12px 0 0;border-bottom-width:3px" onclick="rewatch()">📖 Gapni qayta ko‘rish</button>':'')+'</div>'}
+  $("#app").innerHTML='<div class="top"><button class="x" onclick="home()">✕</button><div class="pg"><i style="width:'+(L.d/L.tot*100)+'%"></i></div><span style="color:'+(L.test||L.rev?"var(--b)":"var(--r)")+';font-weight:900;font-size:18px">'+(L.test?"TEST":L.rev?"🔁":"❤️ "+L.hp)+'</span></div><div class="bd">'+b+'</div>'+ft;if(it.t==="teach"){fillScene();fillWords()}if(it.auto&&!it.played&&L.st==="ask"){it.played=1;setTimeout(sayCur,300)}}
+/* ============ gapirish mashqi: o'zingizni yozib eshitish (shadowing). Server va limit kerak emas ============ */
+var REC=null,RECOK=!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.MediaRecorder);
+function speakHead(it,s){return '<div class="bub" style="margin-bottom:10px">'+esc(s[3])+' '+esc(s[2])+'</div><div class="ru" style="margin-bottom:8px">'+esc(s[1])+spk()+'</div>'+
+  '<div style="text-align:center;margin:14px 0 4px"><button class="mic" '+(RECOK&&!it.recErr?'':'disabled style="opacity:.35"')+' onclick="recToggle()">'+(it.recording?'⏹':'🎙')+'</button><div class="mg">'+
+  (it.recErr||!RECOK?'Mikrofon ishlamadi. Gapni ovoz chiqarib ayting, keyin pastdan tanlang.':it.recUrl?'<audio controls src="'+it.recUrl+'" style="width:100%"></audio><div class="note">Eshitib ko‘ring, keyin pastdan tanlang</div>':it.recording?'Yozilmoqda… to‘xtatish uchun bosing':'Gapni 2–3 marta ovoz chiqarib ayting. 🎙 bilan yozib, o‘zingizni tinglang.')+'</div></div>'}
+function recToggle(){var it=L&&L.q[L.i];if(!it||it.t!=="speak")return;
+  if(REC&&REC.state==="recording"){try{REC.stop()}catch(e){}return}
+  try{if(AU)AU.pause()}catch(e){}
+  try{navigator.mediaDevices.getUserMedia({audio:true}).then(function(st){var ch=[];REC=new MediaRecorder(st);
+    REC.ondataavailable=function(e){if(e.data&&e.data.size)ch.push(e.data)};
+    REC.onstop=function(){try{st.getTracks().forEach(function(t){t.stop()})}catch(x){}it.recording=0;
+      if(it.recUrl){try{URL.revokeObjectURL(it.recUrl)}catch(x){}}
+      if(ch.length)it.recUrl=URL.createObjectURL(new Blob(ch,{type:REC.mimeType||"audio/webm"}));
+      if(L&&L.q[L.i]===it)draw()};
+    it.recording=1;REC.start();draw()}).catch(function(){it.recErr=1;it.recording=0;if(L&&L.q[L.i]===it)draw()})}catch(e){it.recErr=1;draw()}}
+function ab(j){var it=L.q[L.i];L.pick.push(it.pool.splice(j,1)[0]);draw()}
+function ub(j){if(L.st!=="ask")return;var it=L.q[L.i];it.pool.push(L.pick.splice(j,1)[0]);draw()}
+function mt(j){var it=L.q[L.i];if(L.st!=="ask"||it.gone[j])return;
+  if(it.sel==null||it.sel===j){it.sel=it.sel===j?null:j;return draw()}
+  var a=it.cells[it.sel],c=it.cells[j];
+  if(a.side===c.side){it.sel=j;return draw()}
+  if(a.id===c.id){it.gone[j]=it.gone[it.sel]=1;it.left--;it.sel=null;snd(660);
+    if(!it.left){if(it.err){L.hp--}else{L.xp+=10}L.st="ok";if(L.hp<=0){return dead()}}draw()}
+  else{it.err++;snd(200,.3);it.bad=[it.sel,j];it.sel=null;draw();setTimeout(function(){it.bad=null;if(L&&L.q[L.i]===it)draw()},450)}}
+function markOld(w,ok){var t=today(),key="s"+w.day,rec=S[key]||{v:[],p:0},v=(rec.v||[]).slice(),o=nr(v[w.idx]),n=grade(o,ok,t);v[w.idx]=pk(n);
+  var nrx={v:v,p:rec.p||0,ver:COURSE};Store.put(key,nrx);S[key]=nrx;
+  if(!ok)lagStat(n.gap);
+  if(L&&L.res)L.res.push({it:w.it,ok:ok,gap:ok?0:n.gap,lap:n.lap,iv:n.iv,old:o})}
+function rewatch(){var it=L.q[L.i];L.q.splice(L.i+1,0,{t:"teach",item:it.item,k:-1,re:1});nxt(0)}
+function chk(){var it=L.q[L.i],s=it.item,ok;
+  if(it.t==="build"||it.t==="dict")ok=norm(L.pick.map(function(p){return p.w}).join(" "))===norm(s[1]);
+  else ok=it.o[L.sel]===it.a;
+  L.st=ok?"ok":"no";L.dirty=1;tyStat(it.t,ok);
+  var wasOld=!!it.old;
+  if(it.old){markOld(it.old,ok);it.old=null}
+  else if(!ok&&it.k>=0&&!it.re&&L.wrongK)L.wrongK[it.k]=1;
+  if(ok){snd(660);snd(880,.2);hap(true);L.xp+=10}
+  else{snd(200,.3);hap(false);L.err++;
+    if(L.test){L.miss.push(it.k)}else{L.hp--;L.q.push(mkEx(it.t,s,it.k));L.tot++;if(L.rev||wasOld)L.q.splice(L.i+1,0,{t:"teach",item:s,k:-1,re:1})}}
+  draw()}
+function nxt(ok){try{if(REC&&REC.state==="recording")REC.stop()}catch(e){}if(ok)L.d++;L.i++;L.st="ask";L.sel=null;L.pick=[];if(L.hp<=0)return dead();draw()}
+function dead(){saveG();$("#app").innerHTML='<div class="end"><div class="e">💔</div><h1 style="color:var(--r)">Jonlar tugadi</h1><p>Xafa bo‘lmang, qaytadan urinib ko‘ring!</p><div class="bd"><button class="btn" onclick="start('+L.u+')">Qayta urinish</button><br><br><button class="op" style="text-align:center" onclick="home()">Bosh sahifa</button></div></div>'}
+function confetti(){var c="";for(var i=0;i<24;i++)c+='<span class="cf" style="left:'+Math.random()*95+'%;animation-delay:'+Math.random()*.8+'s">'+["🎉","⭐","✨","🟢"][i%4]+'</span>';return c}
+function fin(){var g=20+L.xp,u=L.u,t=today();G.xp+=g;bumpStreak();saveG();
+  if(u<UN.length){UN[u].k.forEach(function(k){if(!dayRec.v[k])dayRec.v[k]=newRec(!!(L.wrongK&&L.wrongK[k]))})}
+  if(u===dayRec.p)dayRec.p=Math.min(dayRec.p+1,UN.length+1);
+  saveDay();snd(523);setTimeout(function(){snd(784,.3)},150);
+  var last=u>=UN.length;
+  $("#app").innerHTML=confetti()+'<div class="end"><div class="e">🏆</div><h1>'+(last?"Kun darsi tugadi!":"Dars tugadi!")+'</h1><div class="stat"><div style="color:#ce82ff">⭐ +'+g+' XP</div><div style="color:#ff9600">🔥 '+G.sk+'</div><div style="color:var(--g)">🎯 '+(L.err?Math.max(0,100-L.err*12):100)+'%</div></div>'+
+    (L.res&&L.res.length?'<div class="note">🔁 '+L.res.length+' ta eski gap takrorlandi'+(L.res.filter(function(r){return !r.ok}).length?', '+L.res.filter(function(r){return !r.ok}).length+' tasi unutilgan — ertaga yana chiqadi.':' — hammasi esingizda! 👏')+'</div>':'')+
+    (last?'<div class="note">Endi botga qaytib, shu kunning testini bosing.</div>':'')+'<div class="bd"><button class="btn" onclick="home()">Davom etish</button></div></div>'}
+
+/* ============ takrorlash sessiyasi ============ */
+function reviewNow(){var l=dueAll();if(!l.length)return memo();startReview(l)}
+function weakNow(){startReview(weakAll())}
+function startReview(list){list=list.slice(0,REVN);if(!list.length)return memo();its=list.map(function(w){return w.it});
+  var q=fixAdj(sh(list.map(function(w,k){var e=mkEx(pickType(w.r),w.it,k);e.old=w;return e})));
+  if(list.length>=4)q.splice(Math.ceil(q.length/2),0,mkMatch(sh(list.map(function(_,i){return i})).slice(0,Math.min(5,list.length))));
+  L={u:-2,rev:true,q:q,i:0,d:0,tot:q.length,hp:99,st:"ask",sel:null,pick:[],xp:0,err:0,res:[]};draw()}
+function whenTxt(d){return d<=0?"bugun":d===1?"ertaga":d+" kundan keyin"}
+function finRev(){var res=L.res,okN=res.filter(function(r){return r.ok}).length,bad=res.filter(function(r){return !r.ok}),g=10+L.xp,t=today();
+  G.xp+=g;bumpStreak();saveG();snd(523);setTimeout(function(){snd(784,.3)},150);
+  var more=dueAll().length,pct=res.length?Math.round(okN/res.length*100):100;
+  var ms=bad.map(function(r){return '<div><div class="ru" style="font-size:18px">'+esc(r.it[1])+'</div><div class="tr" style="margin:2px 0 0">'+esc(r.it[2])+'</div><div class="note" style="margin:4px 0 0">'+(r.gap>0?r.gap+' kundan keyin unutdingiz. ':'')+'Ertaga yana ko‘rasiz.'+(r.lap>=2?' <b>'+r.lap+'-marta</b> — bu gap qiyin, tez-tez qaytadi.':'')+'</div></div>'}).join("");
+  var good=res.filter(function(r){return r.ok}).length;
+  $("#app").innerHTML=confetti()+'<div class="bd end" style="padding-top:20px"><div class="e">'+(bad.length?"💪":"🏆")+'</div><h1>'+(bad.length?"Takrorlash tugadi":"Hammasi esingizda!")+'</h1><div class="stat"><div style="color:var(--g)">✅ '+okN+'</div><div style="color:var(--r)">❌ '+bad.length+'</div><div style="color:#ce82ff">⭐ +'+g+'</div></div>'+
+    (good?'<div class="note">'+good+' ta gap keyingi takrorlashga uzoqroq muddatga o‘tdi.</div>':'')+
+    (bad.length?'<div class="note" style="text-align:left">Unutilgan gaplar (bular tez qaytadi):</div><div class="miss">'+ms+'</div>':'')+
+    (more?'<button class="btn" onclick="reviewNow()">Yana takrorlash ('+more+' ta qoldi)</button><br><br>':'')+
+    '<button class="op" style="text-align:center" onclick="memo()">📊 Xotira holati</button>'+(DAYS[DAY-1]?'<br><button class="op" style="text-align:center" onclick="home()">Bosh sahifa</button>':'')+'</div>'}
+
+/* ============ xotira holati: nimani unutyapsiz, qayerda qiynalasiz ============ */
+var TYN={mc:"Tarjimani tanlash",tf:"Ha / Yo‘q",fill:"Bo‘sh joyni to‘ldirish",build:"Gap tuzish",uzru:"O‘zbekcha → inglizcha",listen:"Eshitib tushunish"};
+var LGN=["1 kun ichida","2–3 kun ichida","4–7 kun ichida","8–30 kun ichida","30 kundan keyin"];
+function barRow(l,r,p,c){return '<div style="margin:9px 0"><div class="mr" style="border:0;padding:0"><span>'+l+'</span><span>'+r+'</span></div><div class="bar"><i style="width:'+Math.max(0,Math.min(100,Math.round(p)))+'%;background:'+c+'"></i></div></div>'}
+function memo(){if(L&&L.dirty)saveG();L=null;var t=today(),A=allRecs(),n=A.length,hasDay=!!DAYS[DAY-1],x=hasDay?'<button class="x" onclick="home()">✕</button>':'';
+  var top='<div class="top">'+x+'<div style="flex:1;font-weight:900;font-size:20px">📊 Xotira holati</div></div>';
+  if(!n){$("#app").innerHTML=top+'<div class="bd"><div class="end"><div class="e">🦊</div><p class="note">Hali o‘rganilgan gap yo‘q. Birinchi darsni tugating — keyin bu yerda xotirangiz ko‘rinadi.</p></div></div>';return}
+  var due=A.filter(function(w){return w.r.due<=t}),weak=weakAll(),weakNd=weak.filter(function(w){return w.r.due>t}),strong=A.filter(function(w){return w.r.st>=5&&w.r.due>t&&!isWeak(w.r)});
+  var avg=Math.round(A.reduce(function(s,w){return s+ret(w.r,t)},0)/n*100);
+  var h='<div class="bd"><div class="stat" style="margin-top:6px"><div style="color:var(--tx)">📚 '+n+'</div><div style="color:var(--g)">🟢 '+strong.length+'</div><div style="color:#ff9600">🟠 '+due.length+'</div><div style="color:var(--r)">🔴 '+weak.length+'</div></div>'+
+    '<div class="sub" style="text-align:center">📚 o‘rganilgan · 🟢 mustahkam · 🟠 takrorlash vaqti · 🔴 qiyin gaplar</div>'+
+    barRow('Hozir taxminan eslab turibsiz','~'+avg+'%',avg,avg>=80?'var(--g)':avg>=60?'#ff9600':'var(--r)')+
+    (due.length?'<button class="btn" style="margin-top:10px" onclick="reviewNow()">🔁 Takrorlash ('+due.length+')</button>':'<div class="note" style="text-align:center">✅ Hozir takrorlash kerak emas. Hammasi esingizda.</div>');
+  if(weak.length)h+='<button class="rv" onclick="weakNow()"><b>🎯 Qiyin gaplarni mashq qilish ('+weak.length+')</b><br><small>Eng ko‘p unutganlaringizdan boshlanadi</small></button>';
+  var fc=[],mx=1;for(var i=0;i<7;i++){var c=A.filter(function(w){return i===0?w.r.due<=t:w.r.due===t+i}).length;fc.push(c);if(c>mx)mx=c}
+  h+='<div class="sec">📅 Keyingi 7 kun</div><div class="sub">Qaysi kuni nechta gapni takrorlash kerak — shunda esdan chiqmaydi.</div>'+fc.map(function(c,i){return barRow(i===0?'Bugun':i===1?'Ertaga':i+' kundan keyin',c+' ta',c/mx*100,'var(--b)')}).join("");
+  var ts=Object.keys(TYN).filter(function(k){var a=G.ty[k];return a&&a[0]+a[1]>=3}).map(function(k){var a=G.ty[k],p=a[0]/(a[0]+a[1])*100;return {k:k,p:p,n:a[0]+a[1]}}).sort(function(a,b){return a.p-b.p});
+  if(ts.length){h+='<div class="sec">🧩 Qaysi mashqda qiynalasiz</div><div class="sub">'+(ts[0].p<80?'Eng qiyini: <b>'+TYN[ts[0].k]+'</b> ('+Math.round(ts[0].p)+'% to‘g‘ri). Shunga ko‘proq e’tibor bering.':'Hamma mashq turida yaxshi natija!')+'</div>'+ts.map(function(o){return barRow(TYN[o.k],Math.round(o.p)+'% · '+o.n+' ta',o.p,o.p>=85?'var(--g)':o.p>=65?'#ff9600':'var(--r)')}).join("")}
+  var lg=G.lg,ls=lg.reduce(function(a,b){return a+b},0);
+  if(ls>0){var mi=lg.indexOf(Math.max.apply(null,lg));h+='<div class="sec">⏳ Qachon unutasiz</div><div class="sub">Gapni oxirgi ko‘rganingizdan keyin qancha vaqtda unutganingiz ('+ls+' ta holat). Ko‘pincha: <b>'+LGN[mi]+'</b>.</div>'+lg.map(function(c,i){return barRow(LGN[i],c+' ta',c/Math.max(1,Math.max.apply(null,lg))*100,i===mi?'var(--r)':'var(--bd2)')}).join("")}
+  var wk=Object.keys(G.wk).filter(function(k){return t-k<7}),wa=0,wo=0;wk.forEach(function(k){wo+=G.wk[k][0];wa+=G.wk[k][0]+G.wk[k][1]});
+  if(wa)h+='<div class="sec">📆 So‘nggi 7 kun</div><div class="stat" style="justify-content:flex-start"><div>🗓 '+wk.length+' kun</div><div>✍️ '+wa+' javob</div><div style="color:var(--g)">🎯 '+Math.round(wo/wa*100)+'%</div></div>';
+  h+='<div class="sec">🔴 Qiynalayotgan gaplar</div>';
+  if(!weak.length)h+='<div class="note">Hozircha qiynalayotgan gap yo‘q 👍</div>';
+  else{h+='<div class="sub">Bular tez-tez unutiladi — dastur ularni boshqalarga qaraganda ko‘proq qaytaradi.</div><div class="miss">'+weak.slice(0,15).map(function(w){var o=w.r;
+    return '<div><div class="ru" style="font-size:18px">'+esc(w.it[1])+'</div><div class="tr" style="margin:2px 0 0">'+esc(w.it[2])+'</div><div class="note" style="margin:4px 0 0">'+(o.lap?'<span class="chip" style="background:#ffe5e5;color:var(--r)">'+o.lap+' marta unutdingiz</span>':'')+(o.gap?'oxirgi marta '+o.gap+' kundan keyin unutdingiz · ':'')+'keyingi takror: '+whenTxt(o.due-t)+'</div></div>'}).join("")+'</div>'+(weak.length>15?'<div class="note">…va yana '+(weak.length-15)+' ta</div>':'')}
+  $("#app").innerHTML=top+h+'<div style="height:40px"></div></div>'}
+
+/* ============ so'zma-so'z tarjima: suz.json {gap_raqami:[har so'z tarjimasi]} ============ */
+var SUZ=null;
+function fillWords(){var el=document.querySelector(".wl[data-n]");if(!el)return;var n=+el.getAttribute("data-n");
+  if(!SUZ)SUZ=fetch("suz.json").then(function(r){if(!r.ok)return fetch("suz_tayyor.json");return r}).then(function(r){if(!r.ok)throw 0;return r.json()}).catch(function(){return {}});
+  SUZ.then(function(j){if(!el.isConnected)return;var g=j[n],it=its.filter(function(x){return x[0]===n})[0];if(!g||!it)return;var w=words(it[1]);
+    el.innerHTML=w.map(function(x,i){return g[i]?'<div class="w"><b>'+esc(x)+'</b><span>'+esc(g[i])+'</span></div>':""}).join("")})}
+/* ============ rasmlar: sc/<blok>.json (100 tadan), yo'q bo'lsa img/<n>.svg, yo'q bo'lsa emoji ============ */
+var SCB={};
+function scBlock(b){if(!SCB[b])SCB[b]=fetch("sc/"+b+".json").then(function(r){if(!r.ok)throw 0;return r.json()}).catch(function(){return {}});return SCB[b]}
+function fillScene(){var el=document.querySelector(".scene[data-n]");if(!el)return;var n=+el.getAttribute("data-n");
+  scBlock(Math.floor((n-13)/100)).then(function(j){if(!el.isConnected)return;var v=j[n];
+    if(v&&/^<svg[\s>]/.test(v)&&!/<script|\son\w+=|href=/i.test(v)){el.innerHTML=v;el.classList.add("has")}
+    else{var im=new Image();im.alt="";im.onload=function(){if(el.isConnected){el.innerHTML="";el.appendChild(im);el.classList.add("has")}};im.src="img/"+n+".svg"}})}
+/* ============ test (kun oxirida; natija botga ketadi) ============ */
+function startTest(){var T5=["mc","tf","fill","build","uzru","dict"],off=Math.floor(Math.random()*6),q=fixAdj(sh(its.map(function(_,k){return mkEx(T5[(k+off)%6],its[k],k)})));
+  L={u:-1,test:true,q:q,i:0,d:0,tot:q.length,hp:99,st:"ask",sel:null,pick:[],xp:0,err:0,miss:[]};draw()}
+function finTest(){var N=its.length,miss=L.miss.filter(function(k,i,a){return a.indexOf(k)===i}),score=N-miss.length,r=score/N,pass=r>=PASS,st=r>=.9?3:pass?2:r>=.5?1:0,t=today();
+  its.forEach(function(_,k){var cur=dayRec.v[k];if(miss.indexOf(k)>=0)dayRec.v[k]=pk(grade(nr(cur||newRec()),false,t));else if(!cur)dayRec.v[k]=newRec()});saveDay();saveG();
+  var C=2*Math.PI*60,svg='<svg width="150" height="150"><circle cx="75" cy="75" r="60" fill="none" stroke="var(--bd)" stroke-width="14"/><circle cx="75" cy="75" r="60" fill="none" stroke="'+(pass?"#58cc02":"#ff4b4b")+'" stroke-width="14" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-r))+'"/></svg>';
+  var ms=miss.map(function(k){return '<div><div class="ru" style="font-size:18px">'+esc(its[k][1])+'</div><div class="tr" style="margin:2px 0 0">'+esc(its[k][2])+'</div></div>'}).join("");
+  var can=inTG&&Number.isInteger(LID),payload=JSON.stringify({l:LID,s:score,n:N});window.__payload=payload;
+  snd(pass?523:200);
+  $("#app").innerHTML=(pass?confetti():"")+'<div class="bd end" style="padding-top:20px"><div class="ring">'+svg+'<b>'+Math.round(r*100)+'%</b></div><div class="stars">'+"★".repeat(st)+"☆".repeat(3-st)+'</div><h1 style="color:var(--tx);font-size:26px">'+(pass?"Test topshirildi! 🎉":"Yana bir urinib ko‘ring")+'</h1>'+
+    '<div class="stat"><div style="color:var(--g)">✅ '+score+'</div><div style="color:var(--r)">❌ '+(N-score)+'</div></div>'+(miss.length?'<div class="note" style="text-align:left">Xato qilingan gaplar:</div><div class="miss">'+ms+'</div>':'')+
+    (can?'<button class="btn" id="sendb">Natijani botga yuborish</button>':'<div class="note">Bu test Telegram bot tugmasi orqali ochilishi kerak, aks holda natija botga yetmaydi.</div>')+'</div>';
+  var sb=document.getElementById("sendb");if(sb)sb.onclick=function(){sb.disabled=true;try{tg.sendData(payload)}catch(e){sb.disabled=false}}}
+
+/* ============ boshlash ============ */
+function init(){
+  if(!DAYS.length||(!REVMODE&&!DAYS[DAY-1])){$("#app").innerHTML='<div class="end"><div class="e">🦊</div><h1>Dars topilmadi</h1><p class="note">Botdagi tugma orqali oching.</p></div>';return}
+  $("#app").innerHTML='<div class="end"><div class="e">🦊</div><p class="note">Yuklanmoqda…</p></div>';
+  Store.all().then(function(m){S=m;loadG(m);
+    var day=DAYS[DAY-1];
+    if(day){its=day.i;var n=its.length,k=Math.ceil(n/4),b=Math.floor(n/k),e=n%k,p=0,E=["🌱","🌿","🌳","🍀"];
+      for(var i=0;i<k;i++){var sz=b+(i<e?1:0),ks=[];for(var j=0;j<sz;j++)ks.push(p+j);p+=sz;UN.push({k:ks,e:E[i%4],n:"Dars "+(i+1)})}
+      var r=S["s"+DAY];if(r&&r.ver!==COURSE)r=null;dayRec={v:(r&&r.v)||[],p:(r&&r.p)||0}}
+    if(TESTMODE&&day)return startTest();
+    if(REVMODE){var dl=dueAll();return dl.length?startReview(dl):memo()}
+    OLD=dueAll().filter(function(w){return w.day!==DAY}).slice(0,Math.min(28,UN.length*7));OLDPER=Math.min(7,Math.ceil(OLD.length/UN.length))||1;
+    home()})}
+init();
+</script></body></html>

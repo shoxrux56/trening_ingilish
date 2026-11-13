@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dars testi</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#f6f4ff;--fg:#1d1535;--muted:#756c94;--card:#fff;--line:#e4def7;--a:#6d4aff;--a2:#ff5c8a;--ok:#16a34a;--okbg:#dcfce7;--bad:#dc2626;--badbg:#fee2e2}
+@media (prefers-color-scheme:dark){:root{--bg:#150f2a;--fg:#f3efff;--muted:#a79fc9;--card:#241a47;--line:#33275f;--a:#9a82ff;--a2:#ff7aa3;--ok:#4ade80;--okbg:#0f3a28;--bad:#f87171;--badbg:#4a1a24}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.45 system-ui,"Segoe UI",sans-serif}
+main{max-width:520px;margin:0 auto;padding:18px 16px 40px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.pill{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:2px 12px;font-size:14px;color:var(--muted);font-weight:600}
+.bar{height:10px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:18px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--a2));border-radius:9px;transform-origin:left;transition:transform .35s ease-out}
+.qc{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:20px 16px;text-align:center;margin-bottom:16px;animation:in .3s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.glyph{font:700 76px/1.1 Georgia,"Times New Roman",serif;color:var(--a);margin:2px 0 6px}
+.glyph:empty{display:none}
+.q{font-size:19px;font-weight:600}
+#o{display:grid;gap:10px}
+#o.g2{grid-template-columns:1fr 1fr}
+button{font:inherit;font-size:18px;width:100%;text-align:center;padding:16px 12px;border:2px solid var(--line);border-radius:16px;background:var(--card);color:var(--fg);transition:transform .1s}
+button:active:not(:disabled){transform:scale(.97)}
+button.idk{grid-column:1/-1;color:var(--muted);background:none;border:2px dashed var(--line);font-size:16px}
+button.ok{background:var(--okbg);border-color:var(--ok)}
+button.bad{background:var(--badbg);border-color:var(--bad);animation:sh .3s}
+@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.res{text-align:center;padding-top:14px}
+.emo{font-size:64px;line-height:1}
+h1{font-size:24px;margin:10px 0 0}
+.big{font-size:64px;font-weight:800;margin:8px 0;background:linear-gradient(90deg,var(--a),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.muted{color:var(--muted);font-size:15px}
+button.main{background:linear-gradient(90deg,var(--a),var(--a2));color:#fff;border:0;font-weight:700;margin-top:18px;box-shadow:0 5px 0 rgba(0,0,0,.18)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body><main id="m"></main>
+<script>
+// ====== FAQAT SHU QISMNI ALMASHTIRING ======
+const PASS = 0.7; // o'tish chegarasi (bot ham 70% deb hisoblaydi)
+const TITLE = "Alifbo testi";
+// [savol, to'g'ri javob, [noto'g'ri javoblar]]
+const Q = [
+  ["«A» harfi qanday o'qiladi?", "ey", ["i", "ay", "a"]],
+  ["«E» harfi qanday o'qiladi?", "i", ["ey", "ay", "e"]],
+  ["«I» harfi qanday o'qiladi?", "ay", ["i", "ey", "yu"]],
+  ["«C» harfi qanday o'qiladi?", "si", ["es", "ki", "ji"]],
+  ["«G» harfi qanday o'qiladi?", "ji", ["jey", "gi", "ki"]],
+  ["«J» harfi qanday o'qiladi?", "jey", ["ji", "yey", "ey"]],
+  ["«W» harfi qanday o'qiladi?", "dablyu", ["vi", "yu", "uay"]],
+  ["«Y» harfi qanday o'qiladi?", "uay", ["yu", "ay", "vi"]],
+  ["«Q» harfi qanday o'qiladi?", "kyu", ["ki", "ar", "ji"]],
+  ["«U» harfi qanday o'qiladi?", "yu", ["ay", "u", "vi"]],
+  ["«Dog» so'zi qaysi harfdan boshlanadi?", "D", ["B", "P", "G"]],
+  ["«Queen» so'zi qaysi harfdan boshlanadi?", "Q", ["K", "C", "G"]],
+  ["«Yacht» so'zi qaysi harfdan boshlanadi?", "Y", ["J", "I", "U"]],
+  ["«Juice» so'zi qaysi harfdan boshlanadi?", "J", ["G", "Y", "I"]],
+];
+// ===========================================
+const tg = window.Telegram && Telegram.WebApp;
+try { tg.ready(); tg.expand(); } catch (e) {}
+const lessonId = parseInt(new URLSearchParams(location.search).get("l"), 10); // bot o'zi qo'shadi
+const m = document.getElementById("m");
+const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(x => x[1]);
+const order = shuffle(Q.map((_, i) => i));
+let k = 0, score = 0;
+
+function ask() {
+  const [q, ok, bad] = Q[order[k]];
+  const g = q.match(/^«([^»]+)»\s*/); // savol «harf» bilan boshlansa, uni katta qilib ko'rsatamiz
+  m.innerHTML = `<div class="top"><b>${TITLE}</b><span class="pill">${k + 1}/${Q.length}</span></div>
+    <div class="bar"><i style="transform:scaleX(${k / Q.length})"></i></div>
+    <div class="qc"><div class="glyph"></div><div class="q"></div></div><div id="o"></div>`;
+  m.querySelector(".glyph").textContent = g ? g[1] : "";
+  const rest = g ? q.slice(g[0].length) : q;
+  m.querySelector(".q").textContent = rest.charAt(0).toUpperCase() + rest.slice(1);
+  const o = document.getElementById("o");
+  const opts = shuffle([ok, ...bad]);
+  if (opts.every(t => t.length <= 8)) o.className = "g2";
+  opts.concat(["Bilmayman"]).forEach(t => {
+    const b = document.createElement("button");
+    b.textContent = t; if (t === "Bilmayman") b.className = "idk";
+    b.onclick = () => pick(b, t === ok, ok);
+    o.appendChild(b);
+  });
+}
+function pick(b, right, ok) {
+  [...document.querySelectorAll("#o button")].forEach(x => { x.disabled = true; if (x.textContent === ok) x.classList.add("ok"); });
+  if (right) score++; else b.classList.add("bad");
+  setTimeout(() => { k++; k < Q.length ? ask() : end(); }, 700);
+}
+function end() {
+  const pass = score / Q.length >= PASS;
+  m.innerHTML = `<div class="bar"><i style="transform:scaleX(1)"></i></div>
+    <div class="res"><div class="emo">${pass ? "🏆" : "💪"}</div>
+    <h1>${pass ? "Zo'r, o'tdingiz!" : "Hali yetarli emas"}</h1>
+    <div class="big">${score}/${Q.length}</div>
+    <p class="muted">${pass ? "Natijani botga yuboring, keyingi dars ochiladi." : "O'tish uchun kamida " + Math.round(PASS * 100) + "% kerak. Darsni qayta o'qib, yana urinib ko'ring."}</p>
+    <button class="main" id="go">${pass ? "Natijani botga yuborish" : "Natijani yuborib, yopish"}</button></div>`;
+  document.getElementById("go").onclick = () => {
+    const payload = JSON.stringify({l: lessonId, s: score, n: Q.length});
+    if (tg && tg.platform && tg.platform !== "unknown" && Number.isInteger(lessonId)) tg.sendData(payload);
+    else alert("Bu test Telegram bot tugmasi orqali ochilishi kerak.");
+  };
+}
+ask();
+</script>
+</body></html>

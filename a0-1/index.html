@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Harf yomg‘iri — ingliz harflarini o‘yinda o‘rgan</title>
+<style>
+:root{--bg:#1b1033;--c:#2a1b4d;--c2:#4a3280;--red:#ff4d5e;--sun:#ffc93c;--mint:#35e0a1;--sky:#4cc9ff;--t:#fff8ee;--m:#b9a9e0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;overflow-x:hidden}
+#app{max-width:520px;margin:0 auto;padding:14px}
+button{font:inherit;color:inherit;cursor:pointer;border:0}
+h1{font-family:Georgia,serif;font-size:2.6rem;margin:6px 0;text-align:center;line-height:1}
+.c{text-align:center}.m{color:var(--m)}
+.big{display:block;width:100%;background:var(--red);padding:20px;border-radius:22px;font-size:1.5rem;font-weight:bold;margin:16px 0;box-shadow:0 6px 0 #a0283a;animation:pulse 1.5s infinite}
+@keyframes pulse{50%{transform:scale(1.03)}}
+.btn{background:var(--red);padding:14px 22px;border-radius:16px;font-weight:bold}
+.btn.b{background:var(--sky);color:#102a3a}.btn.s{background:var(--c2)}
+.row{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.how{background:var(--c);border-radius:18px;padding:14px;line-height:1.6}
+.tiles{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;margin-top:8px}
+.tile{aspect-ratio:1;border-radius:9px;font-family:Georgia,serif;font-size:1.15rem;background:var(--c);color:#6a5a98;padding:0}
+.tile.t1{background:#6b4f12;color:var(--sun)}.tile.t2{background:var(--mint);color:#102a20}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.back{background:var(--c);width:40px;height:40px;border-radius:50%}
+.prompt{background:var(--c);border-radius:18px;padding:8px;text-align:center;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:16px;min-height:76px}
+.pe{font-size:2.8rem}.ps{font-size:2.6rem;font-weight:bold;color:var(--sun)}
+#field{position:relative;height:calc(100vh - 290px);min-height:300px;background:linear-gradient(#2a1b4d,#120a26);border-radius:20px;overflow:hidden;border-bottom:4px solid var(--red)}
+.fc{position:absolute;top:0;width:30%;aspect-ratio:1;border-radius:20px;font-family:Georgia,serif;font-size:3rem;background:var(--c2);box-shadow:0 6px 0 rgba(0,0,0,.35)}
+.fc.good{background:var(--mint);color:#102a20}.fc.bad{background:var(--red)}
+.ov{position:absolute;inset:0;background:rgba(27,16,51,.96);display:flex;align-items:center;justify-content:center;padding:8px;overflow:auto;animation:pop .3s}
+@keyframes pop{from{transform:scale(.85);opacity:0}}
+.huge{font-family:Georgia,serif;font-size:4.6rem;line-height:1.1}
+.snd{color:var(--sky);font-size:1.3rem}.emo{font-size:3.4rem}
+.tip{background:rgba(0,0,0,.3);border-radius:12px;padding:8px;margin:8px 0;line-height:1.4}
+.fb{margin-top:10px;padding:10px;border-radius:14px;text-align:center;line-height:1.5}
+.fb.g{background:rgba(53,224,161,.2)}.fb.b{background:rgba(255,77,94,.25)}
+.splash{display:flex;align-items:center;justify-content:center;min-height:80vh}
+.splash{flex-direction:column;gap:18px}
+.splash .big{max-width:320px}
+.camel{width:190px;animation:bob 1s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-8px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// Ochilish tartibi: oson harflardan qiyinlariga. [harf, tovush, so'z, emoji, ma'no, maslahat]
+const L=[
+['A','ey','Apple','🍎','olma',`A = "ey". Olma — apple. Boshida "e"ga yaqin: "epl".`],
+['B','bi','Banana','🍌','banan',`B = "bi". Lablarni yumib "b" de: banana.`],
+['D','di','Dog','🐶','it',`D = "di". Dog — it, "dog".`],
+['M','em','Milk','🥛','sut',`M = "em". Ikki cho'qqi = "mmm": milk.`],
+['T','ti','Tea','🍵','choy',`T = "ti". Tea — choy, "ti".`],
+['K','key','Kite','🪁','varrak',`K = "key". Kite — varrak, "kayt".`],
+['S','es','Sun','☀️','quyosh',`S = "es". Quyosh — sun, "san". ⚠️ C emas!`],
+['L','el','Lemon','🍋','limon',`L = "el". Tilni tishga tekkiz: lemon.`],
+['N','en','Nose','👃','burun',`N = "en". Nose — burun, "nous".`],
+['P','pi','Pizza','🍕','pitsa',`P = "pi". Ovoz bilan emas, havo bilan: "p-pizza".`],
+['F','ef','Fish','🐟','baliq',`F = "ef". Pastki lab — tishga: fish.`],
+['R','ar','Rabbit','🐰','quyon',`R = "ar". Tilni tegizmay: "rabbit". Rus "r" kabi titratma!`],
+['Z','zi','Zebra','🦓','zebra',`Z = "zi" (ba'zan "zed"). Zebra — "zibra".`],
+['E','i','Egg','🥚','tuxum',`⚠️ E = "i"! Egg — tuxum, "eg".`],
+['I','ay','Ice cream','🍦','muzqaymoq',`⚠️ I = "ay"! Ice cream — "ays krim".`],
+['O','ou','Orange','🍊','apelsin',`O = "ou". Orange — apelsin.`],
+['U','yu','Umbrella','☂️','soyabon',`⚠️ U = "yu"! Umbrella — soyabon, "ambrela".`],
+['H','eych','House','🏠','uy',`H = "eych". Nafas bilan: "h-haus".`],
+['C','si','Cat','🐱','mushuk',`⚠️ C = "si". Cat — mushuk, "k" kabi o'qiladi.`],
+['G','ji','Goat','🐐','echki',`⚠️ G = "ji"! Harf nomi "ji", lekin goat — "gout".`],
+['J','jey','Juice','🧃','sharbat',`⚠️ J = "jey"! G bilan adashtirma. Juice — "jus".`],
+['V','vi','Violin','🎻','skripka',`V = "vi". Pastki lab tishda: violin.`],
+['W','dablyu','Water','💧','suv',`⚠️ W = "dablyu" (ikkita U). Water — "uoter".`],
+['Y','uay','Yacht','⛵','yaxta',`⚠️ Y = "uay". Yacht — yaxta, "yot".`],
+['X','eks','X-ray','🩻','rentgen',`X = "eks". X-ray — "eks-rey".`],
+['Q','kyu','Queen','👑','malika',`⚠️ Q = "kyu". Queen — malika, "kuin".`]
+];
+const PR=[['Well done!',`barakalla`],['Excellent!',`a'lo`],['Super!',`zo'r`],['Bravo!','bravo']];
+const LN={A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'jee',H:'aitch',I:'eye',J:'jay',K:'kay',L:'ell',M:'em',N:'en',O:'oh',P:'pee',Q:'queue',R:'are',S:'ess',T:'tee',U:'you',V:'vee',W:'double you',X:'ex',Y:'why',Z:'zee'};
+let S={u:3,i:0,best:0,w:{}};
+try{S=Object.assign(S,JSON.parse(localStorage.getItem('alphabet_en1')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('alphabet_en1',JSON.stringify(S))}catch(e){}};
+const app=document.getElementById('app'),$=id=>document.getElementById(id);
+const rnd=n=>Math.floor(Math.random()*n),shuf=a=>[...a].sort(()=>Math.random()-.5);
+
+/* ===== OVOZ TIZIMI ===== */
+/* ===== Tayyor ovoz fayllari (internetsiz va telefon ovozisiz ishlaydi) ===== */
+var AUDIO={};
+var AUe=null,SILC='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
+function akey(t){return String(t).replace(/<[^>]*>/g,'').toLowerCase().replace(/[.,!?;:«»"“”…()–—]/g,' ').replace(/\s+/g,' ').trim();}
+function unlockClip(){try{AUe=new Audio();AUe.src=SILC;var p=AUe.play();if(p&&p.catch)p.catch(function(){});}catch(e){}}
+function playClip(t,done){
+  var d=AUDIO[akey(t)];if(!d)return false;
+  try{if(!AUe)AUe=new Audio();AUe.onended=done||null;AUe.src=d;var p=AUe.play();if(p&&p.catch)p.catch(function(){});return true;}catch(e){return false;}
+}
+
+let AC=null,GID=0,VOICES=[],SOUND=false,SID=0;
+
+function ctx(){
+ try{
+  if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C()}
+  if(AC&&AC.state==='suspended')AC.resume();
+ }catch(e){}
+ return AC;
+}
+function loadV(){try{VOICES=speechSynthesis.getVoices()}catch(e){}}
+try{loadV();speechSynthesis.onvoiceschanged=loadV}catch(e){}
+
+function say(t,r){
+ if(!SOUND)return;
+ t=LN[t]||t;
+ if(playClip(t))return;
+ const id=++SID;
+ const v=VOICES.find(x=>/^en/i.test(x.lang));
+ if(!v||!('speechSynthesis' in window))return;
+ let started=false;
+ const u=new SpeechSynthesisUtterance(t);
+ u.lang='en-US';u.voice=v;u.rate=r||.85;
+ u.onstart=()=>{started=true};
+ 
+ window._u=u;
+ try{speechSynthesis.cancel()}catch(e){}
+ setTimeout(()=>{try{speechSynthesis.speak(u)}catch(e){}},80);
+}
+function beep(ok){
+ if(!SOUND)return;
+ try{
+  const c=ctx();if(!c)return;
+  const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;
+  o.connect(g);g.connect(c.destination);o.type='triangle';o.frequency.value=ok?880:170;
+  g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+.25);
+  o.start(t);o.stop(t+.25);
+ }catch(e){}
+}
+// Birinchi bosishda brauzer ovozni ochadi
+function unlock(){unlockClip();
+ ctx();
+ try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}
+}
+
+const tiles=()=>`<div class=tiles>${L.map((x,i)=>`<button class="tile ${i<S.u?(S.w[x[0]]>0?'t1':'t2'):''}" onclick="say('${x[0]}')">${x[0]}</button>`).join('')}</div>`;
+
+function home(){
+ GID++;try{speechSynthesis.cancel()}catch(e){}
+ app.innerHTML=`<h1>Harf yomg‘iri 🌧️</h1><p class="c m" style="margin:0">Ingliz harflarini o‘yin o‘ynab o‘rgan!</p>
+ <div class=how style="margin-top:12px;border:2px dashed var(--sun)">😴 <b>Rostini aytaman:</b> alifbo o‘rganish biroz <b>zerikarli</b>. Lekin sabr qil — keyingi darslar <b>juda oson va juda qiziqarli</b> bo‘ladi! 🎉</div>
+ <button class=big onclick="game()">▶ ${S.i?'DAVOM ETISH':'O‘YNASH'}</button>
+ <div class=how>🎯 Tepada tovush va rasm ko‘rinadi.<br>👆 Tushayotgan harflardan <b>to‘g‘risini bos</b>.<br>💡 Har 4 ta to‘g‘ri javobdan keyin <b>yangi harf</b> ochiladi.<br>❤️ 3 ta jon bor. Xato qilsang, to‘g‘ri javob ko‘rsatiladi — shunda eslab qolasan!</div>
+ <p class="c m">🏆 Rekord: ${S.best} · Harflar: ${Math.min(S.u,L.length)}/${L.length}</p>${tiles()}
+ <p class="c m" style="font-size:.8rem">Yashil — bilasan, sariq — takrorlash kerak, kulrang — hali yopiq. Bossang, harf o‘qiladi.</p>
+ <div class=c><button class=lnk style="background:none;color:var(--m);text-decoration:underline;font-size:.8rem" onclick="if(confirm('Hamma natija o‘chadi. Ishonchingiz komilmi?')){S={u:3,i:0,best:0,w:{}};save();home()}">Boshidan boshlash</button></div>`;
+}
+
+function game(){
+ const gid=++GID;
+ let lives=3,score=0,combo=0,hits=0,wave=null,force=null,last='',q=L.slice(S.i,S.u);
+ app.innerHTML=`<div class=top><button class=back onclick="home()">←</button><b id=hp style="flex:1"></b><b id=sc></b></div><div class=prompt id=pr></div><div id=field></div><div id=fb></div>`;
+ const F=$('field'),hud=()=>{$('hp').textContent='❤️'.repeat(lives)+'🖤'.repeat(3-lives);$('sc').textContent='🚀'+(Math.floor(score/50)+1)+' ⭐'+score+(combo>1?' 🔥x'+combo:'')};
+ hud();
+ (function lp(){
+  if(gid!=GID)return;
+  if(wave&&!wave.done){
+   const p=(performance.now()-wave.s)/wave.d;
+   wave.els.forEach(e=>e.style.transform=`translateY(${Math.min(p,1)*(F.clientHeight-F.clientWidth*.3)}px)`);
+   if(p>=1){wave.done=1;bad(null,'Harf yerga tushdi!')}
+  }
+  requestAnimationFrame(lp);
+ })();
+ function nx(){q.length?intro(q.shift()):spawn()}
+ function intro(x){
+  S.i=Math.max(S.i,L.indexOf(x)+1);save();$('pr').innerHTML='<b>🆕 Yangi harf!</b>';$('fb').innerHTML='';
+  F.innerHTML=`<div class=ov><div class=c><div class=huge>${x[0]}${x[0].toLowerCase()}</div><div class=snd>nomi: <b>${x[1]}</b></div><div class=emo>${x[3]}</div><div><b>${x[2]}</b> — ${x[4]}</div><div class=tip>💡 ${x[5]}</div><div class=row><button class="btn b" onclick="say('${x[0]}')">🔊 Harf</button><button class="btn b" onclick="say('${x[2]}')">🔊 So‘z</button><button class=btn id=go>Eslab oldim ▶</button></div></div></div>`;
+  say(x[0]);$('go').onclick=()=>{if(q.length)intro(q.shift());else{force=x;spawn()}};
+ }
+ function spawn(){
+  if(gid!=GID)return;
+  const un=L.slice(0,S.u);let t;
+  if(force){t=force;force=null}
+  else{
+   const w=[];un.forEach((x,i)=>{const k=1+3*(S.w[x[0]]||0)+(i>=S.u-2?2:0);for(let j=0;j<Math.min(k,12);j++)w.push(x)});
+   for(let j=0;j<6;j++){t=w[rnd(w.length)];if(t[0]!=last)break}
+  }
+  last=t[0];
+  const cards=shuf([t,...shuf(un.filter(x=>x!=t)).slice(0,2)]),lanes=['2%','35%','68%'];
+  F.innerHTML='';$('fb').innerHTML='';
+  const els=cards.map((x,i)=>{const b=document.createElement('button');b.className='fc';b.textContent=x[0];b.style.left=lanes[i];b.onclick=()=>tap(x,b);F.appendChild(b);return b});
+  $('pr').innerHTML=`<span class=pe>${t[3]}</span><span class=ps>${t[1]}</span><span class=m>${t[4]}</span>`;
+  wave={t,els,s:performance.now(),d:Math.max(1.3,6.5*Math.pow(.994,score))*1000,done:0};
+  say(t[0]);
+ }
+ function tap(x,b){
+  if(!wave||wave.done)return;wave.done=1;const t=wave.t;
+  if(x!=t)return bad(b,'Xato!');
+  const p=PR[rnd(4)];
+  const lo=Math.floor(score/50);score+=10+Math.min(combo,10);combo++;hits++;const up=Math.floor(score/50)>lo;S.w[t[0]]=Math.max(0,(S.w[t[0]]||0)-1);
+  beep(1);b.classList.add('good');say(t[2]);hud();save();
+  $('fb').innerHTML=`<div class="fb g">🐻 <b>${p[0]}</b> (${p[1]}) · ${t[0]} = ${t[1]} · ${t[2]}${up?'<br>🚀 <b>Tezlashdi!</b>':''}</div>`;
+  setTimeout(()=>{if(gid!=GID)return;if(hits%4==0&&S.u<L.length){S.u++;q.push(L[S.u-1])}nx()},900);
+ }
+ function bad(b,why){
+  const t=wave.t;lives--;combo=0;S.w[t[0]]=(S.w[t[0]]||0)+1;beep(0);
+  wave.els.forEach(e=>{if(e.textContent==t[0])e.classList.add('good')});
+  if(b)b.classList.add('bad');
+  $('fb').innerHTML=`<div class="fb b">🐻 ${why} To‘g‘risi: <b>${t[0]}</b> = ${t[1]} · ${t[2]} ${t[3]}</div>`;
+  say(t[2]);hud();save();
+  setTimeout(()=>{if(gid!=GID)return;lives<=0?end():spawn()},2000);
+ }
+ function end(){
+  GID++;const nb=score>S.best;if(nb)S.best=score;save();
+  app.innerHTML=`<div class=c><h1>${nb?'🏆 Yangi rekord!':'O‘yin tugadi'}</h1><p style="font-size:1.4rem">⭐ ${score} ball · 🔥 ${hits} ta to‘g‘ri</p><p class=m>Ochilgan harflar: ${S.u}/${L.length}</p><p class=m>💪 Alifbo biroz zerikarli, lekin keyingi darslar oson va juda qiziqarli bo‘ladi!</p>${tiles()}<div class=row><button class=btn onclick="game()">🔁 Yana o‘ynash</button><button class="btn s" onclick="home()">Menyu</button></div></div>`;
+ }
+ nx();
+}
+
+/* ===== Birinchi ekran: faqat "Boshlash" tugmasi ===== */
+const CAMEL='<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="#d9a05b"><path d="M16 58Q8 62 10 78" stroke="#c98b45" stroke-width="5" stroke-linecap="round" fill="none"/><rect x="24" y="70" width="9" height="24" rx="4.5"/><rect x="38" y="72" width="9" height="22" rx="4.5"/><rect x="56" y="72" width="9" height="22" rx="4.5"/><rect x="70" y="70" width="9" height="24" rx="4.5"/><ellipse cx="37" cy="38" rx="11" ry="15" fill="#c98b45"/><ellipse cx="60" cy="38" rx="11" ry="15" fill="#c98b45"/><ellipse cx="49" cy="62" rx="32" ry="19"/><path d="M66 58Q80 54 76 30L90 30Q92 58 82 72Z"/><ellipse cx="85" cy="26" rx="12" ry="9"/></g><ellipse cx="49" cy="64" rx="15" ry="9" fill="#1cb0f6"/><ellipse cx="49" cy="64" rx="8" ry="4" fill="#ffc800"/><ellipse cx="78" cy="15" rx="3" ry="5" fill="#c98b45"/><circle cx="83" cy="23" r="3.5" fill="#3c3c3c"/><circle cx="84" cy="22" r="1.2" fill="#fff"/><circle cx="90" cy="30" r="3" fill="#ff8a8a" opacity=".7"/><path d="M92 25q2 1 2 4" stroke="#8a5a28" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>';
+function splash(){
+ app.innerHTML=`<div class=splash><div class=camel>${CAMEL}</div><button class=big id=st>Boshlash</button></div>`;
+ $('st').onclick=()=>{
+  SOUND=true;
+  unlock();
+  setTimeout(()=>say('Hello!'),150);
+  home();
+ };
+}
+splash();
+</script>
+</body>
+</html>

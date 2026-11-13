@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>1-dars testi</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF; --ink:#4B4B4B; --ink-strong:#3C3C3C; --muted:#AFAFAF; --muted-2:#777777;
+  --line:#E5E5E5; --line-shadow:#CECECE;
+  --green:#58CC02; --green-shadow:#58A700; --green-soft:#D7FFB8; --green-ink:#58A700;
+  --blue:#1CB0F6; --blue-shadow:#1899D6; --blue-soft:#DDF4FF; --blue-line:#84D8FF; --blue-ink:#1899D6;
+  --red:#FF4B4B; --red-shadow:#EA2B2B; --red-soft:#FFDFE0; --red-ink:#EA2B2B;
+  --gold:#FFC800; --gold-shadow:#E5B400;
+  --eye:#3C3C3C;
+  --f:"Nunito","Trebuchet MS",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#131F24; --ink:#DCE6EC; --ink-strong:#F1F7FB; --muted:#6B7F89; --muted-2:#8FA3AD;
+    --line:#37464F; --line-shadow:#2B3A42;
+    --green-soft:#1D3A10; --green-ink:#89E219;
+    --blue-soft:#143240; --blue-line:#1899D6; --blue-ink:#49C0F8;
+    --red-soft:#3E1B1D; --red-ink:#FF7878;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131F24; --ink:#DCE6EC; --ink-strong:#F1F7FB; --muted:#6B7F89; --muted-2:#8FA3AD;
+  --line:#37464F; --line-shadow:#2B3A42;
+  --green-soft:#1D3A10; --green-ink:#89E219;
+  --blue-soft:#143240; --blue-line:#1899D6; --blue-ink:#49C0F8;
+  --red-soft:#3E1B1D; --red-ink:#FF7878;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0;background:var(--bg)}
+body{color:var(--ink);font:700 17px/1.4 var(--f);-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+#app{height:100%;max-width:520px;margin:0 auto;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+.top{display:flex;align-items:center;gap:14px;padding:16px 16px 8px}
+.track{flex:1;height:16px;border-radius:999px;background:var(--line);overflow:hidden}
+.fill{height:100%;width:5%;border-radius:999px;background:var(--green);transition:width .35s ease;position:relative}
+.fill::after{content:"";position:absolute;left:8px;right:8px;top:4px;height:4px;border-radius:4px;background:#fff;opacity:.3}
+.combo{min-width:46px;display:flex;align-items:center;justify-content:flex-end;gap:4px;font:900 17px/1 var(--f);color:var(--gold-shadow);font-variant-numeric:tabular-nums;visibility:hidden}
+.combo.on{visibility:visible}
+#stage{flex:1;min-height:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:20px}
+.label{font:800 12px/1 var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
+.ask{display:flex;align-items:center;gap:6px}
+.ask svg{flex:none;width:72px;height:auto}
+.bubble{position:relative;flex:1;min-width:0;border:2px solid var(--line);border-radius:18px;padding:14px 16px;font:900 clamp(19px,5.6vw,23px)/1.3 var(--f);color:var(--ink-strong);overflow-wrap:anywhere;text-wrap:balance}
+.bubble::before{content:"";position:absolute;left:-9px;top:50%;width:14px;height:14px;background:var(--bg);border-left:2px solid var(--line);border-bottom:2px solid var(--line);transform:translateY(-50%) rotate(45deg)}
+.opts{display:grid;gap:10px}
+.tile{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--bg);border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:14px 16px;font:800 18px/1.3 var(--f);color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.tile .k{flex:none;width:28px;height:28px;border-radius:9px;border:2px solid var(--line);display:grid;place-items:center;font:800 13px/1 var(--f);color:var(--muted)}
+.tile:active:not(:disabled){transform:translateY(2px);border-bottom-width:2px}
+.tile.sel{border-color:var(--blue-line);background:var(--blue-soft);color:var(--blue-ink)}
+.tile.sel .k{border-color:var(--blue-line);color:var(--blue-ink)}
+.tile.good{border-color:var(--green);background:var(--green-soft);color:var(--green-ink)}
+.tile.good .k{border-color:var(--green);color:var(--green-ink)}
+.tile.wrong{border-color:var(--red);background:var(--red-soft);color:var(--red-ink)}
+.tile.wrong .k{border-color:var(--red);color:var(--red-ink)}
+.tile:disabled{cursor:default}
+.idk{border:0;background:transparent;color:var(--muted);font:800 14px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;padding:12px;align-self:center}
+.idk:disabled{opacity:.4;cursor:default}
+.btn{display:block;width:100%;border:0;border-radius:16px;padding:15px 20px;font:800 16px/1.1 var(--f);letter-spacing:.08em;text-transform:uppercase;text-align:center;background:var(--green);color:#fff;box-shadow:0 4px 0 var(--green-shadow);transition:transform .08s,box-shadow .08s}
+.btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 0 0 var(--green-shadow)}
+.btn:disabled{background:var(--line);color:var(--muted);box-shadow:none;cursor:not-allowed}
+.btn.bad{background:var(--red);box-shadow:0 4px 0 var(--red-shadow)}
+.btn.bad:active:not(:disabled){box-shadow:0 0 0 var(--red-shadow)}
+.btn.ghost{background:var(--bg);color:var(--blue-ink);border:2px solid var(--line);box-shadow:0 4px 0 var(--line);padding:13px 18px}
+.dock{flex:none;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));border-top:2px solid var(--line);background:var(--bg);display:flex;flex-direction:column;gap:14px}
+.dock.ok{background:var(--green-soft);border-top-color:transparent}
+.dock.bad{background:var(--red-soft);border-top-color:transparent}
+.fb{display:none;align-items:center;gap:14px}
+.dock.ok .fb,.dock.bad .fb{display:flex}
+.fb .ic{flex:none;width:52px;height:52px;border-radius:50%;background:var(--bg);display:grid;place-items:center}
+.dock.ok .fb .ic{color:var(--green)}
+.dock.bad .fb .ic{color:var(--red)}
+.fb .t{font:900 22px/1.2 var(--f)}
+.fb .s{margin-top:2px;font-weight:800;font-size:16px;line-height:1.3;overflow-wrap:anywhere}
+.dock.ok .fb{color:var(--green-ink)}
+.dock.bad .fb{color:var(--red-ink)}
+.dock.bad .fb .s:empty{display:none}
+
+/* Natija */
+.res{align-items:center;text-align:center;gap:18px;justify-content:center;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+.res > svg.fox{width:112px;height:auto;animation:hop .9s ease-out both}
+@keyframes hop{0%{transform:translateY(26px) scale(.8);opacity:0}60%{transform:translateY(-8px)}100%{transform:none;opacity:1}}
+.res h1{margin:0;font:900 clamp(26px,8vw,32px)/1.15 var(--f);color:var(--gold)}
+.res h1.sad{color:var(--red)}
+.ring{position:relative;width:148px;height:148px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:12;stroke-linecap:round}
+.ring .bgc{stroke:var(--line)}
+.ring .fgc{stroke:var(--c);stroke-dasharray:326.7;stroke-dashoffset:326.7;transition:stroke-dashoffset 1s .2s ease-out}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font:900 34px/1 var(--f);color:var(--ink-strong);font-variant-numeric:tabular-nums}
+.stars{display:flex;gap:8px}
+.stars svg{width:44px;height:44px;animation:pop .5s both}
+.stars svg:nth-child(2){animation-delay:.15s}.stars svg:nth-child(3){animation-delay:.3s}
+@keyframes pop{0%{transform:scale(0) rotate(-30deg)}70%{transform:scale(1.2)}100%{transform:none}}
+.sb{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.sbox{border:2px solid var(--c);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.sbox span{background:var(--c);color:#fff;font:900 11px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;padding:7px 4px}
+.sbox b{padding:14px 4px;font:900 22px/1 var(--f);color:var(--c);font-variant-numeric:tabular-nums}
+.res p{margin:0;color:var(--muted-2);max-width:34ch}
+.rev{width:100%;text-align:left;display:grid;gap:8px}
+.rev h2{margin:0 0 2px;font:800 12px/1 var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2)}
+.rev div{border:2px solid var(--line);border-radius:14px;padding:10px 14px;font-size:15px;overflow-wrap:anywhere}
+.rev div b{display:block;color:var(--green-ink);font-weight:900;margin-top:2px}
+.note{background:var(--blue-soft);color:var(--blue-ink);border-radius:14px;padding:12px 14px;font-size:15px;font-weight:800;width:100%}
+.note.warn{background:var(--red-soft);color:var(--red-ink)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="top"><div class="track"><div class="fill" id="fill"></div></div><div class="combo" id="combo"></div></div>
+  <main id="stage"></main>
+  <div class="dock" id="dock">
+    <div class="fb"><span class="ic" id="fbIc"></span><div><div class="t" id="fbT"></div><div class="s" id="fbS"></div></div></div>
+    <button class="btn" id="act" type="button">Tekshirish</button>
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="fox">
+      <path d="M84 138C110 138 120 112 108 90 104 108 96 114 82 114z" fill="#FF9600"/>
+      <path d="M108 90C104 108 100 112 96 114c10 2 20-6 20-16 0-4-3-8-8-8z" fill="#fff"/>
+      <path d="M30 140C30 116 42 104 60 104s30 12 30 36c0 8-14 10-30 10s-30-2-30-10z" fill="#FF9600"/>
+      <ellipse cx="60" cy="130" rx="14" ry="17" fill="#FFF3E0"/>
+      <path d="M22 54L18 10 54 32z" fill="#FF9600"/><path d="M98 54L102 10 66 32z" fill="#FF9600"/>
+      <path d="M28 44L26 22 44 34z" fill="#FFC48A"/><path d="M92 44L94 22 76 34z" fill="#FFC48A"/>
+      <ellipse cx="60" cy="62" rx="39" ry="33" fill="#FF9600"/>
+      <path d="M21 68C34 58 48 78 60 78s26-20 39-10C96 86 80 95 60 95S24 86 21 68z" fill="#fff"/>
+      <ellipse cx="45" cy="62" rx="5.5" ry="7.5" fill="var(--eye)"/><ellipse cx="75" cy="62" rx="5.5" ry="7.5" fill="var(--eye)"/>
+      <circle cx="47.5" cy="59" r="2.3" fill="#fff"/><circle cx="77.5" cy="59" r="2.3" fill="#fff"/>
+      <circle cx="33" cy="76" r="5" fill="#FF6F91" opacity=".4"/><circle cx="87" cy="76" r="5" fill="#FF6F91" opacity=".4"/>
+      <ellipse cx="60" cy="76" rx="6" ry="4.2" fill="var(--eye)"/>
+      <path d="M60 80Q60 88 52 87M60 80Q60 88 68 87" stroke="var(--eye)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    </g>
+  </defs>
+</svg>
+
+<script>
+// ====== FAQAT SHU QISMNI ALMASHTIRING (boshqa darslar uchun) ======
+const PASS = 0.7; // o'tish chegarasi (bot ham 70% deb hisoblaydi)
+const TITLE = "Oila testi";
+const ASK = 15;   // bankdan har urinishda nechta savol tasodifiy tanlanadi
+// [savol, to'g'ri javob, [noto'g'ri javoblar]]
+const Q = [
+  ["«Mom» o'zbekchada nima degani?", "Onam", ["Otam", "Opam", "Akam"]],
+  ["«Dad» o'zbekchada nima degani?", "Otam", ["Onam", "Opam", "Akam"]],
+  ["«Brother» o'zbekchada nima degani?", "Aka yoki uka", ["Opa yoki singil", "Onam", "Otam"]],
+  ["«Sister» o'zbekchada nima degani?", "Opa yoki singil", ["Aka yoki uka", "Onam", "Otam"]],
+  ["«Otam» inglizcha qanday aytiladi?", "dad", ["mom", "brother", "sister"]],
+  ["«Onam» inglizcha qanday aytiladi?", "mom", ["dad", "brother", "sister"]],
+  ["«Opa yoki singil» inglizcha qanday aytiladi?", "sister", ["brother", "mom", "dad"]],
+  ["«Aka yoki uka» inglizcha qanday aytiladi?", "brother", ["sister", "mom", "dad"]],
+  ["«My dad is a businessman» ma'nosi?", "Otam tadbirkor", ["Otam shifokor", "Akam tadbirkor", "Onam tadbirkor"]],
+  ["«My mom works as a doctor» ma'nosi?", "Onam shifokor bo'lib ishlaydi", ["Otam shifokor bo'lib ishlaydi", "Onam tadbirkor", "Opam shifokor"]],
+  ["«Menda onam bor» inglizcha qanday?", "I have a mom", ["You have a mom", "I have a dad", "I have a brother"]],
+  ["«Menda otam bor» inglizcha qanday?", "I have a dad", ["You have a dad", "I have a mom", "I have a sister"]],
+  ["«I have a brother» ma'nosi?", "Mening akam (ukam) bor", ["Mening opam (singlim) bor", "Menda otam bor", "Sening akang bormi?"]],
+  ["«I have a sister» ma'nosi?", "Mening opam (singlim) bor", ["Mening akam (ukam) bor", "Menda onam bor", "Sening opang bormi?"]],
+  ["Bo'sh joyni to'ldiring: I have a ___. (Mening akam bor)", "brother", ["mom", "dad", "sister"]],
+  ["«Mening akam (ukam) va opam (singlim) bor» inglizcha qanday?", "I have a brother and a sister", ["I have a brother and a mom", "You have a brother and a sister", "I have a mom and a sister"]],
+  ["«and» inglizcha gapda nima degani?", "Va", ["Yo'q", "Juda", "Mening"]],
+  ["Bo'sh joyni to'ldiring: ___ dad. (Mening dadam)", "My", ["Your", "Me"]],
+  ["Bo'sh joyni to'ldiring: ___ mom. (Sening onang)", "Your", ["My", "You"]],
+  ["Bo'sh joyni to'ldiring: ___ brother. (Mening akam)", "My", ["Your", "Me"]],
+  ["Bo'sh joyni to'ldiring: ___ sister. (Sening opang)", "Your", ["My", "You"]],
+  ["Qaysi biri to'g'ri?", "My mom", ["Me mom", "My mum is", "Mine mom"]],
+  ["«Sening akang (ukang) bormi?» inglizcha qanday?", "Do you have a brother?", ["I have a brother", "Do you have a sister?", "Yes, I have a brother"]],
+  ["«Do you have a sister?» ma'nosi?", "Sening opang (singling) bormi?", ["Menda opam bor", "Sening akang bormi?", "Sening onang bormi?"]],
+  ["«I have...» ma'nosi?", "Menda ... bor", ["Sening ... bormi?", "Sening ... yo'q", "Mening ... yo'q"]],
+  ["«Yes, I have a sister» ma'nosi?", "Ha, mening opam bor", ["Yo'q, mening opam yo'q", "Sening opang bormi?", "Ha, mening akam bor"]],
+  ["«Ha, mening akam bor» inglizcha qanday?", "Yes, I have a brother", ["No, I don't have a brother", "Yes, I have a sister", "Do you have a brother?"]],
+  ["«No» nima degani?", "Yo'q", ["Ha", "Bor", "Mening"]],
+  ["«Yes» nima degani?", "Ha", ["Yo'q", "Bor", "Mening"]],
+  ["«Kind» nima degani?", "Mehribon", ["Katta", "Kichik", "Juda"]],
+  ["«Older» nima degani?", "Katta (yosh jihatdan)", ["Kichik (yosh jihatdan)", "Mehribon", "Juda"]],
+  ["«Younger» nima degani?", "Kichik (yosh jihatdan)", ["Katta (yosh jihatdan)", "Mehribon", "Juda"]],
+  ["«Mening katta akam» inglizcha qanday?", "My older brother", ["My younger brother", "My older sister", "My younger sister"]],
+  ["«Mening kichik singlim» inglizcha qanday?", "My younger sister", ["My younger brother", "My older sister", "My older brother"]],
+  ["Bo'sh joyni to'ldiring: My ___ sister. (Mening kichik singlim)", "younger", ["older", "kind", "very"]],
+  ["Bo'sh joyni to'ldiring: My ___ brother. (Mening katta akam)", "older", ["younger", "kind", "very"]],
+  ["«My mom is very kind» ma'nosi?", "Mening oyim juda mehribon", ["Mening oyim juda katta", "Mening dadam juda mehribon", "Mening opam juda kichik"]],
+  ["«very» nima degani?", "Juda", ["Va", "Yo'q", "Mehribon"]],
+];
+// ==================================================================
+
+const tg = window.Telegram && Telegram.WebApp;
+try { tg.ready(); tg.expand(); } catch (e) {}
+try { if (tg && tg.colorScheme) document.documentElement.setAttribute("data-theme", tg.colorScheme); } catch (e) {}
+try { tg.disableVerticalSwipes(); } catch (e) {}
+const lessonId = parseInt(new URLSearchParams(location.search).get("l"), 10); // bot o'zi qo'shadi
+
+const $ = s => document.querySelector(s);
+const stage = $("#stage"), dock = $("#dock"), act = $("#act"), fill = $("#fill"), combo = $("#combo");
+const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(x => x[1]);
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const haptic = t => { try { tg.HapticFeedback.notificationOccurred(t); } catch (e) {} };
+
+const ICON = {
+  check: '<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  cross: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  bolt: '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#FFC800" stroke="#E5B400" stroke-width="1.5" stroke-linejoin="round"/></svg>',
+  star: on => '<svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,2.5 14.9,8.6 21.6,9.4 16.7,14 18,20.7 12,17.4 6,20.7 7.3,14 2.4,9.4 9.1,8.6" fill="' + (on ? "#FFC800" : "var(--line)") + '" stroke="' + (on ? "#E5B400" : "var(--line-shadow)") + '" stroke-width="1.5" stroke-linejoin="round"/></svg>'
+};
+const fox = (cls) => '<svg class="' + (cls || "") + '" viewBox="0 0 120 150" aria-hidden="true"><use href="#fox"/></svg>';
+
+const order = shuffle(Q.map((_, i) => i)).slice(0, ASK);
+const N = order.length;
+let k = 0, score = 0, streak = 0, best = 0, sel = null, checked = false, wrongs = [];
+
+function setDock(mode, o) {
+  o = o || {};
+  dock.className = "dock" + (mode === "ok" ? " ok" : mode === "bad" ? " bad" : "");
+  act.className = "btn" + (mode === "bad" ? " bad" : "");
+  if (mode === "idle") { act.textContent = "Tekshirish"; act.disabled = true; }
+  else {
+    act.textContent = k + 1 >= N ? "Natijani ko'rish" : "Davom"; act.disabled = false;
+    $("#fbT").textContent = o.title || ""; $("#fbS").textContent = o.sub || "";
+    $("#fbIc").innerHTML = mode === "ok" ? ICON.check : ICON.cross;
+  }
+}
+function setProgress(n) { fill.style.width = Math.max(5, Math.round(n / N * 100)) + "%"; }
+function setCombo() {
+  combo.className = "combo" + (streak >= 2 ? " on" : "");
+  combo.innerHTML = streak >= 2 ? ICON.bolt + "<span>" + streak + "</span>" : "";
+}
+
+function ask() {
+  const [q, ok, bad] = Q[order[k]];
+  sel = null; checked = false;
+  stage.innerHTML = ""; stage.className = ""; stage.scrollTop = 0;
+  dock.hidden = false;
+  setProgress(k); setCombo(); setDock("idle");
+
+  stage.appendChild(el("div", "label", TITLE + " · " + (k + 1) + "/" + N));
+  const row = el("div", "ask");
+  row.insertAdjacentHTML("afterbegin", fox());
+  row.appendChild(el("div", "bubble", q));
+  stage.appendChild(row);
+
+  const o = el("div", "opts");
+  const tiles = shuffle([ok, ...bad]).map((t, i) => {
+    const b = el("button", "tile"); b.type = "button";
+    b.appendChild(el("span", "k", String(i + 1))); b.appendChild(el("span", null, t));
+    b.onclick = () => { if (checked) return; tiles.forEach(x => x.b.classList.remove("sel")); b.classList.add("sel"); sel = t; act.disabled = false; };
+    o.appendChild(b); return { b, t };
+  });
+  stage.appendChild(o);
+  const idk = el("button", "idk", "Bilmayman"); idk.type = "button";
+  idk.onclick = () => { if (checked) return; sel = null; reveal(tiles, ok, idk); };
+  stage.appendChild(idk);
+
+  act.onclick = () => { if (!checked) reveal(tiles, ok, idk); else next(); };
+}
+
+function reveal(tiles, ok, idk) {
+  checked = true; idk.disabled = true;
+  const right = sel === ok;
+  tiles.forEach(x => {
+    x.b.disabled = true; x.b.classList.remove("sel");
+    if (x.t === ok) x.b.classList.add("good"); else if (x.t === sel) x.b.classList.add("wrong");
+  });
+  if (right) {
+    score++; streak++; best = Math.max(best, streak);
+    setDock("ok", { title: ["To'g'ri!", "Barakalla!", "Ajoyib!", "Zo'r!"][Math.floor(Math.random() * 4)] });
+    haptic("success");
+  } else {
+    streak = 0; wrongs.push([Q[order[k]][0], ok]);
+    setDock("bad", { title: sel === null ? "Hechqisi yo'q. To'g'ri javob:" : "To'g'ri javob:", sub: ok });
+    haptic("error");
+  }
+  setCombo(); setProgress(k + 1);
+}
+function next() { k++; k < N ? ask() : end(); }
+
+function sbox(label, val, color) { return '<div class="sbox" style="--c:' + color + '"><span>' + label + '</span><b>' + val + '</b></div>'; }
+function end() {
+  const ratio = score / N, pass = ratio >= PASS;
+  const stars = ratio >= 0.9 ? 3 : pass ? 2 : ratio >= 0.5 ? 1 : 0;
+  const c = pass ? "#58CC02" : "#FF4B4B";
+  setProgress(N); combo.className = "combo"; dock.hidden = true;
+  stage.className = "res"; stage.innerHTML = ""; stage.scrollTop = 0;
+  stage.insertAdjacentHTML("beforeend",
+    fox("fox") +
+    '<h1 class="' + (pass ? "" : "sad") + '">' + (pass ? "Zo'r, o'tdingiz!" : "Hali yetarli emas") + '</h1>' +
+    '<div class="ring" style="--c:' + c + '"><svg viewBox="0 0 120 120"><circle class="bgc" cx="60" cy="60" r="52"/><circle class="fgc" id="fg" cx="60" cy="60" r="52"/></svg><b>' + score + "/" + N + '</b></div>' +
+    '<div class="stars">' + [1, 2, 3].map(n => ICON.star(n <= stars)).join("") + '</div>' +
+    '<div class="sb">' + sbox("To'g'ri", score, "#58CC02") + sbox("Xato", N - score, "#FF4B4B") + sbox("Foiz", Math.round(ratio * 100) + "%", "#1CB0F6") + '</div>' +
+    '<p>' + (pass ? "Natijani botga yuboring, keyingi dars ochiladi." : "O'tish uchun kamida " + Math.round(PASS * 100) + "% kerak. Darsni qayta o'qib, yana urinib ko'ring.") + '</p>');
+  if (wrongs.length) {
+    const rev = el("div", "rev"); rev.appendChild(el("h2", null, "Xatolar ustida ishlang"));
+    wrongs.forEach(w => { const d = el("div", null, w[0]); d.appendChild(el("b", null, w[1])); rev.appendChild(d); });
+    stage.appendChild(rev);
+  }
+  const note = el("div", "note warn"); note.hidden = true; stage.appendChild(note);
+  const go = el("button", "btn", pass ? "Natijani botga yuborish" : "Natijani yuborib, yopish"); go.type = "button";
+  go.onclick = () => {
+    const payload = JSON.stringify({ l: lessonId, s: score, n: N });
+    if (tg && tg.platform && tg.platform !== "unknown" && Number.isInteger(lessonId)) { go.disabled = true; tg.sendData(payload); }
+    else { note.hidden = false; note.textContent = "Bu test Telegram bot tugmasi orqali ochilishi kerak."; }
+  };
+  stage.appendChild(go);
+  haptic(pass ? "success" : "warning");
+  requestAnimationFrame(() => requestAnimationFrame(() => { const fg = document.getElementById("fg"); if (fg) fg.style.strokeDashoffset = String(326.7 * (1 - ratio)); }));
+}
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !act.disabled && !dock.hidden) { e.preventDefault(); act.click(); }
+  else if (/^[1-9]$/.test(e.key) && !checked) { const t = stage.querySelectorAll(".tile")[+e.key - 1]; if (t) t.click(); }
+});
+ask();
+</script>
+</body>
+</html>
