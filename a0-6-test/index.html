@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Dars testi</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#07080f;--tx:#eef0ff;--ht:#8d93b5;--a1:#7c5cff;--a2:#22d3ee;--ok:#22e58a;--bad:#ff4d6d;--gl:rgba(255,255,255,.055);--ln:rgba(255,255,255,.1);color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--tx);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.orb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.5;pointer-events:none;z-index:0;animation:drift 20s ease-in-out infinite alternate}
+.o1{width:340px;height:340px;background:var(--a1);top:-90px;left:-100px}.o2{width:300px;height:300px;background:var(--a2);bottom:-80px;right:-90px;animation-duration:26s;opacity:.35}.o3{width:220px;height:220px;background:#ff4fd8;top:42%;left:55%;animation-duration:32s;opacity:.22}
+main{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:max(16px,env(safe-area-inset-top)) 16px 280px}
+.seg{display:flex;gap:5px}.seg i{flex:1;height:6px;border-radius:6px;background:var(--gl);position:relative;overflow:hidden}
+.seg i::after{content:"";position:absolute;inset:0;border-radius:6px;background:linear-gradient(90deg,var(--a2),var(--a1));box-shadow:0 0 12px var(--a1);transform:scaleX(0);transform-origin:left}
+.seg .d::after{transform:none}.seg .n::after{animation:fill .6s cubic-bezier(.2,.9,.3,1)}
+.seg .c::after{transform:scaleX(.18);animation:pulse 1.4s ease-in-out infinite}
+.meta{display:flex;justify-content:space-between;align-items:center;color:var(--ht);font-size:14px;margin:12px 0 18px;font-variant-numeric:tabular-nums}
+.cmb{padding:3px 11px;border-radius:99px;background:linear-gradient(90deg,#ff9f1c,#ff4d6d);color:#fff;font-weight:700;font-size:14px;box-shadow:0 0 18px rgba(255,120,60,.55);opacity:0;transform:scale(.5)}
+.cmb.on{opacity:1;transform:none;animation:pop .5s cubic-bezier(.3,1.8,.5,1)}
+.card{position:relative;padding:22px 16px 8px;border-radius:26px;background:var(--gl);border:1px solid var(--ln);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 20px 60px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08);animation:card .7s cubic-bezier(.2,.9,.25,1) both}
+.card::before{content:"";position:absolute;inset:-1px;border-radius:27px;padding:1px;background:conic-gradient(from var(--ang,0deg),transparent 60%,var(--a2),var(--a1),transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 5s linear infinite;pointer-events:none}
+@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+.card.shk{animation:shake .5s}
+.q{font-size:24px;line-height:1.28;font-weight:700;letter-spacing:-.012em;margin:0 4px 20px}
+.q span{display:inline-block;margin-right:.28em;opacity:0;animation:word .5s cubic-bezier(.2,.9,.3,1) forwards;animation-delay:calc(var(--w)*50ms + 150ms)}
+.o{position:relative;overflow:hidden;display:flex;align-items:center;gap:13px;width:100%;min-height:58px;padding:12px 14px;margin:0 0 10px;border:1.5px solid var(--ln);border-radius:16px;background:rgba(255,255,255,.04);color:var(--tx);font:inherit;text-align:left;cursor:pointer;opacity:0;animation:slideIn .55s cubic-bezier(.2,.9,.3,1) forwards;animation-delay:calc(var(--i)*80ms + 400ms);transition:transform .15s,border-color .25s,background .25s,box-shadow .25s}
+.o:hover:not(:disabled){border-color:var(--a1);background:rgba(124,92,255,.12)}.o:active:not(:disabled){transform:scale(.97)}
+.o .n{flex:none;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-size:13px;font-weight:700;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;box-shadow:0 0 14px rgba(124,92,255,.5);transition:.3s}
+.o .t{flex:1}.o .ic{flex:none;width:24px;height:24px;opacity:0;transform:scale(0) rotate(-90deg);transition:.4s cubic-bezier(.3,1.8,.5,1)}
+.o.ok{border-color:var(--ok);background:rgba(34,229,138,.14);}.o.ok .n{background:var(--ok);box-shadow:0 0 16px var(--ok)}.o.ok .ic{opacity:1;transform:none;color:var(--ok)}
+.o.bad{border-color:var(--bad);background:rgba(255,77,109,.14);}.o.bad .n{background:var(--bad);box-shadow:0 0 16px var(--bad)}.o.bad .ic{opacity:1;transform:none;color:var(--bad)}
+.o.idk{min-height:46px;justify-content:center;background:none;border-style:dashed;color:var(--ht);font-size:15px}
+.o:disabled{cursor:default}.o:disabled:not(.ok):not(.bad){opacity:.35!important;filter:blur(.6px)}
+.rp{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:translate(-50%,-50%) scale(0);animation:rip .7s ease-out forwards;pointer-events:none}
+.sh{position:fixed;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;padding:20px 18px calc(18px + env(safe-area-inset-bottom));border-radius:26px 26px 0 0;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);z-index:5;animation:slide .55s cubic-bezier(.2,1.2,.3,1)}
+.sh.g{background:linear-gradient(180deg,rgba(34,229,138,.2),rgba(8,20,16,.94));border-top:1px solid rgba(34,229,138,.55);box-shadow:0 -14px 50px rgba(34,229,138,.25)}
+.sh.r{background:linear-gradient(180deg,rgba(255,77,109,.22),rgba(24,8,12,.94));border-top:1px solid rgba(255,77,109,.55);box-shadow:0 -14px 50px rgba(255,77,109,.28)}
+.st{font-size:20px;font-weight:800}.g .st{color:var(--ok)}.r .st{color:var(--bad)}
+.sh>*{animation:rise .5s both}.sh>:nth-child(2){animation-delay:.12s}.sh>:nth-child(3){animation-delay:.2s}.sh>:nth-child(4){animation-delay:.28s}
+.ans{margin-top:4px;font-size:18px}.inf{margin:6px 0 0;color:var(--ht);font-size:15px}
+.btn{position:relative;overflow:hidden;width:100%;height:54px;margin-top:14px;border:0;border-radius:16px;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;font:inherit;font-weight:700;cursor:pointer;box-shadow:0 8px 26px rgba(124,92,255,.45);transition:transform .12s}
+.btn::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);animation:shine 2.6s ease-in-out infinite}
+.btn:active{transform:scale(.97)}.sh.g .btn,.btn.ok{background:linear-gradient(135deg,#12b868,var(--ok));box-shadow:0 8px 26px rgba(34,229,138,.4)}.sh.r .btn{background:linear-gradient(135deg,#d6224a,var(--bad));box-shadow:0 8px 26px rgba(255,77,109,.4)}
+.res{text-align:center;padding-top:22px}
+.em{font-size:62px;display:inline-block;animation:bounce 1.2s ease-in-out infinite}.em.f{animation:shake .8s infinite}
+.ring{position:relative;width:190px;height:190px;margin:6px auto 0;animation:card .8s cubic-bezier(.2,.9,.25,1) both}
+.ring svg{transform:rotate(-90deg);overflow:visible}.ring circle{fill:none;stroke-width:11;stroke-linecap:round}
+.ring .bg{stroke:var(--gl)}.ring .fg{stroke-dasharray:377;stroke-dashoffset:377;transition:stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1) .3s;filter:drop-shadow(0 0 8px var(--a1))}
+.ring.f .fg{filter:drop-shadow(0 0 8px var(--bad))}
+.sc{position:absolute;inset:0;display:grid;place-items:center;font-size:54px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.03em}.sc small{font-size:22px;color:var(--ht);font-weight:600}
+.tag{display:inline-block;margin:16px 0 6px;padding:6px 16px;border-radius:99px;font-weight:700;font-size:15px;animation:pop .6s .6s cubic-bezier(.3,1.8,.5,1) both}
+.tag.p{background:rgba(34,229,138,.15);color:var(--ok);box-shadow:0 0 22px rgba(34,229,138,.35)}.tag.f{background:rgba(255,77,109,.15);color:var(--bad);box-shadow:0 0 22px rgba(255,77,109,.35)}
+.hint{color:var(--ht);font-size:15px;margin:4px 0 0;animation:rise .5s .8s both}
+.rv{margin:22px 0 0;padding:16px;border-radius:18px;background:var(--gl);border:1px solid var(--ln);text-align:left;animation:rise .6s 1s both}
+.rv small{color:var(--ht);display:block;font-size:12px;text-transform:uppercase;letter-spacing:.07em;margin-top:12px}.rv small:first-child{margin:0}
+.rv .w{color:var(--bad);text-decoration:line-through}.rv .c{color:var(--ok);font-weight:700}
+.fx{margin-top:22px;animation:rise .6s 1.1s both}
+#fl{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0}
+#fl.rf{background:radial-gradient(circle,transparent 35%,rgba(255,77,109,.6));animation:fl .7s}#fl.gf{background:radial-gradient(circle,transparent 45%,rgba(34,229,138,.4));animation:fl .6s}
+.pt{position:fixed;z-index:50;width:var(--s);height:var(--s);background:var(--c);box-shadow:0 0 8px var(--c);pointer-events:none;animation:fly 1.3s cubic-bezier(.1,.6,.3,1) forwards}
+@keyframes drift{to{transform:translate(60px,90px) scale(1.25)}}
+@keyframes fill{from{transform:scaleX(0)}}@keyframes pulse{50%{transform:scaleX(.5)}}
+@keyframes card{from{opacity:0;transform:perspective(900px) rotateX(-16deg) translateY(36px) scale(.96)}}
+@keyframes spin{to{--ang:360deg}}
+@keyframes word{from{opacity:0;transform:translateY(16px) scale(.9);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes slide{from{transform:translateY(110%)}}
+@keyframes pop{50%{transform:scale(1.25)}}
+@keyframes shake{20%{transform:translateX(-9px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+@keyframes glowOk{0%{box-shadow:0 0 0 0 rgba(34,229,138,.7)}100%{box-shadow:0 0 0 22px transparent}}
+@keyframes glowBad{0%{box-shadow:0 0 0 0 rgba(255,77,109,.7)}100%{box-shadow:0 0 0 22px transparent}}
+@keyframes rip{to{transform:translate(-50%,-50%) scale(1);opacity:0}}
+@keyframes shine{0%,55%{left:-60%}100%{left:130%}}
+@keyframes bounce{50%{transform:translateY(-16px) rotate(8deg)}}
+@keyframes fl{0%{opacity:1}100%{opacity:0}}
+@keyframes fly{to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div id="fl"></div><main id="m"></main>
+<script>
+// ====== FAQAT SHU QISMNI ALMASHTIRING ======
+const PASS = 0.7; // o'tish chegarasi (bot ham 70% deb hisoblaydi)
+const TITLE = "English · birinchi gaplar";
+// [savol, to'g'ri javob, [noto'g'ri javoblar], izoh (ixtiyoriy: qachon ishlatiladi)]
+const Q = [
+  ["«My name is Aziz.» o‘zbekchada nima?", "Mening ismim Aziz.", ["Men Azizni bilaman.", "Aziz mening do‘stim.", "Men Azizman, o‘qituvchi."], "Yangi odam bilan tanishayotganda o‘zingizni shunday tanishtirasiz."],
+  ["«Nice to meet you.»", "Tanishganimdan juda xursandman.", ["Qayerda yashaysiz?", "Katta rahmat.", "Iltimos, takrorlang."], "Tanishgandan keyin xushmuomalalik bilan aytiladi."],
+  ["«I live in Tashkent.»", "Men Toshkentda yashayman.", ["Men Toshkentga boraman.", "Men Toshkentni yaxshi ko‘raman.", "Men Toshkentdan keldim."], "Qayerda yashashingizni aytganda."],
+  ["«Where are you from?»", "Siz qayerdansiz?", ["Siz qayerda yashaysiz?", "Siz qayerga ketyapsiz?", "Sizning ismingiz nima?"], "Yangi tanishdan qayerlik ekanini so‘rash uchun."],
+  ["«I don't understand.»", "Men tushunmayapman.", ["Men bilmayman.", "Men eshitmadim.", "Men gapirmayman."], "Inglizcha gapirishsa-yu tushunmasangiz, halol aytasiz."],
+  ["«Please repeat.»", "Iltimos, takrorlang.", ["Iltimos, yozing.", "Iltimos, kuting.", "Iltimos, sekinroq gapiring."], "Gapni eshitmay qolganda."],
+  ["«Please speak slowly.»", "Iltimos, sekinroq gapiring.", ["Iltimos, balandroq gapiring.", "Iltimos, takrorlang.", "Iltimos, tezroq gapiring."], "Suhbatdosh juda tez gapirsa."],
+  ["«How do you say this in English?»", "Buni inglizcha qanday aytiladi?", ["Bu nima degani?", "Bu qancha turadi?", "Buni kim aytdi?"], "Biror narsaning inglizcha nomini so‘rash uchun."],
+  ["«What does this mean?»", "Bu nima degani?", ["Bu nima?", "Bu qayerda?", "Bu kimniki?"], "Notanish so‘z ma’nosini so‘rash uchun."],
+  ["«Thank you very much.»", "Katta rahmat.", ["Iltimos.", "Kechirasiz.", "Xayr."], "Samimiy minnatdorchilik."],
+  ["«You're welcome.»", "Marhamat (arzimaydi).", ["Rahmat.", "Kechirasiz.", "Xush kelibsiz, kiring."], "«Thank you»ga javob."],
+  ["Tanishuvda o'zingizni qanday tanishtirasiz?", "My name is …", ["Nice to meet you", "Where are you from?", "You're welcome"]],
+  ["Suhbatdosh tez gapirdi. Nima deysiz?", "Please speak slowly.", ["Thank you very much.", "I live in Tashkent.", "Nice to meet you."]],
+  ["Sizga «Thank you» deyishdi. Javobingiz?", "You're welcome.", ["Please repeat.", "My name is Aziz.", "I don't understand."]],
+  ["Bir narsaning inglizcha nomini bilmaysiz. Nima deysiz?", "How do you say this in English?", ["What does this mean?", "Where are you from?", "Nice to meet you."]],
+];
+// ===========================================
+const tg = window.Telegram && Telegram.WebApp;
+try { tg.ready(); tg.expand(); tg.setHeaderColor("#07080f"); tg.setBackgroundColor("#07080f"); } catch (e) {}
+const lessonId = parseInt(new URLSearchParams(location.search).get("l"), 10); // bot o'zi qo'shadi
+const m = document.getElementById("m");
+const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(x => x[1]);
+const esc = s => String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const hp = t => { try { tg.HapticFeedback.notificationOccurred(t); } catch (e) {} };
+const CHK = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const X = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+const COL = ["#22d3ee", "#7c5cff", "#22e58a", "#ff4fd8", "#ffd23f"];
+const order = shuffle(Q.map((_, i) => i));
+let k = 0, score = 0, streak = 0, miss = [], locked = false;
+
+function burst(x, y, n, sp) {
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement("i"), a = Math.random() * 6.283, d = sp * (.4 + Math.random());
+    s.className = "pt";
+    s.style.cssText = `left:${x}px;top:${y}px;--x:${Math.cos(a) * d}px;--y:${Math.sin(a) * d + 70}px;--r:${Math.random() * 720 - 360}deg;--c:${COL[i % 5]};--s:${5 + Math.random() * 7}px;border-radius:${i % 2 ? "50%" : "2px"}`;
+    document.body.appendChild(s); setTimeout(() => s.remove(), 1400);
+  }
+}
+function flash() {}
+function ask() {
+  locked = false;
+  const [q, ok, bad, info] = Q[order[k]];
+  m.innerHTML = `<div class="seg">${Q.map((_, i) => `<i class="${i < k ? "d" : i === k ? "c" : ""}${i === k - 1 ? " n" : ""}"></i>`).join("")}</div>
+    <div class="meta"><span>${esc(TITLE)} · ${k + 1}/${Q.length}</span><span class="cmb ${streak > 1 ? "on" : ""}" id="cb">🔥 ×${streak}</span></div>
+    <div class="card" id="cd"><h2 class="q"></h2><div id="o"></div></div><div id="sh"></div>`;
+  const h = m.querySelector(".q");
+  q.split(" ").forEach((w, i) => { const s = document.createElement("span"); s.style.setProperty("--w", i); s.textContent = w; h.appendChild(s); });
+  const o = document.getElementById("o");
+  shuffle([ok, ...bad]).concat(["Bilmayman"]).forEach((t, i) => {
+    const b = document.createElement("button"), idk = t === "Bilmayman";
+    b.className = "o" + (idk ? " idk" : ""); b.dataset.t = t; b.style.setProperty("--i", i);
+    b.innerHTML = idk ? "<span></span>" : `<span class="n">${i + 1}</span><span class="t"></span>${CHK}`;
+    (idk ? b.firstChild : b.querySelector(".t")).textContent = t;
+    b.onclick = e => pick(b, t === ok, q, ok, info, e);
+    o.appendChild(b);
+  });
+}
+function pick(b, right, q, ok, info, e) {
+  if (locked) return; locked = true;
+  const r = b.getBoundingClientRect(), px = e && e.clientX ? e.clientX : r.left + r.width / 2, py = e && e.clientY ? e.clientY : r.top + r.height / 2;
+  const rp = document.createElement("span"); rp.className = "rp"; rp.style.cssText = `left:${px - r.left}px;top:${py - r.top}px;width:${r.width * 1.6}px;height:${r.width * 1.6}px`; b.appendChild(rp);
+  document.querySelectorAll("#o button").forEach(x => { x.disabled = true; x.style.animationDelay = "0s"; if (x.dataset.t === ok) x.classList.add("ok"); });
+  if (right) {
+    score++; streak++; hp("success"); flash("gf"); burst(px, py, 22, 260);
+    const cb = document.getElementById("cb"); cb.textContent = "🔥 ×" + streak; if (streak > 1) { cb.classList.remove("on"); void cb.offsetWidth; cb.classList.add("on"); }
+  } else {
+    miss.push({q, my: b.dataset.t, ok}); hp("error"); flash("rf"); document.getElementById("cd").classList.add("shk");
+    if (b.classList.contains("idk")) b.style.opacity = ".4"; else { b.classList.add("bad"); b.querySelector(".ic").outerHTML = X; }
+  }
+  b.querySelectorAll(".ic").forEach(i => i.style.transitionDelay = ".05s");
+  const last = k + 1 >= Q.length;
+  document.getElementById("sh").innerHTML = right
+    ? `<div class="sh g"><div class="st">✓ To‘g‘ri!</div>${info ? `<p class="inf">${esc(info)}</p>` : ""}<button class="btn" id="nx">${last ? "Natijani ko‘rish" : "Davom etish"}</button></div>`
+    : `<div class="sh r"><div class="st">✕ Xato</div><div class="ans">To‘g‘ri javob: <b>${esc(ok)}</b></div>${info ? `<p class="inf">${esc(info)}</p>` : ""}<button class="btn" id="nx">${last ? "Natijani ko‘rish" : "Davom etish"}</button></div>`;
+  let done = false; const go = () => { if (done) return; done = true; clearTimeout(window._t); k++; k < Q.length ? ask() : end(); };
+  document.getElementById("nx").onclick = go; if (right && !last) window._t = setTimeout(go, 1700);
+}
+function end() {
+  const pct = Math.round(score / Q.length * 100), good = score / Q.length >= PASS;
+  m.innerHTML = `<div class="res"><div class="em">${good ? "🏆" : "💪"}</div>
+    <div class="ring"><svg width="190" height="190" viewBox="0 0 140 140"><defs><linearGradient id="gp"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#7c5cff"/></linearGradient></defs><circle class="bg" cx="70" cy="70" r="60"/><circle class="fg" id="rg" cx="70" cy="70" r="60" stroke="url(#gp)"/></svg><div class="sc" id="sc">0<small>/${Q.length}</small></div></div>
+    <span class="tag" style="background:rgba(34,211,238,.14);color:#22d3ee;box-shadow:0 0 22px rgba(34,211,238,.3)">${pct}%</span>
+    <p class="hint">Natijani botga yuboring, bot o‘zi hal qiladi.</p>
+    ${miss.length ? `<div class="rv"><small>Xato qilingan savollar (${miss.length})</small>${miss.map(x => `<div style="margin-top:12px">${esc(x.q)}</div><div class="w">${esc(x.my)}</div><div class="c">${esc(x.ok)}</div>`).join("")}</div>` : ""}
+    <button class="btn fx ok" id="go">Natijani botga yuborish</button></div>`;
+  setTimeout(() => document.getElementById("rg").style.strokeDashoffset = 377 * (1 - score / Q.length), 80);
+  const t0 = performance.now(), sc = document.getElementById("sc");
+  (function f(t) { const p = Math.min(1, (t - t0) / 1500); sc.firstChild.textContent = Math.round(score * p); if (p < 1) requestAnimationFrame(f); })(t0);
+  if (good) { hp("success"); for (let i = 0; i < 14; i++) setTimeout(() => burst(innerWidth * Math.random(), innerHeight * (.2 + Math.random() * .4), 14, 300), i * 230); }
+  document.getElementById("go").onclick = () => {
+    const payload = JSON.stringify({l: lessonId, s: score, n: Q.length});
+    if (tg && tg.platform && tg.platform !== "unknown" && Number.isInteger(lessonId)) tg.sendData(payload);
+    else alert("Bu test Telegram bot tugmasi orqali ochilishi kerak.");
+  };
+}
+document.addEventListener("keydown", e => {
+  const nx = document.getElementById("nx");
+  if (nx && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); return nx.click(); }
+  const b = !locked && document.querySelectorAll("#o .o:not(.idk)")[+e.key - 1]; if (b) b.click();
+});
+ask();
+</script>
+</body></html>
