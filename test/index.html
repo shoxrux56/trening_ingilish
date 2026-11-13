@@ -94,10 +94,10 @@ h1{font-size:26px;line-height:1.2;font-weight:600;margin:0 0 12px}
       <div class="big" id="big" lang="en" aria-label="Hello"></div>
       <h1 data-in>Ingliz tilida darajangiz qaysi?</h1>
       <p data-in>20 ta savol bilan darajangizni aniqlaymiz. Savollar asta-sekin qiyinlashadi, B1 dan boshlab ancha qiyin bo'ladi. Javobni bilmasangiz taxmin qilmang, «Bilmayman» ni bosing: shunda natija aniqroq chiqadi.</p>
-      <div class="chips" data-in><span>20 savol</span><span>~5 daqiqa</span><span>A1 dan C1 gacha</span></div>
+      <div class="chips" data-in><span>20 savol</span><span>~5 daqiqa</span><span>A0 dan C1 gacha</span></div>
     </div>
     <button class="btn primary" id="go" data-in>Testni boshlash</button>
-    <button class="btn ghost" id="skip" data-in>Umuman bilmayman, noldan boshlayman</button>
+    <button class="btn ghost" id="skip" data-in>Umuman bilmayman, noldan (A0) boshlayman</button>
   </section>
 
   <section id="quiz" class="screen" hidden>
@@ -126,9 +126,10 @@ h1{font-size:26px;line-height:1.2;font-weight:600;margin:0 0 12px}
 </main>
 
 <script>
-const LEVELS = ["A1", "A2", "B1", "B2", "C1"];
+const LEVELS = ["A0", "A1", "A2", "B1", "B2", "C1"];
 const INFO = {
-  A1: ["Boshlang'ich", "Inglizcha asoslardan boshlaymiz: salomlashish, oila, do'kon. Ko'pchilik shu yerdan boshlaydi."],
+  A0: ["Noldan boshlaymiz", "Inglizcha harflar, raqamlar va birinchi so'zlardan boshlaymiz. Hamma shu yerdan boshlaydi."],
+  A1: ["Boshlang'ich", "Inglizcha asoslardan boshlaymiz: salomlashish, oila, do'kon."],
   A2: ["Elementar", "Lug'at va grammatikangiz oddiy kundalik vaziyatlar uchun yetarli."],
   B1: ["O'rta", "Tanish mavzularda ancha erkin tushunasiz va bog'lanib gapira olasiz."],
   B2: ["O'rtadan yuqori", "Murakkabroq grammatika va ko'p so'zlarni bilasiz."],
@@ -170,10 +171,10 @@ function evaluate(answers) {
     if (c[L] >= 3 && below >= 3 * (L - 1) - 1) level = L;
     below += c[L];
   }
-  const eff = Math.max(level, 1);   // ingliz tilida eng past daraja A1
   const acc = t => { const x = answers.filter(a => a.t === t); return x.length ? x.filter(a => a.ok).length / x.length : null; };
-  return {level: LEVELS[eff - 1], v: acc("v"), g: acc("g"), s: answers.filter(a => a.ok).length, lv: c.slice(1),
-          near: eff < 5 && c[eff + 1] === 2 ? LEVELS[eff] : null};
+  const eff = Math.max(level, 1);
+  return {level: LEVELS[eff], v: acc("v"), g: acc("g"), s: answers.filter(a => a.ok).length, lv: c.slice(1),
+          near: eff < 5 && c[eff + 1] === 2 ? LEVELS[eff + 1] : null};
 }
 
 const shuffle = a => { a = a.slice(); for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
@@ -263,16 +264,16 @@ function finish(res) {
   $("bars").innerHTML = [["v", "Lug'at boyligi"], ["g", "Grammatika"]].filter(([k]) => res[k] !== null)
     .map(([k, t]) => `<div class="bar"><div><span>${t}</span><em>${Math.round(res[k] * 100)}%</em></div><u><i data-p="${res[k]}"></i></u></div>`).join("");
   $("lvls").hidden = !res.lv;
-  $("lvls").innerHTML = res.lv ? res.lv.map((n, k) => `<span class="${k === idx ? "me" : ""}"><b>${LEVELS[k]}</b>${n}/4</span>`).join("") : "";
+  $("lvls").innerHTML = res.lv ? res.lv.map((n, k) => `<span class="${k + 1 === idx ? "me" : ""}"><b>${LEVELS[k + 1]}</b>${n}/4</span>`).join("") : "";
   $("send").textContent = inTg ? "Natijani botga yuborish" : "Qayta yechish";
 
-  const dur = reduce ? 0.001 : Math.max(0.4, idx / 4 * 1.4);
+  const dur = reduce ? 0.001 : Math.max(0.4, idx / 5 * 1.4);
   $("track").style.setProperty("--dur", dur + "s");
   const w = $("track").clientWidth;
   $("fill").style.transform = "scaleX(0)"; $("orb").style.transform = "translateX(0)";
   setTimeout(() => {
-    $("fill").style.transform = `scaleX(${idx / 4})`;
-    $("orb").style.transform = `translateX(${w * idx / 4}px)`;
+    $("fill").style.transform = `scaleX(${idx / 5})`;
+    $("orb").style.transform = `translateX(${w * idx / 5}px)`;
     document.querySelectorAll(".n").forEach((n, k) => setTimeout(() => n.classList.add("on"), reduce || k > idx ? (k > idx ? 1e9 : 0) : (k / Math.max(idx, 1)) * dur * 850));
     $("rf").style.strokeDashoffset = 213.6 * (1 - res.s / 20);
     const t0 = performance.now(), T = reduce ? 1 : 1000;
@@ -287,7 +288,7 @@ function finish(res) {
     $("lvl").style.opacity = 1;
     anim($("lvl"), [{opacity: 0, transform: "scale(.75)"}, {opacity: 1, transform: "none"}], {duration: 420, easing: "cubic-bezier(.2,1.2,.4,1)"});
     haptic("notificationOccurred", "success");
-    confetti();
+    if (idx >= 1) confetti();
   }, 300 + dur * 1000 + 150);
 }
 
@@ -319,7 +320,7 @@ $("go").onclick = () => {
   try { tg.enableClosingConfirmation(); } catch (e) {}
   ask();
 };
-$("skip").onclick = () => finish({level: "A1", v: null, g: null, s: 0, lv: null, near: null, skip: true});
+$("skip").onclick = () => finish({level: "A0", v: null, g: null, s: 0, lv: null, near: null, skip: true});
 $("send").onclick = sendResult;
 </script>
 </body>
