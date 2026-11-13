@@ -83,6 +83,17 @@ h1{font-size:26px;line-height:1.2;font-weight:600;margin:0 0 12px}
 .note{font-size:13px;color:var(--muted);margin:18px 0 0}
 .foot{position:sticky;bottom:0;padding:16px 0 max(16px,env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg) 38%)}
 @media (prefers-reduced-motion:reduce){*{transition-duration:.001s!important}}
+
+.inp{width:100%;font:500 20px/1.3 "Onest",sans-serif;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:10px;outline:none}
+.inp:focus{border-color:var(--a);box-shadow:0 0 0 3px var(--glow)}
+.bk{display:flex;flex-wrap:wrap;gap:8px;min-height:56px;padding:12px;border:1.5px dashed var(--line);border-radius:16px;margin-bottom:12px;background:var(--surface)}
+.bk.pool{border-style:solid;background:none}
+.tile{font:500 17px/1 "Onest",sans-serif;background:var(--surface);color:var(--ink);border:1.5px solid var(--line);border-radius:12px;padding:11px 14px;cursor:pointer;transition:transform .12s}
+.tile:active{transform:scale(.95)}
+.bk:not(.pool) .tile{background:var(--soft);border-color:var(--a)}
+.go2{margin-top:6px}
+.pass{font-size:13px;color:var(--muted);margin:0 0 12px}
+.txt{font:500 16px/1.5 "Onest",sans-serif;text-align:left;font-family:"Onest",sans-serif}
 </style>
 </head>
 <body>
@@ -93,8 +104,8 @@ h1{font-size:26px;line-height:1.2;font-weight:600;margin:0 0 12px}
     <div class="hero">
       <div class="big" id="big" lang="en" aria-label="Hello"></div>
       <h1 data-in>Ingliz tilida darajangiz qaysi?</h1>
-      <p data-in>20 ta savol bilan darajangizni aniqlaymiz. Savollar asta-sekin qiyinlashadi, B1 dan boshlab ancha qiyin bo'ladi. Javobni bilmasangiz taxmin qilmang, «Bilmayman» ni bosing: shunda natija aniqroq chiqadi.</p>
-      <div class="chips" data-in><span>20 savol</span><span>~5 daqiqa</span><span>A0 dan C1 gacha</span></div>
+      <p data-in>Test oson savollardan boshlanadi va asta-sekin qiyinlashadi. Taxmin qilib bo'lmaydi: bilmagan test savoliga <b>«Bilmayman»</b> ni bosing, xato javob ballni kamaytiradi. Kerakli joyda javobni o'zingiz yozasiz yoki gapni so'zlardan yig'asiz.</p>
+      <div class="chips" data-in><span>~15–40 savol</span><span>~5–12 daqiqa</span><span>A0 dan C1 gacha</span></div>
     </div>
     <button class="btn primary" id="go" data-in>Testni boshlash</button>
     <button class="btn ghost" id="skip" data-in>Umuman bilmayman, noldan (A0) boshlayman</button>
@@ -112,76 +123,102 @@ h1{font-size:26px;line-height:1.2;font-weight:600;margin:0 0 12px}
       <div class="kicker">Natijangiz</div>
       <div class="row">
         <div class="lvl" id="lvl"></div>
-        <div class="ring"><svg viewBox="0 0 80 80"><circle class="rt" cx="40" cy="40" r="34"/><circle class="rf" id="rf" cx="40" cy="40" r="34"/></svg><div class="rn" id="rn">0</div><small>/ 20</small></div>
+        <div class="ring"><svg viewBox="0 0 80 80"><circle class="rt" cx="40" cy="40" r="34"/><circle class="rf" id="rf" cx="40" cy="40" r="34"/></svg><div class="rn" id="rn">0</div><small id="rsm">/ 0</small></div>
       </div>
       <div class="name" id="lname"></div>
       <p class="explain" id="explain"></p>
       <div class="track" id="track"><div class="line"><i id="fill"></i></div><div class="orb" id="orb"></div><div class="nodes" id="nodes"></div></div>
       <div class="lvls" id="lvls"></div>
       <div id="bars"></div>
-      <p class="note">Daraja qoidasi: biror darajadagi 4 savoldan kamida 3 tasiga to'g'ri javob bersangiz, o'sha daraja sanaladi (pastki darajalar ham yaxshi bo'lishi kerak). Bu faqat lug'at va grammatika testi, shuning uchun natija ±1 daraja farq qilishi mumkin.</p>
+      <p class="note">Qoida: har daraja bo'yicha 10 ta savol beriladi; daraja hisoblanishi uchun kamida 6 ball kerak (xato tanlov javobi ball kamaytiradi, «Bilmayman» ball bermaydi ham, kamaytirmaydi ham). Bitta darajadan o'ta olmasangiz test shu yerda tugaydi. Taxmin bilan yuqori darajaga chiqib bo'lmaydi. Bu faqat lug'at, grammatika va o'qish testi, natija ±1 daraja farq qilishi mumkin.</p>
     </div>
     <div class="foot"><button class="btn primary" id="send"></button></div>
   </section>
 </main>
-
 <script>
 const LEVELS = ["A0", "A1", "A2", "B1", "B2", "C1"];
 const INFO = {
   A0: ["Noldan boshlaymiz", "Inglizcha harflar, raqamlar va birinchi so'zlardan boshlaymiz. Hamma shu yerdan boshlaydi."],
-  A1: ["Boshlang'ich", "Inglizcha asoslardan boshlaymiz: salomlashish, oila, do'kon."],
+  A1: ["Boshlang'ich", "Eng oddiy so'z va gaplarni bilasiz. Keyingi qadam: kundalik gaplar va asosiy grammatika."],
   A2: ["Elementar", "Lug'at va grammatikangiz oddiy kundalik vaziyatlar uchun yetarli."],
-  B1: ["O'rta", "Tanish mavzularda ancha erkin tushunasiz va bog'lanib gapira olasiz."],
-  B2: ["O'rtadan yuqori", "Murakkabroq grammatika va ko'p so'zlarni bilasiz."],
+  B1: ["O'rta", "Tanish mavzularda tushunasiz va bog'lanib gapira olasiz."],
+  B2: ["O'rtadan yuqori", "Murakkab grammatika va ko'p so'zlarni aniq bilasiz."],
   C1: ["Ilg'or", "Siz ingliz tilini juda yaxshi bilasiz. Kurs sizga asosan takrorlash bo'ladi."],
 };
-const ASK = {v: "Bu so'z o'zbekcha nima?", g: "Bo'sh joyni to'ldiring"};
-const TAG = {v: "Lug'at", g: "Grammatika"};
-// [daraja (1=A1 ... 5=C1), tur (v = lug'at, g = grammatika), savol, to'g'ri javob, noto'g'ri javoblar]
-const Q = [
-  [1, "v", "Thank you", "Rahmat", ["Kechirasiz", "Salom", "Xayr"]],
-  [1, "g", "My name ___ Aziz.", "is", ["am", "are", "be"]],
-  [1, "g", "I live ___ Tashkent.", "in", ["on", "from", "to"]],
-  [1, "v", "Water", "Suv", ["Non", "Sut", "Choy"]],
-  [2, "g", "Yesterday I ___ to the market.", "went", ["go", "goes", "going"]],
-  [2, "g", "There aren't ___ apples in the bag.", "any", ["some", "a", "an"]],
-  [2, "v", "Expensive", "Qimmat", ["Arzon", "Tez", "Uzoq"]],
-  [2, "g", "My brother is ___ than me.", "taller", ["tall", "tallest", "more tall"]],
-  [3, "g", "I have lived here ___ 2019.", "since", ["for", "from", "during"]],
-  [3, "g", "If it rains tomorrow, we ___ at home.", "will stay", ["stay", "would stay", "stayed"]],
-  [3, "g", "I am used to ___ up early.", "getting", ["get", "got", "gets"]],
-  [3, "v", "Refuse", "Rad etmoq", ["Rozi bo'lmoq", "Qaytmoq", "Yordam bermoq"]],
-  [4, "g", "If I had known, I ___ you.", "would have told", ["will tell", "would tell", "told"]],
-  [4, "g", "The man ___ car was stolen called the police.", "whose", ["who", "which", "whom"]],
-  [4, "v", "Achieve", "Erishmoq", ["Yetib bormoq", "Qaytib kelmoq", "Taslim bo'lmoq"]],
-  [4, "g", "By next year, she ___ here for ten years.", "will have worked", ["will work", "works", "has worked"]],
-  [5, "g", "Hardly ___ the door when the phone rang.", "had she opened", ["she opened", "did she open", "she had opened"]],
-  [5, "v", "Reluctant", "Istamaydigan", ["Tayyor", "Mashhur", "Yashirin"]],
-  [5, "g", "Not only ___ late, but he also forgot the documents.", "was he", ["he was", "did he", "he is"]],
-  [5, "g", "She suggested that he ___ a doctor.", "see", ["sees", "saw", "seeing"]],
-];
+const TAG = {v: "Lug'at", g: "Grammatika", r: "O'qish", e: "Xatoni top"};
+const ASK = {v: "Bu so'z o'zbekcha nima?", g: "Bo'sh joyni to'ldiring", r: "Matnni o'qing va savolga javob bering", e: "Qaysi gap to'g'ri?", b: "Gapni inglizcha so'zlardan yig'ing", t: "Bo'sh joyni o'zingiz yozing"};
+const NEED = 6;      // darajadan o'tish uchun blokdan kamida shuncha ball (10 dan)
+const WRONG = 1 / 3; // 4 variantli savolda xato javob jarimasi: taxmin qilishdan foyda yo'q
 
-// Daraja: L darajaga chiqish uchun u darajadagi 4 savoldan kamida 3 tasi to'g'ri bo'lishi va pastki
-// darajalarda yetarlicha to'g'ri javob bo'lishi shart. "Bilmayman" xato hisoblanadi (jarima yo'q).
-function evaluate(answers) {
-  const c = [0, 0, 0, 0, 0, 0];
-  answers.forEach(a => { if (a.ok) c[a.lvl]++; });
-  let level = 0, below = 0;
-  for (let L = 1; L <= 5; L++) {
-    if (c[L] >= 3 && below >= 3 * (L - 1) - 1) level = L;
-    below += c[L];
-  }
-  const acc = t => { const x = answers.filter(a => a.t === t); return x.length ? x.filter(a => a.ok).length / x.length : null; };
-  const eff = Math.max(level, 1);
-  return {level: LEVELS[eff], v: acc("v"), g: acc("g"), s: answers.filter(a => a.ok).length, lv: c.slice(1),
-          near: eff < 5 && c[eff + 1] === 2 ? LEVELS[eff + 1] : null};
-}
+// Tur: ["m", teg, savol, to'g'ri, [3 noto'g'ri]] — tanlov; ["t", teg, gap (___ bilan), [qabul qilinadigan javoblar]] — yozma;
+//      ["b", teg, o'zbekcha gap, [qabul qilinadigan inglizcha gaplar], [qo'shimcha chalg'ituvchi so'zlar]] — gap yig'ish
+const BLOCKS = {
+ 1: [
+  ["m", "v", "Window", "Deraza", ["Eshik", "Devor", "Tom"]],
+  ["m", "v", "Sister", "Opa yoki singil", ["Aka yoki uka", "Ona", "Buvi"]],
+  ["m", "g", "I ___ a student.", "am", ["is", "are", "be"]],
+  ["t", "g", "She ___ to school every day. (go)", ["goes"]],
+  ["m", "g", "There ___ two books on the table.", "are", ["is", "am", "be"]],
+  ["b", "g", "Men suv ichaman", ["I drink water"], ["drinks", "am"]],
+  ["t", "v", "Monday, Tuesday, ___, Thursday", ["wednesday"]],
+  ["m", "r", "Anna gets up at seven. She eats breakfast at half past seven.\nSavol: Anna soat nechada nonushta qiladi?", "7:30", ["7:00", "8:00", "8:30"]],
+  ["m", "v", "How much is this?", "Bu necha pul?", ["Bu nima?", "Bu kim?", "Bu qayerda?"]],
+  ["b", "g", "Uning katta uyi bor", ["She has a big house"], ["have", "an"]],
+ ],
+ 2: [
+  ["m", "g", "Yesterday we ___ to the cinema.", "went", ["go", "goed", "gone"]],
+  ["m", "g", "I'm going to ___ my grandmother this weekend.", "visit", ["visiting", "visits", "visited"]],
+  ["t", "g", "My sister is ___ than me. (tall)", ["taller"]],
+  ["m", "v", "Borrow", "Qarzga olmoq", ["Qarz bermoq", "Sotib olmoq", "Yo'qotmoq"]],
+  ["m", "g", "How ___ water do you drink a day?", "much", ["many", "long", "often"]],
+  ["t", "g", "There isn't ___ milk in the fridge.", ["any"]],
+  ["b", "g", "Men kecha ishda emas edim", ["I wasn't at work yesterday", "Yesterday I wasn't at work"], ["weren't", "didn't"]],
+  ["m", "r", "Nick works in a shop. He starts at nine and finishes at six. On Sundays he doesn't work.\nSavol: Nick qachon dam oladi?", "Yakshanba kuni", ["Shanba kuni", "Juma kuni", "Har kuni kechqurun"]],
+  ["m", "g", "If it ___ tomorrow, we will stay at home.", "rains", ["will rain", "rained", "rain"]],
+  ["m", "e", "Qaysi gap to'g'ri?", "She doesn't like coffee.", ["She don't like coffee.", "She doesn't likes coffee.", "She not like coffee."]],
+ ],
+ 3: [
+  ["m", "g", "I have lived here ___ 2020.", "since", ["for", "from", "during"]],
+  ["t", "g", "She asked me where I ___. (live, o'tgan zamon)", ["lived"]],
+  ["m", "g", "If I ___ more money, I would buy a car.", "had", ["have", "will have", "would have"]],
+  ["m", "g", "The film ___ by a famous director.", "was directed", ["directed", "is direct", "has directing"]],
+  ["m", "v", "Reliable", "Ishonchli", ["Ehtiyotkor", "Sodda", "Mashhur"]],
+  ["b", "g", "Agar yomg'ir yog'sa, biz uyda qolamiz", ["If it rains we will stay at home", "We will stay at home if it rains"], ["would", "rained"]],
+  ["t", "g", "I'm not used to ___ up early. (get)", ["getting"]],
+  ["m", "r", "Dear Sam, I'm sorry I couldn't come to your party last night. I had to work late because my boss asked me to finish a report. I'll call you tomorrow. Best, Ben.\nSavol: Ben nega kelmadi?", "Kech qolib ishlashi kerak edi", ["Kasal edi", "Yo'lda qolib ketdi", "Esidan chiqib qoldi"]],
+  ["m", "g", "He suggested ___ a taxi.", "taking", ["take", "to take", "took"]],
+  ["m", "e", "Qaysi gap to'g'ri?", "I've known her for ten years.", ["I know her since ten years.", "I'm knowing her for ten years.", "I knew her since ten years."]],
+ ],
+ 4: [
+  ["m", "g", "If I had known about the traffic, I ___ earlier.", "would have left", ["would leave", "had left", "will leave"]],
+  ["m", "g", "I wish I ___ speak French.", "could", ["can", "will", "would have"]],
+  ["t", "g", "She is ___ to be the best candidate. (say)", ["said"]],
+  ["m", "g", "By the time we arrived, the film ___.", "had already started", ["already started", "has already started", "was already starting"]],
+  ["m", "v", "Reluctant", "Istamaydigan", ["Tayyor", "Mashhur", "Tinch"]],
+  ["b", "g", "Men u bilan uchrashishni intizorlik bilan kutyapman", ["I am looking forward to meeting him"], ["meet", "see"]],
+  ["m", "g", "The manager, ___ office is on the third floor, is away.", "whose", ["who", "which", "that"]],
+  ["m", "r", "Although the forecast promised sunshine, it rained all morning. The organisers, however, decided not to cancel the match because thousands of fans had already arrived.\nSavol: Tashkilotchilar nega o'yinni bekor qilmadi?", "Minglab muxlislar allaqachon kelgan edi", ["Ob-havo yaxshi bo'lib qoldi", "Yomg'ir to'xtadi", "Hakam ruxsat bermadi"]],
+  ["m", "e", "Qaysi gap to'g'ri?", "Hardly had we sat down when the lights went out.", ["Hardly we had sat down when the lights went out.", "Hardly had we sat down than the lights went out.", "Hardly did we sat down when the lights went out."]],
+  ["t", "g", "He denied ___ the window. (break)", ["breaking", "having broken"]],
+ ],
+ 5: [
+  ["m", "g", "Not only ___ late, but he also forgot the documents.", "was he", ["he was", "did he", "he is"]],
+  ["m", "v", "Ubiquitous", "Hamma joyda uchraydigan", ["Kamyob", "Qadimiy", "Xavfli"]],
+  ["t", "g", "Were it not for your help, I ___ failed. (would ...)", ["would have"]],
+  ["m", "g", "She insisted that he ___ the truth.", "tell", ["tells", "told", "would tell"]],
+  ["m", "g", "No sooner had she left ___ the phone rang.", "than", ["when", "then", "that"]],
+  ["b", "g", "U qanchalik urinmasin, uni ishontira olmadi", ["No matter how hard he tried he could not convince her"], ["can", "did"]],
+  ["m", "v", "Mitigate", "Yengillashtirmoq", ["Kuchaytirmoq", "Bekor qilmoq", "Ayblamoq"]],
+  ["m", "r", "While critics praised the novel's ambitious structure, many readers found it needlessly convoluted and abandoned it before the halfway point.\nSavol: Ko'pchilik o'quvchilar romanga qanday munosabatda bo'ldi?", "Uni juda chalkash deb topib, yarmigacha tashlab ketdi", ["Uning tuzilishini maqtadi", "Uni qiziqarli deb oxirigacha o'qidi", "Tanqidchilar bilan bir fikrda bo'ldi"]],
+  ["m", "e", "Qaysi gap to'g'ri?", "Had I known, I would have told you.", ["If I would have known, I would have told you.", "Had I knew, I would tell you.", "Would I known, I had told you."]],
+  ["t", "g", "The proposal, ___ was widely criticised, was eventually approved.", ["which"]],
+ ],
+};
 
 const shuffle = a => { a = a.slice(); for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
 const $ = id => document.getElementById(id);
 const show = id => ["start", "quiz", "fin"].forEach(s => $(s).hidden = s !== id);
 const tg = window.Telegram && Telegram.WebApp;
-// klaviatura tugmasidan ochilganda initData bo'sh bo'ladi, shuning uchun platform bo'yicha aniqlaymiz
 const inTg = !!(tg && tg.platform && tg.platform !== "unknown");
 const reduce = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
 const dark = tg && tg.colorScheme ? tg.colorScheme === "dark" : !!(window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
@@ -192,79 +229,132 @@ try {
   tg.setHeaderColor(bg); tg.setBackgroundColor(bg);
 } catch (e) {}
 const haptic = (kind, v) => { try { tg.HapticFeedback[kind](v); } catch (e) {} };
-// faqat transform va opacity animatsiyalari: telefonda ham silliq
 const anim = (el, kf, o) => (reduce || !el.animate) ? Promise.resolve() : el.animate(kf, o).finished.catch(() => {});
 const UP = [{opacity: 0, transform: "translateY(14px)"}, {opacity: 1, transform: "none"}];
+const norm = s => s.toLowerCase().replace(/[’`]/g, "'").replace(/[.,!?;:]/g, " ").replace(/\s+/g, " ").trim();
 
-// ---- boshlanish ekrani ----
 $("big").innerHTML = [..."Hello"].map(ch => `<span>${ch}</span>`).join("");
 document.querySelectorAll("#big span").forEach((s, k) => anim(s, UP, {duration: 420, delay: k * 60, easing: "cubic-bezier(.2,.8,.2,1)", fill: "backwards"}));
 document.querySelectorAll("[data-in]").forEach((el, k) => anim(el, UP, {duration: 420, delay: 260 + k * 70, easing: "cubic-bezier(.2,.8,.2,1)", fill: "backwards"}));
 
-// ---- test ----
-let i = 0, answers = [], locked = false;
+// ---- test: blok-blok (A1 -> C1), blokdan o'tmasa to'xtaydi ----
+let lvl = 1, qs = [], qi = 0, blockScore = 0, locked = false;
+const res = {sc: {}, asked: 0, total: 0, tagOk: {v: 0, g: 0, r: 0, e: 0}, tagN: {v: 0, g: 0, r: 0, e: 0}};
 
+function startBlock() {
+  qs = shuffle(BLOCKS[lvl]); qi = 0; blockScore = 0;
+  ask();
+}
 function ask() {
-  const [, t, ru, ok, wrong] = Q[i];
+  const q = qs[qi];
   locked = false;
   show("quiz");
-  $("opts").className = "";
-  $("count").textContent = `Savol ${i + 1} / ${Q.length}`;
-  $("tag").textContent = TAG[t];
-  $("pf").style.transform = `scaleX(${i / Q.length})`;
-  $("ask").textContent = ASK[t];
-  const r = $("ru");
-  r.className = "ru " + (t === "v" ? "word" : "sent");
-  r.innerHTML = t === "v" ? ru : ru.replace("___", '<span class="gap"></span>');
-  const box = $("opts"); box.innerHTML = "";
-  shuffle([ok, ...wrong]).forEach((o, k) => {
-    const b = document.createElement("button");
-    b.className = "opt"; b.textContent = o;
-    if (t === "g") b.lang = "en";
-    b.onclick = () => choose(b, o);
-    box.appendChild(b);
-    anim(b, UP, {duration: 240, delay: 80 + k * 40, easing: "ease-out", fill: "backwards"});
-  });
-  const idk = document.createElement("button");   // taxmin qilmaslik uchun: har doim oxirida
-  idk.className = "opt idk"; idk.textContent = "Bilmayman";
-  idk.onclick = () => choose(idk, null);
-  box.appendChild(idk);
-  anim(idk, UP, {duration: 240, delay: 80 + 4 * 40, easing: "ease-out", fill: "backwards"});
+  const kind = q[0], tag = q[1];
+  $("count").textContent = `${LEVELS[lvl]} bloki · ${qi + 1}/${qs.length}`;
+  $("tag").textContent = kind === "b" ? "Gap yig'ish" : kind === "t" ? "Yozma" : TAG[tag];
+  $("pf").style.transform = `scaleX(${((lvl - 1) * 10 + qi) / 50})`;
+  $("ask").textContent = ASK[kind === "m" ? tag : kind];
+  const r = $("ru"), box = $("opts");
+  box.innerHTML = ""; box.className = "";
+  r.className = "ru";
+  if (kind === "m") {
+    const t = q[2];
+    if (tag === "v") { r.classList.add("word"); r.textContent = t; }
+    else if (tag === "r") { r.classList.add("txt"); r.textContent = t; r.style.whiteSpace = "pre-line"; }
+    else if (tag === "e") { r.classList.add("sent"); r.textContent = t; }
+    else { r.classList.add("sent"); r.innerHTML = t.replace("___", '<span class="gap"></span>'); }
+    if (tag !== "r") r.style.whiteSpace = "";
+    shuffle([q[3], ...q[4]]).forEach((o, k) => {
+      const b = document.createElement("button");
+      b.className = "opt"; b.textContent = o;
+      if (tag !== "v" || /^[A-Za-z]/.test(o)) b.lang = /^[A-Za-z]/.test(o) && tag === "g" ? "en" : "";
+      b.onclick = () => done(b, o === q[3] ? 1 : -WRONG);
+      box.appendChild(b);
+      anim(b, UP, {duration: 240, delay: 80 + k * 40, easing: "ease-out", fill: "backwards"});
+    });
+    addIdk(box);
+  } else if (kind === "t") {
+    r.classList.add("sent"); r.style.whiteSpace = "";
+    r.innerHTML = q[2].replace("___", '<span class="gap"></span>');
+    const inp = document.createElement("input");
+    inp.className = "inp"; inp.type = "text"; inp.autocomplete = "off"; inp.autocapitalize = "none"; inp.spellcheck = false;
+    inp.placeholder = "Javobni yozing";
+    const ok = document.createElement("button");
+    ok.className = "btn primary go2"; ok.textContent = "Tekshirish";
+    const submit = () => { if (locked) return; const v = norm(inp.value); if (!v) return; done(ok, q[3].map(norm).includes(v) ? 1 : 0); };
+    ok.onclick = submit; inp.onkeydown = e => { if (e.key === "Enter") submit(); };
+    box.appendChild(inp); box.appendChild(ok); addIdk(box);
+    setTimeout(() => { try { inp.focus(); } catch (e) {} }, 150);
+  } else {  // build
+    r.classList.add("sent"); r.style.whiteSpace = ""; r.textContent = q[2];
+    const words = q[3][0].split(" ");
+    const pool = document.createElement("div"); pool.className = "bk pool";
+    const line = document.createElement("div"); line.className = "bk";
+    const mk = w => { const b = document.createElement("button"); b.className = "tile"; b.textContent = w; b.lang = "en"; return b; };
+    const place = (b, from, to) => { if (locked) return; to.appendChild(b); haptic("impactOccurred", "light"); };
+    shuffle([...words, ...(q[4] || [])]).forEach(w => {
+      const b = mk(w);
+      b.onclick = () => place(b, b.parentNode, b.parentNode === pool ? line : pool);
+      pool.appendChild(b);
+    });
+    const ok = document.createElement("button");
+    ok.className = "btn primary go2"; ok.textContent = "Tekshirish";
+    ok.onclick = () => { if (locked) return; const v = norm([...line.children].map(x => x.textContent).join(" ")); if (!v) return; done(ok, q[3].map(norm).includes(v) ? 1 : 0); };
+    box.appendChild(line); box.appendChild(pool); box.appendChild(ok); addIdk(box);
+  }
   const card = $("card");
   card.getAnimations && card.getAnimations().forEach(a => a.cancel());
   anim(card, [{opacity: 0, transform: "translateX(20px)"}, {opacity: 1, transform: "none"}], {duration: 260, easing: "cubic-bezier(.2,.8,.2,1)"});
 }
-
-function choose(btn, o) {
+function addIdk(box) {
+  const idk = document.createElement("button");
+  idk.className = "opt idk"; idk.textContent = "Bilmayman";
+  idk.onclick = () => done(idk, 0, true);
+  box.appendChild(idk);
+}
+function done(btn, pts, idk) {
   if (locked) return;
   locked = true;
   btn.classList.add("sel"); $("opts").className = "locked";
   haptic("impactOccurred", "light");
-  const [lvl, t, , ok] = Q[i];
-  answers.push({lvl, t, ok: o === ok});
-  $("pf").style.transform = `scaleX(${(i + 1) / Q.length})`;
+  const q = qs[qi];
+  blockScore += pts; res.asked++;
+  if (q[0] === "m" || q[0] === "t" || q[0] === "b") { const g = q[1] === "v" ? "v" : "g"; res.tagN[g]++; if (pts > 0) res.tagOk[g]++; }
   setTimeout(async () => {
     await anim($("card"), [{opacity: 1, transform: "none"}, {opacity: 0, transform: "translateX(-20px)"}], {duration: 170, easing: "ease-in", fill: "forwards"});
-    i++; i < Q.length ? ask() : finish(evaluate(answers));
+    qi++;
+    if (qi < qs.length) return ask();
+    const sc = Math.max(0, Math.round(blockScore * 10) / 10);
+    res.sc[lvl] = sc;
+    if (sc >= NEED && lvl < 5) { lvl++; return startBlock(); }
+    finish(sc >= NEED ? 5 : lvl - 1, sc);
   }, reduce ? 0 : 260);
 }
 
 // ---- natija ----
 let result = null;
-function finish(res) {
-  result = res;
+function finish(top, lastSc, skip) {
+  // top = o'tilgan eng yuqori daraja indeksi (0 = A0). near: keyingi bloknda 4,5 ball va undan ko'p bo'lsa
+  const nextSc = res.sc[top + 1];
+  const near = !skip && top < 5 && nextSc !== undefined && nextSc >= 4.5 ? LEVELS[top + 1] : null;
+  const lv = [1, 2, 3, 4, 5].map(L => res.sc[L] === undefined ? 0 : Math.min(10, Math.round(res.sc[L])));
+  const total = Object.values(res.sc).reduce((a, b) => a + b, 0);
+  const acc = t => res.tagN[t] ? res.tagOk[t] / res.tagN[t] : null;
+  result = {level: LEVELS[top], v: acc("v"), g: acc("g"), s: Math.round(total), n: Object.keys(res.sc).length * 10, lv, near, ...(skip ? {skip: true} : {})};
   try { tg.disableClosingConfirmation(); } catch (e) {}
   show("fin"); window.scrollTo(0, 0);
-  const idx = LEVELS.indexOf(res.level), [name, desc] = INFO[res.level];
-  $("lvl").textContent = res.level; $("lvl").style.opacity = 0;
-  $("lname").textContent = name + (res.near ? ` · ${res.near} ga yaqin` : "");
+  const idx = top, [name, desc] = INFO[LEVELS[top]];
+  $("lvl").textContent = LEVELS[top]; $("lvl").style.opacity = 0;
+  $("lname").textContent = name + (near ? ` · ${near} ga yaqin` : "");
   $("explain").textContent = desc;
+  const n = Math.max(result.n, 1);
+  $("rsm").textContent = "/ " + n;
   $("rn").textContent = "0"; $("rf").style.strokeDashoffset = 213.6;
   $("nodes").innerHTML = LEVELS.map(l => `<div class="n"><b></b><span>${l}</span></div>`).join("");
-  $("bars").innerHTML = [["v", "Lug'at boyligi"], ["g", "Grammatika"]].filter(([k]) => res[k] !== null)
-    .map(([k, t]) => `<div class="bar"><div><span>${t}</span><em>${Math.round(res[k] * 100)}%</em></div><u><i data-p="${res[k]}"></i></u></div>`).join("");
-  $("lvls").hidden = !res.lv;
-  $("lvls").innerHTML = res.lv ? res.lv.map((n, k) => `<span class="${k + 1 === idx ? "me" : ""}"><b>${LEVELS[k + 1]}</b>${n}/4</span>`).join("") : "";
+  $("bars").innerHTML = [["v", "Lug'at boyligi"], ["g", "Grammatika va o'qish"]].filter(([k]) => result[k] !== null)
+    .map(([k, t]) => `<div class="bar"><div><span>${t}</span><em>${Math.round(result[k] * 100)}%</em></div><u><i data-p="${result[k]}"></i></u></div>`).join("");
+  $("lvls").hidden = skip;
+  $("lvls").innerHTML = skip ? "" : [1, 2, 3, 4, 5].map((L, k) => `<span class="${L === idx ? "me" : ""}"><b>${LEVELS[L]}</b>${res.sc[L] === undefined ? "–" : Math.round(res.sc[L]) + "/10"}</span>`).join("");
   $("send").textContent = inTg ? "Natijani botga yuborish" : "Qayta yechish";
 
   const dur = reduce ? 0.001 : Math.max(0.4, idx / 5 * 1.4);
@@ -274,12 +364,12 @@ function finish(res) {
   setTimeout(() => {
     $("fill").style.transform = `scaleX(${idx / 5})`;
     $("orb").style.transform = `translateX(${w * idx / 5}px)`;
-    document.querySelectorAll(".n").forEach((n, k) => setTimeout(() => n.classList.add("on"), reduce || k > idx ? (k > idx ? 1e9 : 0) : (k / Math.max(idx, 1)) * dur * 850));
-    $("rf").style.strokeDashoffset = 213.6 * (1 - res.s / 20);
+    document.querySelectorAll(".n").forEach((nd, k) => setTimeout(() => nd.classList.add("on"), reduce || k > idx ? (k > idx ? 1e9 : 0) : (k / Math.max(idx, 1)) * dur * 850));
+    $("rf").style.strokeDashoffset = 213.6 * (1 - Math.min(1, result.s / n));
     const t0 = performance.now(), T = reduce ? 1 : 1000;
     (function tick(now) {
       const p = Math.min(1, (now - t0) / T);
-      $("rn").textContent = Math.round(res.s * p);
+      $("rn").textContent = Math.round(result.s * p);
       if (p < 1) requestAnimationFrame(tick);
     })(t0);
     document.querySelectorAll(".bar u i").forEach(el => el.style.transform = `scaleX(${el.dataset.p})`);
@@ -311,16 +401,16 @@ function confetti() {
 }
 
 function sendResult() {
-  if (inTg) tg.sendData(JSON.stringify(result));   // bot natijani oladi, oyna o'zi yopiladi
+  if (inTg) tg.sendData(JSON.stringify(result));
   else show("start");
 }
-
 $("go").onclick = () => {
-  i = 0; answers = []; haptic("impactOccurred", "medium");
+  lvl = 1; res.sc = {}; res.asked = 0; res.tagOk = {v: 0, g: 0, r: 0, e: 0}; res.tagN = {v: 0, g: 0, r: 0, e: 0};
+  haptic("impactOccurred", "medium");
   try { tg.enableClosingConfirmation(); } catch (e) {}
-  ask();
+  startBlock();
 };
-$("skip").onclick = () => finish({level: "A0", v: null, g: null, s: 0, lv: null, near: null, skip: true});
+$("skip").onclick = () => { result = null; res.sc = {}; finish(0, 0, true); };
 $("send").onclick = sendResult;
 </script>
 </body>
