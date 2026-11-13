@@ -179,8 +179,8 @@ function node(i,st,e,name){var off=[0,50,-45,40,0,-30][i%6];
   return '<div style="transform:translateX('+off+'px);text-align:center"><button class="nd '+st+'" '+(st==="lock"?"":'onclick="start('+i+')"')+'>'+(st==="cur"?'<span class="s">BOSHLASH</span>':'')+(st==="done"?"⭐":e)+'</button><div class="lb">'+esc(name)+'</div></div>'}
 
 
-/* ============ grammatika (har 5-kunda, 1 mavzu) ============ */
-function gramIdx(d){return d%5===0?d/5-1:-1}
+/* ============ grammatika (har mavzuning o'z kuni: t.d) ============ */
+function gramIdx(d){if(!window.GRAM)return -1;for(var i=0;i<GRAM.length;i++)if(GRAM[i].d===d)return i;return -1}
 function gramFor(d){var i=gramIdx(d);return window.GRAM&&i>=0?GRAM[i]||null:null}
 var GR=null;
 function gStart(test){var i=gramIdx(DAY),t=GRAM[i];if(!t)return;
