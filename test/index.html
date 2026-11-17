@@ -105,7 +105,7 @@ h1{font-size:26px;line-height:1.2;font-weight:600;margin:0 0 12px}
       <div class="big" id="big" lang="en" aria-label="Hello"></div>
       <h1 data-in>Ingliz tilida darajangiz qaysi?</h1>
       <p data-in>Test oson savollardan boshlanadi va asta-sekin qiyinlashadi. Taxmin qilib bo'lmaydi: bilmagan test savoliga <b>«Bilmayman»</b> ni bosing, xato javob ballni kamaytiradi. Kerakli joyda javobni o'zingiz yozasiz yoki gapni so'zlardan yig'asiz.</p>
-      <div class="chips" data-in><span>~15–40 savol</span><span>~5–12 daqiqa</span><span>A0 dan C1 gacha</span></div>
+      <div class="chips" data-in><span>~15–40 savol</span><span>~5–12 daqiqa</span><span>A1 dan C1 gacha</span></div>
     </div>
     <button class="btn primary" id="go" data-in>Testni boshlash</button>
     <button class="btn ghost" id="skip" data-in>Umuman bilmayman, noldan (A0) boshlayman</button>
@@ -327,7 +327,7 @@ function done(btn, pts, idk) {
     const sc = Math.max(0, Math.round(blockScore * 10) / 10);
     res.sc[lvl] = sc;
     if (sc >= NEED && lvl < 5) { lvl++; return startBlock(); }
-    finish(sc >= NEED ? 5 : lvl - 1, sc);
+    finish(sc >= NEED ? 5 : Math.max(1, lvl - 1), sc);   // test hech qachon A0 bermaydi: eng past natija A1 (A0 faqat «Umuman bilmayman» tugmasi bilan)
   }, reduce ? 0 : 260);
 }
 
