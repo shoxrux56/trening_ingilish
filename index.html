@@ -218,7 +218,7 @@ function gFinTest(){var N=GR.q.length,sc=(N-GR.err)/N,pass=sc>=.8,xp=0;
   if(pass)bumpStreak();saveG();snd(pass?523:200);
   $("#app").innerHTML=(pass?confetti():"")+'<div class="end"><div class="e">'+(pass?"🏆":"💪")+'</div><h1>'+(pass?"Test topshirildi!":"Yana urinib ko'ring")+'</h1><div class="stat"><div style="color:#ce82ff">⭐ +'+xp+' XP</div><div style="color:var(--g)">🎯 '+Math.round(sc*100)+'%</div></div><div class="note">'+(pass?"Grammatika yodlandi. Ertaga yangi kun!":"80% kerak. Qoidani qayta o'qib, testni yana bajaring.")+'</div><div class="bd"><button class="btn" onclick="'+(pass?"home()":"gStart()")+'">'+(pass?"Davom etish":"Qoidani qayta ko'rish")+'</button></div></div>'}
 function gFin(){if(GR.test)return gFinTest();var xp=15;if(!G.gr[GR.i]){G.gr[GR.i]=1;G.xp+=xp}else xp=0;bumpStreak();saveG();snd(523);setTimeout(function(){snd(784,.3)},150);
-  $("#app").innerHTML=confetti()+'<div class="end"><div class="e">📘</div><h1>Grammatika tayyor!</h1><div class="stat"><div style="color:#ce82ff">⭐ +'+xp+' XP</div><div style="color:var(--g)">🎯 '+Math.max(0,100-GR.err*12)+'%</div></div><div class="note">Mavzu: '+esc(GR.t.t)+'. Keyingi grammatika 5 kundan keyin.</div><div class="bd"><button class="btn" onclick="home()">Davom etish</button></div></div>'}
+  $("#app").innerHTML=confetti()+'<div class="end"><div class="e">📘</div><h1>Grammatika tayyor!</h1><div class="stat"><div style="color:#ce82ff">⭐ +'+xp+' XP</div><div style="color:var(--g)">🎯 '+Math.max(0,100-GR.err*12)+'%</div></div><div class="note">Mavzu: '+esc(GR.t.t)+'. Keyingi grammatika yaqin darslardan keyin.</div><div class="bd"><button class="btn" onclick="home()">Davom etish</button></div></div>'}
 
 /* ============ mashq turlari (har xil shablonlar) ============ */
 function spk(){try{var q=L&&L.q[L.i];if(q&&q.item)getPk(Math.floor((q.item[0]-13)/100)).catch(function(){})}catch(e){}return '<button class="spk" onclick="sayCur()" aria-label="Eshitish">🔊</button>'}
@@ -432,4 +432,5 @@ function init(){
     OLD=dueAll().filter(function(w){return w.day!==DAY}).slice(0,Math.min(28,UN.length*7));OLDPER=Math.min(7,Math.ceil(OLD.length/UN.length))||1;
     home()})}
 init();
-</script></body></html>
+</script>
+<script src="gram2.js"></script></body></html>
