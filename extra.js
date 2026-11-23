@@ -68,6 +68,19 @@ window.xClaim=function(){xd();if(X.cl||!(X.ls&&X.li&&X.gp))return;X.cl=1;G.xp+=3
 var oFin=window.fin;window.fin=function(){oFin.apply(this,arguments);try{xd();X.ls=1;checkBd();saveG()}catch(e){}};
 var oFinRev=window.finRev;if(oFinRev)window.finRev=function(){oFinRev.apply(this,arguments);try{xd();X.rv=1;checkBd();saveG()}catch(e){}};
 
+
+/* ---- yangi dars tartibi: avval hamma yangi gaplar birga (hikoya kabi), keyin aralash o'yinlar ---- */
+var oMk=window.mk;
+window.mk=function(u){
+  if(u>=UN.length)return oMk(u);
+  var ks=UN[u].k,r1t=["listen","mc","listen","tf"],r2t=["build","uzru","fill","dict"],q=[];
+  ks.forEach(function(k){q.push({t:"teach",k:k,item:its[k]})});                       // 1) hammasi ketma-ket, orada test yo'q
+  q=q.concat(fixAdj(sh(ks.map(function(k,j){return mkEx(r1t[(j+u)%4],its[k],k)}))));   // 2) eshitish/tanlash raundi (aralash tartibda)
+  if(ks.length>=3)q.push(mkMatch(ks));                                                 // 3) juftlik o'yini
+  var arr=fixAdj(sh(ks.map(function(k,j){return mkEx(r2t[(j+u+1)%4],its[k],k)})));    // 4) qiyinroq raund: boshqa shaklda
+  OLD.slice(u*OLDPER,u*OLDPER+OLDPER).forEach(function(w){arr.splice(Math.floor(Math.random()*(arr.length+1)),0,exOld(w))});
+  return q.concat(arr)};
+
 /* ---- umumiy ---- */
 function pool(){var out=[],seen={};
   try{allRecs().forEach(function(w){if(!seen[w.it[0]]){seen[w.it[0]]=1;out.push({it:w.it,w:w})}})}catch(e){}
