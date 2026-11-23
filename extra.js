@@ -26,7 +26,8 @@ document.head.appendChild(st);
 /* ---- saqlash: G yozuviga qo'shimcha maydon (mavjud progress buzilmaydi) ---- */
 window.saveG=function(){xd();Store.put("g",{gr:G.gr,gt:G.gt,xp:G.xp,sk:G.sk,last:G.last,ty:G.ty,lg:G.lg,wk:G.wk,x:X})};
 var oLoad=window.loadG;
-window.loadG=function(m){oLoad(m);if(m&&m.g&&m.g.x){var x=m.g.x;X.d=x.d||0;X.ls=x.ls||0;X.rv=x.rv||0;X.li=x.li||0;X.gp=x.gp||0;X.cl=x.cl||0;X.g=x.g||0;X.bd=x.bd||{}}xd()};
+var xLoaded=false;
+window.loadG=function(m){xLoaded=true;oLoad(m);if(m&&m.g&&m.g.x){var x=m.g.x;X.d=x.d||0;X.ls=x.ls||0;X.rv=x.rv||0;X.li=x.li||0;X.gp=x.gp||0;X.cl=x.cl||0;X.g=x.g||0;X.bd=x.bd||{}}xd()};
 
 /* ---- yutuqlar ---- */
 var BD=[
@@ -52,8 +53,23 @@ window.xBadges=function(){checkBd();var got=BD.filter(function(b){return X.bd[b[
    BD.map(function(b){var on=!!X.bd[b[0]];return '<div class="xbd '+(on?"on":"off")+'"><b>'+b[1]+'</b>'+b[2]+'</div>'}).join("")+'</div></div><div class="ft"><button class="btn" onclick="home()">Orqaga</button></div>'};
 
 /* ---- bosh sahifada kunlik vazifalar ---- */
+/* ---- daraja imtihoni (?m=exam&lv=A1) va haftalik sinov (?m=week): mavjud test mexanizmi, natija botga sendData bilan ketadi ---- */
+var XM=Q.get("m"),XLV=Q.get("lv"),xStarted=false,xW=[];
+function xTestMode(){var items=[],lv=XLV||"",title;
+  if(XM==="exam"){var all=[];DAYS.forEach(function(d){if(d.lv===lv)d.i.forEach(function(x){all.push(x)})});items=sh(all).slice(0,30);PASS=.75}
+  else{var rs=[];try{rs=allRecs()}catch(e){}
+    var weak=sh(rs.filter(function(w){return isWeak(w.r)})).slice(0,8),rest=sh(rs.filter(function(w){return weak.indexOf(w)<0})).slice(0,15-weak.length);
+    var pick=weak.concat(rest);xW=pick;items=pick.map(function(w){return w.it});
+    if(items.length<6){xW=[];items=sh(DAYS[DAY-1].i).slice(0)}}
+  var day={lv:lv,t:XM==="exam"?"Daraja imtihoni":"Hafta sinovi",e:"🎓",s:"",k:1,p:1,i:items};DAYS.push(day);
+  DAY=DAYS.length;its=items;UN=[];dayRec={v:[],p:0};LID=Number(Q.get("l"));window.saveDay=function(){};
+  startTest()}
+var oFinTest=window.finTest;
+window.finTest=function(){try{if(XM==="week"&&xW.length&&L&&L.miss){L.miss.filter(function(k,i,a){return a.indexOf(k)===i}).forEach(function(k){if(xW[k])markOld(xW[k],false)})}}catch(e){}return oFinTest.apply(this,arguments)};
+
 var oHome=window.home;
-window.home=function(){oHome.apply(this,arguments);try{xd();var u=$(".unit");if(!u||GDAY)return;
+window.home=function(){if((XM==="exam"||XM==="week")&&!xStarted){xStarted=true;return xTestMode()}
+  oHome.apply(this,arguments);try{xd();var u=$(".unit");if(!u||GDAY)return;
   var n=(X.ls?1:0)+(X.li?1:0)+(X.gp?1:0),all=n===3;
   var row=function(done,emo,txt,fn){return '<button class="xqr'+(done?" ok":"")+'" '+(fn?'onclick="'+fn+'"':"")+'><span class="c">'+emo+'</span><span class="t">'+txt+'</span><span class="c">'+(done?"✅":"▶")+'</span></button>'};
   u.insertAdjacentHTML("afterend",'<div class="xq"><div class="xqh"><b>🎯 Bugungi vazifalar</b><span>'+n+'/3</span></div><div class="xqb"><i style="width:'+Math.round(n/3*100)+'%"></i></div>'+
@@ -128,4 +144,5 @@ window.xbc=function(){var S=window.xb;if(S.done){S.i++;return bDraw()}
   $("#xa").style.background=ok?"var(--gl)":"var(--rl)";
   if(!ok)$("#xa").innerHTML='<div style="padding:10px;text-align:center;font-size:18px">✅ '+esc(it[1])+'</div>';else{$("#xa").innerHTML+='<div style="text-align:center;font-weight:900;color:var(--gd)">'+(sec<20?"⚡ Tez! +10":"+7")+'</div>'}
   try{play(it)}catch(e){}};
+if((XM==="exam"||XM==="week")&&!xStarted&&!/Yuklanmoqda/.test($("#app").innerText))home();
 })();
