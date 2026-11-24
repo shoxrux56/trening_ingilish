@@ -144,5 +144,24 @@ window.xbc=function(){var S=window.xb;if(S.done){S.i++;return bDraw()}
   $("#xa").style.background=ok?"var(--gl)":"var(--rl)";
   if(!ok)$("#xa").innerHTML='<div style="padding:10px;text-align:center;font-size:18px">✅ '+esc(it[1])+'</div>';else{$("#xa").innerHTML+='<div style="text-align:center;font-weight:900;color:var(--gd)">'+(sec<20?"⚡ Tez! +10":"+7")+'</div>'}
   try{play(it)}catch(e){}};
+/* ============ Rumiyo sayti ichida: dars -> test -> qaytish (ret rejimi) ============ */
+var RET=Q.get("ret");if(RET&&!/^https:\/\//.test(RET))RET=null;
+function xSep(u){return u.indexOf("?")<0?"?":"&"}
+if(RET){
+  var oFinR=window.fin;window.fin=function(){oFinR.apply(this,arguments);
+    try{var nt=document.querySelector("#app .note");
+      if(nt&&/botga qaytib/i.test(nt.textContent)){nt.textContent="Endi shu kunning testini yeching.";
+        var bt=document.querySelector("#app .btn");if(bt){bt.textContent="📝 Testga o‘tish";bt.onclick=function(){startTest()}}}}catch(e){}};
+  var oFinT=window.finTest;window.finTest=function(){var r=oFinT.apply(this,arguments);
+    try{var p=window.__payload;if(p&&Number.isInteger(LID)){
+      var host=document.querySelector("#app .bd")||document.querySelector("#app"),o=JSON.parse(p),pass=o.n>0&&o.s/o.n>=PASS;
+      var sb=document.getElementById("sendb");if(sb&&sb.parentNode)sb.parentNode.removeChild(sb);
+      var ns=host.querySelectorAll(".note");for(var i=0;i<ns.length;i++)if(/Telegram bot tugmasi/.test(ns[i].textContent))ns[i].parentNode.removeChild(ns[i]);
+      var d=document.createElement("div");d.style.marginTop="14px";
+      d.innerHTML=(pass?"":'<button class="op" style="text-align:center" id="retry">🔁 Testni qayta yechish</button><br><br>')+'<button class="btn" id="retb">🗣 Rumiyoga qaytish</button>';
+      host.appendChild(d);
+      var rb=document.getElementById("retb");if(rb)rb.onclick=function(){rb.disabled=true;location.href=RET+xSep(RET)+"r="+encodeURIComponent(p)+(location.hash||"")};
+      var rt=document.getElementById("retry");if(rt)rt.onclick=function(){startTest()}}}catch(e){}return r};
+}
 if((XM==="exam"||XM==="week")&&!xStarted&&!/Yuklanmoqda/.test($("#app").innerText))home();
 })();
