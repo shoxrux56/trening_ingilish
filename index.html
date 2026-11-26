@@ -411,7 +411,7 @@ function finTest(){var N=its.length,miss=L.miss.filter(function(k,i,a){return a.
   its.forEach(function(_,k){var cur=dayRec.v[k];if(miss.indexOf(k)>=0)dayRec.v[k]=pk(grade(nr(cur||newRec()),false,t));else if(!cur)dayRec.v[k]=newRec()});saveDay();saveG();
   var C=2*Math.PI*60,svg='<svg width="150" height="150"><circle cx="75" cy="75" r="60" fill="none" stroke="var(--bd)" stroke-width="14"/><circle cx="75" cy="75" r="60" fill="none" stroke="'+(pass?"#58cc02":"#ff4b4b")+'" stroke-width="14" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-r))+'"/></svg>';
   var ms=miss.map(function(k){return '<div><div class="ru" style="font-size:18px">'+esc(its[k][1])+'</div><div class="tr" style="margin:2px 0 0">'+esc(its[k][2])+'</div></div>'}).join("");
-  var can=inTG&&Number.isInteger(LID),payload=JSON.stringify({l:LID,s:score,n:N});window.__payload=payload;
+  var can=inTG&&Number.isInteger(LID),payload=JSON.stringify({l:LID,s:score,n:N,w:miss.slice(0,3).map(function(k){return String(its[k][1]).slice(0,80)})});window.__payload=payload;
   snd(pass?523:200);
   $("#app").innerHTML=(pass?confetti():"")+'<div class="bd end" style="padding-top:20px"><div class="ring">'+svg+'<b>'+Math.round(r*100)+'%</b></div><div class="stars">'+"★".repeat(st)+"☆".repeat(3-st)+'</div><h1 style="color:var(--tx);font-size:26px">'+(pass?"Test topshirildi! 🎉":"Yana bir urinib ko‘ring")+'</h1>'+
     '<div class="stat"><div style="color:var(--g)">✅ '+score+'</div><div style="color:var(--r)">❌ '+(N-score)+'</div></div>'+(miss.length?'<div class="note" style="text-align:left">Xato qilingan gaplar:</div><div class="miss">'+ms+'</div>':'')+
