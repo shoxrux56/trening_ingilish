@@ -25,6 +25,12 @@ var st=document.createElement("style");st.textContent=
 document.head.appendChild(st);
 
 var HK={
+"would like: muloyim «xohlayman»":["🎩 I'D LIKE …","Would like = muloyim xohlayman. I'd like a coffee. Would you like some tea? Hamma shaxsga bir xil, -s yo'q."],
+"there was / there were":["⏪ THERE WAS · THERE WERE","Bitta narsa — there was, ko'p — there were. Savol: Was there …? Inkor: wasn't / weren't."],
+"and / but / so / because":["🔗 AND · BUT · SO · BECAUSE","and — va, but — lekin, so — shuning uchun (natija), because — chunki (sabab)."],
+"may / might: ehtimol va ruxsat":["🤔 MAY · MIGHT","Balki! It might rain. Ruxsat: May I come in? Fe'l o'zgarmaydi, to yo'q."],
+"Present Perfect Continuous: have been + -ing":["⏳ HAVE BEEN WORKING","Davom etayotgan ish: I have been working since morning. for — qancha, since — qachondan."],
+"Question tags: isn't it? don't you?":["🏷️ …, ISN'T IT?","Darak gap ➜ inkor tag, inkor gap ➜ oddiy tag. You are tired, aren't you? He isn't here, is he?"],
 "a / an / the":["🍎 an · 🚗 a · ☀️ the","AN — unli TOVUSH oldidan (an apple, an egg). A — undosh oldidan (a car). THE — 👆 ko'rsatkich barmoq: aniq narsa."],
 "Ko'plik (plural)":["🐱 ➜ 🐱🐱🐱","Ko'p bo'lsa +s: cat ➜ cats. s, sh, ch, x bilan tugasa +es: bus ➜ buses. Sirli: man ➜ men, child ➜ children."],
 "I, you, he, she, it, we, they":["👦 he · 👧 she · 🐶 it · 👥 we","Faqat 7 ta so'z! I=men, you=sen/siz, he=u (o'g'il), she=u (qiz), it=u (narsa/hayvon), we=biz, they=ular."],
