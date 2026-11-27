@@ -66,6 +66,8 @@ body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:Nunit
 .mini{font-size:34px;margin-bottom:6px;line-height:1.1}
 .unit .sit{margin-top:8px;font-size:15px;font-weight:700;opacity:.95}
 .mt{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mtc{margin:0!important;text-align:center!important;font-size:16px!important;min-height:64px;display:flex;align-items:center;justify-content:center}.op.gone{visibility:hidden}
+.pic{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pic .op{margin:0;text-align:center;font-size:46px;padding:14px 0}
+.rc{display:flex;justify-content:space-between;font-weight:900;margin:4px 0 8px}.rb{height:10px;background:var(--bd);border-radius:6px;overflow:hidden;margin-bottom:14px}.rb i{display:block;height:100%;width:100%;background:var(--g);transition:width .1s linear}.rb.hot i{background:var(--r)}.rb{height:14px}.shk{animation:shk .35s}@keyframes shk{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 .note{color:var(--mut);font-size:15px;margin:10px 0}
 .bar{height:10px;border-radius:6px;background:var(--bd);overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;border-radius:6px}
 .sec{font-size:18px;font-weight:900;margin:22px 0 6px}.sub{color:var(--mut);font-size:14px;margin:0 0 8px}
@@ -73,7 +75,7 @@ body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:Nunit
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body><div id="app"></div>
 <script src="data.js"></script>
-<script src="gramatika.js"></script>
+<script src="gramatika.js?v=16"></script>
 <script>
 "use strict";
 /* ============ sozlamalar ============ */
@@ -161,18 +163,18 @@ function lagStat(g){G.lg[g<=1?0:g<=3?1:g<=7?2:g<=30?3:4]++}
 function pickType(o){var a=(o.lap>=2||o.st<=2)?["mc","listen","uzru","tf"]:o.st<=4?["fill","uzru","listen","dict"]:["dict","build","speak","fill","listen"];return a[Math.floor(Math.random()*a.length)]}
 
 /* ============ bosh sahifa (yo'l xaritasi) ============ */
-function home(){if(!DAYS[DAY-1])return memo();if(L&&L.dirty)saveG();L=null;
+function home(){try{rStop()}catch(e){}if(!DAYS[DAY-1])return memo();if(L&&L.dirty)saveG();L=null;
   var day=DAYS[DAY-1];its=day.i;
   var nodes=UN.map(function(u,i){var st=i<dayRec.p?"done":i===dayRec.p?"cur":"lock";return node(i,st,u.e,u.n)});
   var gf=gramFor(DAY);if(gf&&GDAY)nodes=[gNode(0,gf),gTest(1,gf)];else {
-  var mst=dayRec.p>UN.length?"done":dayRec.p===UN.length?"cur":"lock";nodes.push(node(UN.length,mst,"🏆","Yakuniy test"));
+  var mst=dayRec.p>UN.length?"done":dayRec.p===UN.length?"cur":"lock";if(!/^https:\/\//.test(new URLSearchParams(location.search).get("ret")||""))nodes.push(node(UN.length,mst,"🏆","Yakuniy test"));
     if(gf&&dayRec.p>UN.length)nodes.push('<div class="note" style="text-align:center;margin:18px 0 0">😌 Dam olish: grammatika (gap yodlash yo\'q)</div>',gNode(UN.length+1,gf),gTest(UN.length+2,gf))}
   $("#app").innerHTML='<div class="hd"><span class="y">🔥 '+G.sk+'</span><span class="p">⭐ '+G.xp+' XP</span><span class="h">❤️ 5</span></div>'+
     '<div class="unit"><small>'+day.lv+'</small><h2>'+day.e+' '+esc(day.t)+(day.k>1?' ('+day.p+'/'+day.k+')':'')+'</h2><div class="sit">📍 '+esc(day.s)+'</div></div>'+
     '<div class="path" style="padding-bottom:10px">'+nodes.join("")+'</div>'+(gf&&GDAY?'<div class="bd"><div class="note" style="text-align:center">😌 Bu grammatika kuni: gap yodlash yo\'q, miya dam oladi. Avval grammatika, so\'ng test.</div></div>':'')+
     (dayRec.p>UN.length?'<div class="bd"><div class="note" style="text-align:center">🎉 Bugungi dars tayyor! Botga qaytib, shu kunning testini bosing.</div></div>':'')}
 function gTest(i,t){var off=[0,50,-45,40,0,-30][i%6],ok=G.gt[gramIdx(DAY)],open=!!G.gr[gramIdx(DAY)];
-  return '<div style="transform:translateX('+off+'px);text-align:center"><button class="nd '+(ok?"done":open?"cur":"lock")+'" '+(open?'onclick="gStart(1)"':"")+'>'+(ok?"⭐":(open?'<span class="s">BOSHLASH</span>':"")+"🏆")+'</button><div class="lb">Grammatika testi</div></div>'}
+  return '<div style="transform:translateX('+off+'px);text-align:center"><button class="nd '+(ok?"done":open?"cur":"lock")+'" '+(open?'onclick="(window.gtRum||function(){gStart(1)})()"':"")+'>'+(ok?"⭐":(open?'<span class="s">BOSHLASH</span>':"")+"🏆")+'</button><div class="lb">Grammatika testi</div></div>'}
 function gNode(i,t){var off=[0,50,-45,40,0,-30][i%6],dn=G.gr[gramIdx(DAY)];
   return '<div style="transform:translateX('+off+'px);text-align:center"><button class="nd cur" style="background:#1cb0f6;border-bottom-color:#1899d6" onclick="gStart()">'+(dn?"✅":"📘")+'</button><div class="lb">Grammatika</div></div>'}
 function node(i,st,e,name){var off=[0,50,-45,40,0,-30][i%6];
@@ -197,22 +199,28 @@ function gDraw(){var t=GR.t;
   var q=GR.q[GR.n];GR.sel=null;GR.ans=[];GR.done=false;
   if(q[0]==="mc"){var ops=sh(q.slice(2).concat([q[2]]).filter(function(v,k,a){return a.indexOf(v)===k}));GR.ops=ops;
     $("#app").innerHTML=gHead()+'<div class="bd"><h3 style="margin:0 0 18px">🎮 To\'g\'ri so\'zni toping</h3><div class="q" style="font-size:22px;margin-bottom:18px">'+esc(q[1])+'</div>'+
-      ops.map(function(o,k){return '<button class="op" id="o'+k+'" onclick="gPick('+k+')">'+esc(o)+'</button>'}).join("")+'</div><div class="ft" id="ft"><button class="btn" id="gb" disabled onclick="gChk()">Tekshirish</button></div>'}
+      ops.map(function(o,k){return '<button class="op" id="o'+k+'" onclick="gPick('+k+')">'+esc(o)+'</button>'}).join("")+'</div><div class="ft" id="ft"><button class="op" onclick="gSkip()">🤷 Bilmayman</button></div>';gTimer(5)}
   else{var w=sh(q[2].split(" ").concat(q[3].split(" ")));GR.bank=w;
-    $("#app").innerHTML=gHead()+'<div class="bd"><h3 style="margin:0 0 18px">Ingliz tiliga tarjima qiling</h3><div class="q" style="font-size:22px">'+esc(q[1])+'</div><div class="ans" id="ga"></div><div class="bank" id="gk"></div></div><div class="ft" id="ft"><button class="btn" id="gb" disabled onclick="gChk()">Tekshirish</button></div>';gTiles()}}
+    $("#app").innerHTML=gHead()+'<div class="bd"><h3 style="margin:0 0 18px">Ingliz tiliga tarjima qiling</h3><div class="q" style="font-size:22px">'+esc(q[1])+'</div><div class="ans" id="ga"></div><div class="bank" id="gk"></div></div><div class="ft" id="ft"><button class="op" onclick="gSkip()">🤷 Bilmayman</button></div>';gTiles();gTimer(10)}}
 function gTiles(){var a=$("#ga"),k=$("#gk");if(!a)return;
   a.innerHTML=GR.ans.map(function(i){return '<button class="tl" onclick="gTap('+i+')">'+esc(GR.bank[i])+'</button>'}).join("");
   k.innerHTML=GR.bank.map(function(w,i){return GR.ans.indexOf(i)<0?'<button class="tl" onclick="gTap('+i+')">'+esc(w)+'</button>':'<button class="tl" disabled style="opacity:.25">'+esc(w)+'</button>'}).join("");
-  $("#gb").disabled=!GR.ans.length}
-function gTap(i){if(GR.done)return;var k=GR.ans.indexOf(i);if(k<0)GR.ans.push(i);else GR.ans.splice(k,1);gTiles()}
-function gPick(k){if(GR.done)return;GR.sel=k;GR.ops.forEach(function(_,j){var b=$("#o"+j);b.style.borderColor=j===k?"#1cb0f6":"";b.style.background=j===k?"#ddf4ff":""});$("#gb").disabled=false}
+}
+function gTap(i){if(GR.done)return;var k=GR.ans.indexOf(i);if(k<0)GR.ans.push(i);else GR.ans.splice(k,1);gTiles();if(GR.ans.length===GR.q[GR.n][2].split(" ").length)gChk()}
+function gSkip(){if(GR.done)return;GR.sel=-1;GR.ans=[];gChk()}
+function gTimer(lim){if(GR.ti){clearInterval(GR.ti);GR.ti=null}var bd=document.querySelector("#app .bd");if(!bd)return;
+  bd.insertAdjacentHTML("afterbegin",'<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><div class="rb" id="gqw" style="flex:1;height:16px;margin:0"><i id="gqb"></i></div><b id="gqn" style="font-size:26px;min-width:34px;text-align:right">'+lim+'</b></div>');
+  var t0=Date.now(),n=GR.n;GR.ti=setInterval(function(){var b=document.getElementById("gqb");if(!b||GR.n!==n||GR.done){clearInterval(GR.ti);GR.ti=null;return}
+    var left=lim-(Date.now()-t0)/1000;b.style.width=Math.max(left,0)/lim*100+"%";var w=document.getElementById("gqw");if(w)w.classList.toggle("hot",left<=3);var c=document.getElementById("gqn");if(c){c.textContent=Math.max(0,Math.ceil(left));c.style.color=left<=3?"var(--r)":"inherit"}
+    if(left<=0){clearInterval(GR.ti);GR.ti=null;gSkip()}},150)}
+function gPick(k){if(GR.done)return;GR.sel=k;gChk()}
 function gChk(){if(GR.done){GR.n++;return gDraw()}
   var q=GR.q[GR.n],ok,right;
   if(q[0]==="mc"){right=q[2];ok=GR.ops[GR.sel]===right;GR.ops.forEach(function(o,j){var b=$("#o"+j);if(o===right){b.style.borderColor="#58cc02";b.style.background="#d7ffb8"}else if(j===GR.sel){b.style.borderColor="#ff4b4b";b.style.background="#ffdfe0"}})}
   else{right=q[2];ok=GR.ans.map(function(i){return GR.bank[i]}).join(" ")===right}
-  GR.done=true;hap(ok);snd(ok?660:200,.2);if(!ok){GR.err++;if(!GR.test)GR.q.push(q)}
+  GR.done=true;if(GR.ti){clearInterval(GR.ti);GR.ti=null}hap(ok);snd(ok?660:200,.2);if(!ok){GR.err++;if(!GR.test)GR.q.push(q)}
   var f=$("#ft");f.className="ft"+(ok?"":" no");
-  f.innerHTML='<div style="font-weight:900;margin-bottom:10px;color:'+(ok?"var(--g)":"var(--r)")+'">'+(ok?["✅ To'g'ri!","🎉 Barakalla!","👏 Zo'r!","🔥 Ajoyib!"][GR.n%4]:"❌ To'g'ri javob: "+esc(right)+(GR.t.tip?'<div style="font-weight:700;color:var(--mut);margin-top:6px">💡 '+esc(GR.t.tip)+'</div>':""))+'</div><button class="btn" id="gb" onclick="gChk()">Davom</button>'}
+  f.innerHTML='<div style="font-weight:900;margin-bottom:10px;color:'+(ok?"var(--g)":"var(--r)")+'">'+(ok?["✅ To'g'ri!","🎉 Barakalla!","👏 Zo'r!","🔥 Ajoyib!"][GR.n%4]:"❌ To'g'ri javob: "+esc(right)+(GR.t.tip?'<div style="font-weight:700;color:var(--mut);margin-top:6px">💡 '+esc(GR.t.tip)+'</div>':""))+'</div>'+(ok?'':'<button class="btn" id="gb" onclick="gChk()">Davom</button>');if(ok){var n0=GR.n;setTimeout(function(){if(GR&&GR.n===n0&&GR.done)gChk()},700)}}
 function gFinTest(){var N=GR.q.length,sc=(N-GR.err)/N,pass=sc>=.8,xp=0;
   if(pass&&!G.gt[GR.i]){G.gt[GR.i]=1;xp=25;G.xp+=xp}
   if(pass)bumpStreak();saveG();snd(pass?523:200);
@@ -249,6 +257,8 @@ function mkEx(t,it,k){var e={t:t,item:it,k:k};
     e.title="Eshiting va to‘g‘ri javobni tanlang";
     e.head='<div style="text-align:center;margin:6px 0 16px"><button class="spk" style="width:96px;height:96px;font-size:44px;border-radius:28px" onclick="sayCur()" aria-label="Eshitish">🔊</button><div class="note">'+(ru?"Qaysi gapni eshitdingiz?":"Bu o‘zbekchada nima?")+' (🔊 ni bosib qayta eshiting)</div></div>';
     e.o=sh([it[f]].concat(distract(it,f,3)));e.a=it[f];e.auto=1}
+  else if(t==="pic"){var em=[];sh(POOL).forEach(function(x){if(em.length<3&&x[3]&&x[3]!==it[3]&&em.indexOf(x[3])<0)em.push(x[3])});if(em.length<3||!it[3])return mkEx("mc",it,k);
+    e.title="Qaysi rasm mos?";e.head='<div class="ru" style="margin-bottom:6px">'+esc(it[1])+spk()+'</div><div class="uz" style="margin-bottom:14px">'+esc(it[2])+'</div>';e.o=sh([it[3]].concat(em));e.a=it[3];e.auto=1}
   else if(t==="speak"){e.title="Ovoz chiqarib ayting";e.head="";e.o=["✅ Aniq ayta oldim","😕 Qiynaldim"];e.a=e.o[0];e.self=1;e.auto=1}
   else if(t==="build"||t==="dict"){var w2=words(it[1]);if(w2.length<3)return mkEx(t==="dict"?"listen":"uzru",it,k);
     var ex=[];sh(POOL).some(function(x){words(x[1]).forEach(function(z){if(ex.length<2&&w2.indexOf(z)<0&&ex.indexOf(z)<0&&z.length>1)ex.push(z)});return ex.length>=2});
@@ -256,14 +266,70 @@ function mkEx(t,it,k){var e={t:t,item:it,k:k};
   return e}
 function mkMatch(ks){var cells=[];ks.forEach(function(k){cells.push({id:its[k][0],side:0,t:its[k][1]},{id:its[k][0],side:1,t:its[k][2]})});
   return {t:"match",item:null,k:-1,cells:sh(cells),gone:{},sel:null,left:ks.length,err:0}}
+function mkMem(ks){var cells=[];ks.forEach(function(k){cells.push({id:its[k][0],side:0,t:its[k][1]},{id:its[k][0],side:1,t:its[k][2]})});
+  return {t:"mem",item:null,k:-1,cells:sh(cells),gone:{},up:{},a:null,lock:0,left:ks.length,err:0,mv:0}}
+function mm(j){var it=L.q[L.i];if(L.st!=="ask"||it.lock||it.gone[j]||it.up[j])return;var c=it.cells[j];it.up[j]=1;snd(500,.06);if(c.side===0)try{sayT(c.t)}catch(e){}
+  if(it.a==null){it.a=j;return draw()}
+  var o=it.a;it.a=null;it.mv++;
+  if(it.cells[o].id===c.id){it.gone[o]=it.gone[j]=1;it.left--;snd(660);try{hap(true)}catch(e){}
+    if(!it.left){if(it.err>=3){L.hp--}else{L.xp+=10}L.st="ok";if(L.hp<=0)return dead()}return draw()}
+  it.err++;it.lock=1;snd(200,.2);try{hap(false)}catch(e){}draw();
+  setTimeout(function(){it.up[o]=it.up[j]=0;it.lock=0;if(L&&L.q[L.i]===it)draw()},800)}
+function mkRace(ks){var qs=[],ord=[];for(var r=0;r<3;r++)ord=ord.concat(sh(ks));
+  ord.slice(0,15).forEach(function(k,j){var it=its[k],ru=j%2===0,f=ru?2:1,g=ru?1:2;
+    qs.push({k:k,p:it[g],o:sh([it[f]].concat(distract(it,f,3))),a:it[f]})});
+  return {t:"race",item:null,k:-1,qs:qs,ri:0,sc:0,lives:3,combo:0,best:0,tl:8,tm:8,run:0,lock:0,done:0}}
+var RT=null;function rStop(){if(RT){clearInterval(RT);RT=null}}
+function rLimit(it){return Math.max(3,8-it.sc*.35)}
+function rHud(it){return '<span id="rl">'+"❤️".repeat(it.lives)+"🖤".repeat(3-it.lives)+'</span><span id="rc">'+(it.combo>=2?'🔥 x'+it.combo:'')+'</span><span id="rs">⭐ '+it.sc+'</span>'}
+function rDraw(){var it=L.q[L.i];if(!it||it.t!=="race")return;var q=it.qs[it.ri];it.tm=it.tl=rLimit(it);it.lock=0;
+  $("#app").innerHTML='<div class="top"><button class="x" onclick="rStop();home()">✕</button><div class="pg"><i style="width:'+(L.d/L.tot*100)+'%"></i></div><span style="font-size:18px">⚡</span></div><div class="bd">'+
+   '<div class="rc" id="rh">'+rHud(it)+'</div><div class="rb" id="rbw"><i id="rbar" style="width:100%"></i></div>'+
+   '<div class="ru" style="margin:6px 0 18px;font-size:26px">'+esc(q.p)+'</div>'+q.o.map(function(o,j){return '<button class="op" onclick="rPick('+j+')">'+esc(o)+'</button>'}).join("")+'</div>'}
+function rStart(){var it=L.q[L.i];if(it.run)return;it.run=1;rStop();rDraw();
+  RT=setInterval(function(){if(!L||L.q[L.i]!==it||it.done)return rStop();if(it.lock)return;
+    var c0=Math.ceil(it.tl);it.tl-=.1;var b=$("#rbar"),w=$("#rbw");if(b)b.style.width=Math.max(it.tl,0)/it.tm*100+"%";
+    if(it.tl<=3){if(w)w.classList.add("hot");if(Math.ceil(it.tl)!==c0)snd(900,.04)}
+    if(it.tl<=0)rWrong(it,-1)},100)}
+function rNext(it){setTimeout(function(){if(L.q[L.i]!==it||it.done)return;it.ri++;if(it.lives<=0||it.ri>=it.qs.length)rEnd();else rDraw()},it.lastOk?220:850)}
+function rPick(j){var it=L.q[L.i];if(!it||it.lock||it.done)return;var q=it.qs[it.ri];
+  if(q.o[j]===q.a){it.lock=1;it.lastOk=1;it.sc++;it.combo++;if(it.combo>it.best)it.best=it.combo;snd(600+Math.min(it.combo,8)*40);
+    var bs=document.querySelectorAll(".op");if(bs[j])bs[j].classList.add("ok");var h=$("#rh");if(h)h.innerHTML=rHud(it);rNext(it)}
+  else rWrong(it,j)}
+function rWrong(it,j){if(it.lock)return;it.lock=1;it.lastOk=0;it.lives--;it.combo=0;var q=it.qs[it.ri];snd(180,.25);try{hap(false)}catch(e){}
+  if(q.k>=0)(window.WK=window.WK||{})[q.k]=1;
+  var bs=document.querySelectorAll(".op");bs.forEach(function(b,x){if(q.o[x]===q.a)b.classList.add("ok");else if(x===j)b.classList.add("no")});
+  var bd=document.querySelector("#app .bd");if(bd){bd.classList.add("shk")}var h=$("#rh");if(h)h.innerHTML=rHud(it);rNext(it)}
+function rEnd(){var it=L.q[L.i];if(!it||it.done)return;it.done=1;rStop();var xp=it.sc*2+it.best*2;L.xp+=xp;L.d++;L.st="ok";hap(true);
+  var tot=it.ri+1>it.qs.length?it.qs.length:it.ri+1;
+  $("#app").innerHTML='<div class="top"><button class="x" onclick="home()">✕</button><div class="pg"><i style="width:'+(L.d/L.tot*100)+'%"></i></div><span></span></div><div class="bd"><div class="end" style="min-height:0"><div class="e">'+(it.lives<=0?"💥":it.sc>=it.qs.length*.8?"🏆":"⚡")+'</div><h1>'+it.sc+' / '+it.qs.length+'</h1><p>'+(it.lives<=0?"Jonlar tugadi · ":"")+'🔥 eng uzun seriya: '+it.best+' · +'+xp+' XP</p></div></div><div class="ft ok"><button class="btn" onclick="L.i++;L.st=\'ask\';draw()">Davom etish</button></div>'}
 function fixAdj(a){for(var i=1;i<a.length;i++){if(a[i].t===a[i-1].t){for(var j=i+1;j<a.length;j++){if(a[j].t!==a[i-1].t&&(!a[i+1]||a[j].t!==a[i+1].t||j===i+1)){var x=a[i];a[i]=a[j];a[j]=x;break}}}}return a}
 function exOld(w){var e=mkEx(pickType(w.r),w.it,-1);e.old=w;return e}
+/* ===== kun qoliblari: har kun boshqa shakldagi o'yin qismi (DAY bo'yicha aylanadi). Yangisini shu ro'yxatga qo'shing ===== */
+function gk(ks,n){var o=[];while(o.length<n)o=o.concat(sh(ks));return o.slice(0,n)}
+function exs(ts,ks,n){var o=gk(ks,n);return o.map(function(k,i){var t=Array.isArray(ts)?ts[i%ts.length]:ts;return mkEx(t,its[k],k)})}
+function mixq(a){return fixAdj(sh(a))}
+var TPLS=[
+ {n:"Klassika",e:"🎮",f:function(ks){return mixq(exs("pic",ks,5).concat(exs("build",ks,2),exs("listen",ks,2))).concat([mkMatch(ks.slice(0,5)),mkRace(ks)])}},
+ {n:"Quloq kuni",e:"🎧",f:function(ks){return mixq(exs("listen",ks,5).concat(exs("pic",ks,2),exs("build",ks,2))).concat([mkRace(ks)])}},
+ {n:"Quruvchi",e:"🧩",f:function(ks){return mixq(exs("build",ks,4).concat(exs("pic",ks,3))).concat([mkMatch(ks.slice(0,5)),mkRace(ks)])}},
+ {n:"Sprint",e:"🏃",f:function(ks){return mixq(exs(["mc","tf","fill","uzru"],ks,8)).concat([mkRace(ks)])}},
+ {n:"Juftlik kuni",e:"🔗",f:function(ks){return [mkMatch(ks.slice(0,5))].concat(mixq(exs("pic",ks,3).concat(exs("build",ks,2))),[mkMatch(sh(ks).slice(0,5)),mkRace(ks)])}},
+ {n:"Xotira kuni",e:"🧠",f:function(ks){return [mkMem(ks.slice(0,4))].concat(mixq(exs("pic",ks,3).concat(exs("build",ks,2),exs("listen",ks,2))),[mkMem(sh(ks).slice(0,4)),mkRace(ks)])}},
+ {n:"Marafon",e:"🏁",f:function(ks){return [mkRace(ks)].concat(mixq(exs("pic",ks,3).concat(exs("listen",ks,2),exs("build",ks,2))),[mkRace(ks)])}}
+];
 function mk(u){var q=[];
-  if(u<UN.length){var ks=UN[u].k,quick=["mc","tf"],second=["fill","build","uzru","listen","dict","speak"];
-    ks.forEach(function(k,j){q.push({t:"teach",k:k,item:its[k]});q.push(mkEx(quick[(j+u)%2],its[k],k))});
-    var arr=ks.map(function(k,j){return mkEx(second[(j+u)%6],its[k],k)});arr=fixAdj(sh(arr));
-    OLD.slice(u*OLDPER,u*OLDPER+OLDPER).forEach(function(w){arr.splice(Math.floor(Math.random()*(arr.length+1)),0,exOld(w))});
-    q=q.concat(fixAdj(arr));if(ks.length>=3)q.push(mkMatch(ks))}
+  if(u<UN.length){var ks=UN[u].k;
+    var M=UN[u].m;
+    if(M!=="play")ks.forEach(function(k){q.push({t:"teach",k:k,item:its[k]})});
+    if(M==="see")return q;
+    if(M==="play"&&UN[u].tp>=0)return TPLS[UN[u].tp].f(ks);
+    var g=sh(ks),arr=[];
+    g.slice(0,Math.min(5,g.length)).forEach(function(k,j){arr.push(mkEx("pic",its[k],k))});
+    g.slice(0,2).forEach(function(k){arr.push(mkEx("build",its[k],k))});
+    g.slice(2,4).forEach(function(k){arr.push(mkEx("listen",its[k],k))});
+    arr=fixAdj(sh(arr));
+    q=q.concat(fixAdj(arr));if(ks.length>=3)q.push(mkMatch(ks.slice(0,5)));q.push(mkRace(ks))}
   else{var T5=["mc","tf","fill","build","uzru","dict"],off=Math.floor(Math.random()*6);
     var arr2=fixAdj(sh(its.map(function(_,k){return mkEx(T5[(k+off)%6],its[k],k)})));
     var idx=its.map(function(_,i){return i}),h=Math.ceil(idx.length/2);
@@ -278,18 +344,23 @@ function draw(){var it=L.q[L.i];if(!it)return L.test?finTest():L.rev?finRev():fi
       '<div class="ru">'+esc(s[1])+spk()+'</div><div class="wl" data-n="'+s[0]+'"></div><div class="uz">'+esc(s[2])+'</div>'+
       '<div class="when">📍 <b>Qayerda va qachon aytiladi:</b><br>'+esc(s[4]||DAYS[DAY-1].s)+'</div>';
     ft='<div class="ft"><button class="btn" onclick="nxt('+(it.re?0:1)+')">'+(it.re?'Esladim, davom etish':'Tushunarli')+'</button></div>'}
+  else if(it.t==="race"){if(!it.done&&!it.run){b='<div class="q">⚡ Tezkor musobaqa</div><div class="owl"><div class="o">🦊</div><div class="bub">Har javobga vaqt kam va u tobora qisqaradi! 3 jon bor. Tez bosing, seriya qiling! 🔥</div></div>';ft='<div class="ft"><button class="btn" onclick="rStart()">Boshlash ⚡</button></div>'}else return it.done?0:rDraw()}
+  else if(it.t==="mem"){
+    b='<div class="q">🧠 Xotira: juftini toping</div><div class="mt">'+it.cells.map(function(c,j){var open=it.up[j]||it.gone[j];
+      return '<button class="op mtc '+(it.gone[j]?"ok":open?"sel":"")+'" style="'+(open?"":"background:var(--b);color:#fff;font-size:30px!important")+'" '+(L.st!=="ask"?"disabled":'onclick="mm('+j+')"')+'>'+(open?esc(c.t):"❓")+'</button>'}).join("")+'</div>';
+    ft=L.st==="ask"?'<div class="ft"><div class="note" style="margin:0;text-align:center">Harakatlar: <b>'+it.mv+'</b></div></div>':'<div class="ft ok"><div class="fm">'+(it.to?"⏰ Vaqt tugadi (−1 jon)":it.err>=3?"Topildi, lekin ko‘p xato (−1 jon)":"🧠 Xotirangiz zo‘r!")+'</div><button class="btn" onclick="nxt(1)">Davom etish</button></div>'}
   else if(it.t==="match"){
     b='<div class="q">Juftliklarni toping</div><div class="mt">'+it.cells.map(function(c,j){var cls=it.gone[j]?"gone":it.bad&&it.bad.indexOf(j)>=0?"no":it.sel===j?"sel":"";
       return '<button class="op mtc '+cls+'" '+(it.gone[j]||L.st!=="ask"?"disabled":'onclick="mt('+j+')"')+'>'+esc(c.t)+'</button>'}).join("")+'</div>';
-    ft=L.st==="ask"?'<div class="ft"><button class="btn" disabled>Juftliklarni tanlang</button></div>':'<div class="ft ok"><div class="fm">'+(it.err?"Juftliklar topildi (xatolar bilan)":"✅ Hammasi to‘g‘ri!")+'</div><button class="btn" onclick="nxt(1)">Davom etish</button></div>'}
+    ft=L.st==="ask"?'<div class="ft"><button class="btn" disabled>Juftliklarni tanlang</button></div>':'<div class="ft ok"><div class="fm">'+(it.to?"⏰ Vaqt tugadi (−1 jon)":it.err?"Juftliklar topildi (xatolar bilan)":"✅ Hammasi to‘g‘ri!")+'</div><button class="btn" onclick="nxt(1)">Davom etish</button></div>'}
   else{
     if(it.t==="build"||it.t==="dict"){
       b=(it.t==="dict"?'<div class="q">Eshiting va yozing</div><div style="text-align:center;margin:6px 0 10px"><button class="spk" style="width:84px;height:84px;font-size:40px;border-radius:24px" onclick="sayCur()" aria-label="Eshitish">🔊</button><div class="note">Eshitganingizni so‘zlardan tuzing (🔊 ni qayta bosish mumkin)</div></div>':'<div class="q">Inglizcha tuzing</div><div class="bub" style="margin-bottom:6px;font-size:20px"><span class="mini" style="display:inline;margin-right:6px">'+esc(s[3])+'</span>'+esc(s[2])+'</div>')+'<div class="ans">'+L.pick.map(function(p,j){return '<button class="tl" onclick="ub('+j+')">'+esc(p.w)+'</button>'}).join("")+'</div><div class="bank">'+it.pool.map(function(p,j){return '<button class="tl" onclick="ab('+j+')">'+esc(p.w)+'</button>'}).join("")+'</div>'}
     else{
-      b='<div class="q">'+it.title+'</div>'+(it.t==="speak"?speakHead(it,s):it.head)+it.o.map(function(o,j){var cls=L.st==="ask"?(L.sel===j?"sel":""):(o===it.a?"ok":(L.sel===j?"no":""));
-        return '<button class="op '+cls+'" '+(L.st==="ask"?'onclick="L.sel='+j+';draw()"':'')+'>'+esc(o)+'</button>'}).join("")}
+      b='<div class="q">'+it.title+'</div>'+(it.t==="speak"?speakHead(it,s):it.head)+(it.t==="pic"?'<div class="pic">':'')+it.o.map(function(o,j){var cls=L.st==="ask"?(L.sel===j?"sel":""):(o===it.a?"ok":(L.sel===j?"no":""));
+        return '<button class="op '+cls+'" '+(L.st==="ask"?'onclick="L.sel='+j+';chk()"':'')+'>'+esc(o)+'</button>'}).join("")+(it.t==="pic"?'</div>':'')}
     var ready=(it.t==="build"||it.t==="dict")?L.pick.length>0:L.sel!=null;
-    if(L.st==="ask")ft='<div class="ft"><button class="btn" '+(ready?"":"disabled")+' onclick="chk()">Tekshirish</button></div>';
+    if(L.st==="ask")ft=it.t==="speak"?'<div class="ft"><button class="btn" '+(ready?"":"disabled")+' onclick="chk()">Tekshirish</button></div>':'<div class="ft"><button class="op" style="text-align:center;margin:0;color:var(--mut,#777)" onclick="skipQ()">🤷 Bilmayman</button></div>';
     else ft='<div class="ft '+L.st+'"><div class="fm">'+(L.st==="ok"?"✅ Ofarin!":(it.self?"😕 Yana eshiting va ayting:":"❌ To‘g‘ri javob:"))+'</div><div style="margin-bottom:12px;font-weight:800;display:flex;gap:10px;align-items:center;justify-content:space-between"><span>'+esc(s[1])+'<br><span style="font-weight:700;opacity:.85">'+esc(s[2])+'</span></span>'+spk()+'</div><button class="btn" onclick="nxt('+(L.st==="ok"?1:0)+')">Davom etish</button>'+(L.st==="no"&&!L.rev&&!L.test?'<button class="op" style="text-align:center;margin:12px 0 0;border-bottom-width:3px" onclick="rewatch()">📖 Gapni qayta ko‘rish</button>':'')+'</div>'}
   $("#app").innerHTML='<div class="top"><button class="x" onclick="home()">✕</button><div class="pg"><i style="width:'+(L.d/L.tot*100)+'%"></i></div><span style="color:'+(L.test||L.rev?"var(--b)":"var(--r)")+';font-weight:900;font-size:18px">'+(L.test?"TEST":L.rev?"🔁":"❤️ "+L.hp)+'</span></div><div class="bd">'+b+'</div>'+ft;if(it.t==="teach"){fillScene();fillWords()}if(it.auto&&!it.played&&L.st==="ask"){it.played=1;setTimeout(sayCur,300)}}
 /* ============ gapirish mashqi: o'zingizni yozib eshitish (shadowing). Server va limit kerak emas ============ */
@@ -307,7 +378,7 @@ function recToggle(){var it=L&&L.q[L.i];if(!it||it.t!=="speak")return;
       if(ch.length)it.recUrl=URL.createObjectURL(new Blob(ch,{type:REC.mimeType||"audio/webm"}));
       if(L&&L.q[L.i]===it)draw()};
     it.recording=1;REC.start();draw()}).catch(function(){it.recErr=1;it.recording=0;if(L&&L.q[L.i]===it)draw()})}catch(e){it.recErr=1;draw()}}
-function ab(j){var it=L.q[L.i];L.pick.push(it.pool.splice(j,1)[0]);draw()}
+function ab(j){var it=L.q[L.i];if(L.st!=="ask")return;L.pick.push(it.pool.splice(j,1)[0]);draw();if(L.pick.length===String(it.item[1]).split(/\s+/).filter(Boolean).length)chk()}
 function ub(j){if(L.st!=="ask")return;var it=L.q[L.i];it.pool.push(L.pick.splice(j,1)[0]);draw()}
 function mt(j){var it=L.q[L.i];if(L.st!=="ask"||it.gone[j])return;
   if(it.sel==null||it.sel===j){it.sel=it.sel===j?null:j;return draw()}
@@ -330,8 +401,10 @@ function chk(){var it=L.q[L.i],s=it.item,ok;
   else if(!ok&&it.k>=0&&!it.re&&L.wrongK)L.wrongK[it.k]=1;
   if(ok){snd(660);snd(880,.2);hap(true);L.xp+=10}
   else{snd(200,.3);hap(false);L.err++;
-    if(L.test){L.miss.push(it.k)}else{L.hp--;L.q.push(mkEx(it.t,s,it.k));L.tot++;if(L.rev||wasOld)L.q.splice(L.i+1,0,{t:"teach",item:s,k:-1,re:1})}}
-  draw()}
+    if(L.test){L.miss.push(it.k)}else{L.hp--;(window.WK=window.WK||{})[it.k]=1;L.q.push(mkEx(it.t,s,it.k));L.tot++;if(L.rev||wasOld)L.q.splice(L.i+1,0,{t:"teach",item:s,k:-1,re:1})}}
+  draw();
+  if(ok){var cit=it;setTimeout(function(){if(L&&L.q[L.i]===cit&&L.st==="ok")nxt(1)},750)}}
+function skipQ(){var it=L.q[L.i];if(!it||L.st!=="ask")return;if(it.t!=="build"&&it.t!=="dict")L.sel=-1;else L.pick=[];chk()}
 function nxt(ok){try{if(REC&&REC.state==="recording")REC.stop()}catch(e){}if(ok)L.d++;L.i++;L.st="ask";L.sel=null;L.pick=[];if(L.hp<=0)return dead();draw()}
 function dead(){saveG();$("#app").innerHTML='<div class="end"><div class="e">💔</div><h1 style="color:var(--r)">Jonlar tugadi</h1><p>Xafa bo‘lmang, qaytadan urinib ko‘ring!</p><div class="bd"><button class="btn" onclick="start('+L.u+')">Qayta urinish</button><br><br><button class="op" style="text-align:center" onclick="home()">Bosh sahifa</button></div></div>'}
 function confetti(){var c="";for(var i=0;i<24;i++)c+='<span class="cf" style="left:'+Math.random()*95+'%;animation-delay:'+Math.random()*.8+'s">'+["🎉","⭐","✨","🟢"][i%4]+'</span>';return c}
@@ -418,6 +491,19 @@ function finTest(){var N=its.length,miss=L.miss.filter(function(k,i,a){return a.
     (can?'<button class="btn" id="sendb">Natijani botga yuborish</button>':'<div class="note">Bu test Telegram bot tugmasi orqali ochilishi kerak, aks holda natija botga yetmaydi.</div>')+'</div>';
   var sb=document.getElementById("sendb");if(sb)sb.onclick=function(){sb.disabled=true;try{tg.sendData(payload)}catch(e){sb.disabled=false}}}
 
+/* ============ har mashqqa vaqt: tugasa o'zi o'tkazadi va 1 jon ketadi ============ */
+var QT={mc:5,tf:5,fill:5,uzru:5,pic:5,listen:5,dict:12,build:10},QI=null;
+function qTimer(){if(QI){clearInterval(QI);QI=null}
+  var it=L&&L.q&&L.q[L.i];if(!it||L.st!=="ask"||!(QT[it.t]||it.t==="match"||it.t==="mem"))return;
+  var lim=it.t==="match"?25:it.t==="mem"?40:QT[it.t];if(!it._t0)it._t0=Date.now();
+  var bd=document.querySelector("#app .bd");if(bd&&!document.getElementById("qbw"))bd.insertAdjacentHTML("afterbegin",'<div style="display:flex;align-items:center;gap:12px;margin-bottom:6px"><div class="rb" id="qbw" style="flex:1;height:16px;margin:0"><i id="qb"></i></div><b id="qn" style="font-size:26px;min-width:34px;text-align:right">'+lim+'</b></div>');
+  function upd(){if(!L||L.q[L.i]!==it||L.st!=="ask"){clearInterval(QI);QI=null;return}
+    var left=lim-(Date.now()-it._t0)/1000,b=document.getElementById("qb"),w=document.getElementById("qbw");
+    if(b)b.style.width=Math.max(left,0)/lim*100+"%";if(w)w.classList.toggle("hot",left<=3);var n=document.getElementById("qn");if(n){n.textContent=Math.max(0,Math.ceil(left));n.style.color=left<=3?"var(--r)":"inherit"}
+    if(left<=0){clearInterval(QI);QI=null;if(it.t==="match"||it.t==="mem")mTO(it);else skipQ()}}
+  upd();QI=setInterval(upd,150)}
+function mTO(it){if(L.st!=="ask")return;it.to=1;it.err=1;it.cells.forEach(function(c,j){it.gone[j]=1});it.left=0;L.hp--;snd(200,.3);try{hap(false)}catch(e){}L.st="ok";if(L.hp<=0)return dead();draw()}
+var _d0=draw;draw=function(){_d0.apply(this,arguments);try{qTimer()}catch(e){}};
 /* ============ boshlash ============ */
 function init(){
   if(!DAYS.length||(!REVMODE&&!DAYS[DAY-1])){$("#app").innerHTML='<div class="end"><div class="e">🦊</div><h1>Dars topilmadi</h1><p class="note">Botdagi tugma orqali oching.</p></div>';return}
@@ -425,7 +511,8 @@ function init(){
   Store.all().then(function(m){S=m;loadG(m);
     var day=DAYS[DAY-1];
     if(day){its=day.i;var n=its.length,k=Math.ceil(n/4),b=Math.floor(n/k),e=n%k,p=0,E=["🌱","🌿","🌳","🍀"];
-      for(var i=0;i<k;i++){var sz=b+(i<e?1:0),ks=[];for(var j=0;j<sz;j++)ks.push(p+j);p+=sz;UN.push({k:ks,e:E[i%4],n:"Dars "+(i+1)})}
+      if(n<=8){var all=[];for(var j=0;j<n;j++)all.push(j);var ti=(DAY-1)%TPLS.length;UN.push({k:all,e:"👀",n:"Gaplar",m:"see"},{k:all,e:TPLS[ti].e,n:TPLS[ti].n,m:"play",tp:ti})}
+      else for(var i=0;i<k;i++){var sz=b+(i<e?1:0),ks=[];for(var j=0;j<sz;j++)ks.push(p+j);p+=sz;UN.push({k:ks,e:E[i%4],n:"Dars "+(i+1)})}
       var r=S["s"+DAY];if(r&&r.ver!==COURSE)r=null;dayRec={v:(r&&r.v)||[],p:(r&&r.p)||0}}
     if(TESTMODE&&day)return startTest();
     if(REVMODE){var dl=dueAll();return dl.length?startReview(dl):memo()}
@@ -434,4 +521,4 @@ function init(){
 init();
 </script>
 <script src="gram2.js"></script>
-<script src="extra.js"></script></body></html>
+<div style="position:fixed;right:8px;bottom:4px;font-size:11px;opacity:.45;pointer-events:none">v16</div><script src="extra.js?v=16"></script></body></html>

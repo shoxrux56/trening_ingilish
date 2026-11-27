@@ -71,31 +71,22 @@ var oHome=window.home;
 window.home=function(){if((XM==="exam"||XM==="week")&&!xStarted){xStarted=true;return xTestMode()}
   oHome.apply(this,arguments);try{xd();var u=$(".unit");if(!u||GDAY)return;
   var n=(X.ls?1:0)+(X.li?1:0)+(X.gp?1:0),all=n===3;
-  var row=function(done,emo,txt,fn){return '<button class="xqr'+(done?" ok":"")+'" '+(fn?'onclick="'+fn+'"':"")+'><span class="c">'+emo+'</span><span class="t">'+txt+'</span><span class="c">'+(done?"✅":"▶")+'</span></button>'};
-  u.insertAdjacentHTML("afterend",'<div class="xq"><div class="xqh"><b>🎯 Bugungi vazifalar</b><span>'+n+'/3</span></div><div class="xqb"><i style="width:'+Math.round(n/3*100)+'%"></i></div>'+
-   row(X.ls,"📚","Darsni tugating",X.ls?"":"")+row(X.li,"🎧","Eshit va top (o'yin)","xListen()")+row(X.gp,"🧩","Gap tuz (o'yin)","xBuild()")+
-   (all&&!X.cl?'<button class="xqg" onclick="xClaim()">🎁 Sovg\'ani oling: +30 XP</button>':all?'<div class="note" style="text-align:center;margin:8px 0 0">🎁 Bugungi sovg\'a olindi!</div>':'')+
-   '<button class="xqy" onclick="xBadges()">🏅 Yutuqlarim ('+BD.filter(function(b){return X.bd[b[0]]}).length+'/'+BD.length+')</button></div>');
+  var row=function(done,emo,txt,fn){return '<button class="xqr'+(done?" ok":"")+'" '+(fn?'onclick="'+fn+'"':"")+'><span class="c">'+emo+'</span><span class="t">'+txt+'</span><span class="c">'+(done?"✅":"⬜")+'</span></button>'};
+  /* vazifalar bloki olib tashlandi: faqat darslar yo'li */
   checkBd()}catch(e){}};
 window.xClaim=function(){xd();if(X.cl||!(X.ls&&X.li&&X.gp))return;X.cl=1;G.xp+=30;bumpStreak();checkBd();saveG();snd(523);setTimeout(function(){snd(784,.3)},150);
   var h=$("#app");h.insertAdjacentHTML("afterbegin",confetti());toast("🎁 +30 XP! Ertaga yangi vazifalar kutadi");setTimeout(home,1500)};
 
 /* darsni tugatish / takrorlash -> vazifa belgilash */
 var oFin=window.fin;window.fin=function(){oFin.apply(this,arguments);try{xd();X.ls=1;checkBd();saveG()}catch(e){}};
+/* alohida o'yinlar yo'q: vazifalar darsning o'zidan belgilanadi */
+var oRE=window.rEnd;if(oRE)window.rEnd=function(){var it=null;try{it=L.q[L.i]}catch(e){}var was=it&&it.done;oRE.apply(this,arguments);
+  try{if(it&&!was&&it.sc>=Math.ceil(it.qs.length*.6)){xd();X.li=1;checkBd();saveG()}}catch(e){}};
+var oFT=window.finTest;window.finTest=function(){var r=oFT.apply(this,arguments);try{xd();X.gp=1;checkBd();saveG()}catch(e){}return r};
 var oFinRev=window.finRev;if(oFinRev)window.finRev=function(){oFinRev.apply(this,arguments);try{xd();X.rv=1;checkBd();saveG()}catch(e){}};
 
 
-/* ---- yangi dars tartibi: avval hamma yangi gaplar birga (hikoya kabi), keyin aralash o'yinlar ---- */
-var oMk=window.mk;
-window.mk=function(u){
-  if(u>=UN.length)return oMk(u);
-  var ks=UN[u].k,r1t=["listen","mc","listen","tf"],r2t=["build","uzru","fill","dict"],q=[];
-  ks.forEach(function(k){q.push({t:"teach",k:k,item:its[k]})});                       // 1) hammasi ketma-ket, orada test yo'q
-  q=q.concat(fixAdj(sh(ks.map(function(k,j){return mkEx(r1t[(j+u)%4],its[k],k)}))));   // 2) eshitish/tanlash raundi (aralash tartibda)
-  if(ks.length>=3)q.push(mkMatch(ks));                                                 // 3) juftlik o'yini
-  var arr=fixAdj(sh(ks.map(function(k,j){return mkEx(r2t[(j+u+1)%4],its[k],k)})));    // 4) qiyinroq raund: boshqa shaklda
-  OLD.slice(u*OLDPER,u*OLDPER+OLDPER).forEach(function(w){arr.splice(Math.floor(Math.random()*(arr.length+1)),0,exOld(w))});
-  return q.concat(arr)};
+/* dars tartibi endi index.html ichidagi mk() da (tez dars: gaplar -> rasm -> juftlik -> tezkor musobaqa) */
 
 /* ---- umumiy ---- */
 function pool(){var out=[],seen={};
@@ -150,8 +141,17 @@ function xSep(u){return u.indexOf("?")<0?"?":"&"}
 if(RET){
   var oFinR=window.fin;window.fin=function(){oFinR.apply(this,arguments);
     try{var nt=document.querySelector("#app .note");
-      if(nt&&/botga qaytib/i.test(nt.textContent)){nt.textContent="Endi shu kunning testini yeching.";
-        var bt=document.querySelector("#app .btn");if(bt){bt.textContent="📝 Testga o‘tish";bt.onclick=function(){startTest()}}}}catch(e){}};
+      if(nt&&/botga qaytib/i.test(nt.textContent)){
+        var bt=document.querySelector("#app .btn");if(bt){bt.textContent="🗣 Rumiyo bilan gaplashish";nt.textContent="Endi Rumiyo bilan shu gaplarni ayting: u talaffuzingizni tuzatadi va darsni baholaydi.";
+          bt.onclick=function(){bt.disabled=true;goRumiyo()}}}}catch(e){}};
+  window.gtRum=function(){location.href=RET+xSep(RET)+"gt="+gramIdx(DAY)+(location.hash||"")};
+  window.goRumiyo=function(){var N=its.length,ms=Object.keys(window.WK||{}).map(Number).filter(function(k){return k<N}),p=JSON.stringify({l:LID,s:N-ms.length,n:N,w:ms.slice(0,3).map(function(k){return String(its[k][1]).slice(0,80)})});
+    try{ms.forEach(function(k){var cur=dayRec.v[k];dayRec.v[k]=pk(grade(nr(cur||newRec()),false,today()))});saveDay();saveG()}catch(e){}
+    location.href=RET+xSep(RET)+"r="+encodeURIComponent(p)+(location.hash||"")};
+  var oHomeR=window.home;window.home=function(){oHomeR.apply(this,arguments);
+    try{if(!GDAY&&dayRec.p>UN.length){var ns=document.querySelectorAll("#app .note"),nt=null;for(var i=0;i<ns.length;i++)if(/botga qaytib/i.test(ns[i].textContent))nt=ns[i];
+      if(nt){nt.textContent="🎉 Bugungi dars tayyor! Endi Rumiyo bilan gaplashing: u talaffuzingizni tuzatadi.";
+        var b=document.createElement("button");b.className="btn";b.style.marginTop="14px";b.textContent="🗣 Rumiyo bilan gaplashish";b.onclick=function(){b.disabled=true;goRumiyo()};nt.parentNode.appendChild(b)}}}catch(e){}};
   var oFinT=window.finTest;window.finTest=function(){var r=oFinT.apply(this,arguments);
     try{var p=window.__payload;if(p&&Number.isInteger(LID)){
       var host=document.querySelector("#app .bd")||document.querySelector("#app"),o=JSON.parse(p),pass=o.n>0&&o.s/o.n>=PASS;
