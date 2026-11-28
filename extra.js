@@ -139,17 +139,17 @@ window.xbc=function(){var S=window.xb;if(S.done){S.i++;return bDraw()}
 var RET=Q.get("ret");if(RET&&!/^https:\/\//.test(RET))RET=null;
 function xSep(u){return u.indexOf("?")<0?"?":"&"}
 if(RET){
-  var oFinR=window.fin;window.fin=function(){oFinR.apply(this,arguments);
-    try{var nt=document.querySelector("#app .note");
-      if(nt&&/botga qaytib/i.test(nt.textContent)){
-        var bt=document.querySelector("#app .btn");if(bt){bt.textContent="🗣 Rumiyo bilan gaplashish";nt.textContent="Endi Rumiyo bilan shu gaplarni ayting: u talaffuzingizni tuzatadi va darsni baholaydi.";
-          bt.onclick=function(){bt.disabled=true;goRumiyo()}}}}catch(e){}};
+  var oFinR=window.fin;window.fin=function(){var u0=(L&&typeof L.u==="number")?L.u:-1;oFinR.apply(this,arguments);
+    try{if(u0>=UN.length-1){var bt=document.querySelector("#app .btn"),nt=document.querySelector("#app .note");
+      if(bt){if(!nt){nt=document.createElement("div");nt.className="note";bt.parentNode.insertBefore(nt,bt)}
+        nt.textContent="🎉 Dars tugadi! Endi Rumiyo bilan shu gaplarni ayting: u talaffuzingizni tuzatadi va darsni baholaydi.";
+        bt.textContent="🗣 Rumiyo bilan gaplashish";bt.onclick=function(){bt.disabled=true;goRumiyo()}}}}catch(e){}};
   window.gtRum=function(){location.href=RET+xSep(RET)+"gt="+gramIdx(DAY)+(location.hash||"")};
   window.goRumiyo=function(){var N=its.length,ms=Object.keys(window.WK||{}).map(Number).filter(function(k){return k<N}),p=JSON.stringify({l:LID,s:N-ms.length,n:N,w:ms.slice(0,3).map(function(k){return String(its[k][1]).slice(0,80)})});
     try{ms.forEach(function(k){var cur=dayRec.v[k];dayRec.v[k]=pk(grade(nr(cur||newRec()),false,today()))});saveDay();saveG()}catch(e){}
     location.href=RET+xSep(RET)+"r="+encodeURIComponent(p)+(location.hash||"")};
   var oHomeR=window.home;window.home=function(){oHomeR.apply(this,arguments);
-    try{if(!GDAY){var done=dayRec.p>UN.length,pth=document.querySelector("#app .path");
+    try{if(!GDAY){var done=dayRec.p>=UN.length,pth=document.querySelector("#app .path");
       var ns=document.querySelectorAll("#app .note");for(var i=0;i<ns.length;i++)if(/botga qaytib/i.test(ns[i].textContent))ns[i].textContent=done?"🎉 Bugungi dars tayyor! Endi Rumiyo bilan gaplashing: u talaffuzingizni tuzatadi.":"";
       var w=document.createElement("div");w.className="bd";w.style.textAlign="center";
       var b=document.createElement("button");b.className="btn";b.style.marginTop="14px";b.textContent="🗣 Rumiyo bilan gaplashish";
